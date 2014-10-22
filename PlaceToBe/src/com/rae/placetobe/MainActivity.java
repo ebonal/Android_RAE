@@ -12,13 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.rae.placetobe.util.CameraUtil;
 import com.rae.placetobe.util.ImageUtil;
 
 public class MainActivity extends Activity
 {
-	
-	private static final String TAG = MainActivity.class.getSimpleName();
-	public final static String EXTRA_MESSAGE = TAG+".MESSAGE";
+	private final static String TAG = MainActivity.class.getSimpleName();
+	public  final static String EXTRA_FILE_PATH = MainActivity.class.getPackage().getName()+".EXTRA_FILE_PATH";
 
 	private String mCurrentPhotoPath; 
     
@@ -37,73 +37,32 @@ public class MainActivity extends Activity
 		return true;
 	}
 
-	public void showPhoto(View view)
+	public void addPhoto(View view)
 	{
-		dispatchTakePictureIntent();
+		mCurrentPhotoPath = CameraUtil.startCaptureActivity(this) ;
 	}
-
-	static final int REQUEST_TAKE_PHOTO = 1;
-
-	private void dispatchTakePictureIntent()
-	{
-	    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 	
-	    // Ensure that there's a camera activity to handle the intent
-	    if (takePictureIntent.resolveActivity(getPackageManager()) == null) return ;
-	   
-        // Create the File where the photo should go
-
-        try
-        {
-        	File mCurrentPhotoFile = ImageUtil.createImageFile();
-        	
-        	mCurrentPhotoPath = ImageUtil.getPath(mCurrentPhotoFile) ;
-        	
-        	Log.d(TAG, "mCurrentPhotoPath : " + mCurrentPhotoPath) ;
-        	        	
-            if(mCurrentPhotoFile != null) {
-            	Uri uri = Uri.fromFile(new File(mCurrentPhotoPath)) ;
-	            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-	            startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-            }
-        }
-        catch (Exception ex) {
-            // Error occurred while creating the File
-            // ...
-        }
- 	}
+	public void showGallery(View view)
+	{
+		mCurrentPhotoPath = CameraUtil.startCaptureActivity(this) ;
+	}
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
     	Log.d(TAG,"onActivityResult") ;
-		if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK)
+		
+    	if(requestCode == CameraUtil.REQUEST_TAKE_PHOTO && resultCode == RESULT_OK)
 		{
 	    	Intent intent = new Intent(this, PublicationActivty.class);
-	    	intent.putExtra(EXTRA_MESSAGE, mCurrentPhotoPath);
+	    	intent.putExtra(EXTRA_FILE_PATH, mCurrentPhotoPath);
 	        startActivity(intent);
+	        return ;
 		}
+		
+		super.onActivityResult(requestCode, resultCode, data);
 	}	
 	
-	
-	
-	
-	protected void onActivityResultXXX(int requestCode, int resultCode, Intent data)
-	{
-    	Log.d(TAG,"onActivityResult") ;
-    	
-		/*
-		Intent intent = new Intent(this, PublicationActivity.class);
-		intent.putExtra(EXTRA_MESSAGE, mCurrentPhotoPath);
-		*/
-		if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK)
-		{
-
-			
-			
-		}
-	}
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -111,10 +70,11 @@ public class MainActivity extends Activity
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings)
-		{
+		
+		if (id == R.id.action_settings) {
 			return true;
 		}
+
 		return super.onOptionsItemSelected(item);
 	}
 

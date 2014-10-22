@@ -3,9 +3,13 @@ package com.rae.placetobe.util;
 import java.util.Map;
 
 import android.content.SharedPreferences;
+import android.util.Log;
+
 
 public class ImageData
 {
+	private static final String TAG = ImageData.class.getSimpleName();
+	
 	static final private String KEY_PATH    = "PATH" ;
 	static final private String KEY_COMMENT = "COMMENT" ;
 	static final private String KEY_DATE    = "DATE" ;
@@ -39,14 +43,12 @@ public class ImageData
 	 *  DATE.1    =  Photo 2 date  
 	 * 
 	 */
-	
-
-
 
 	static public ImageData addPhoto(SharedPreferences sharedPref, String filePath, String comment)
 	{
 		int idx = getNextID(sharedPref) ;
-		
+    	Log.d(TAG,"getNextID : " + idx) ;
+    	
 		long timestamp = System.currentTimeMillis() ;
 		
 		SharedPreferences.Editor editor = sharedPref.edit();
@@ -63,11 +65,11 @@ public class ImageData
 		Map<String, ? > all = sharedPref.getAll() ;
 
 		String key   ;		
-		for(Map.Entry<String, ?> entries : all.entrySet()) 
+		for(Map.Entry<String, ?> entry : all.entrySet()) 
 		{
-			key = entries.getKey() ;
-			if(key.startsWith(KEY_PATH)) continue ;
-			if(filePath.equals(entries.getKey()))  {
+			key = entry.getKey() ;
+			if(key==null || key.startsWith(KEY_PATH)) continue ;
+			if(filePath.equals(key))  {
 				String lasDigit = key.substring(0, key.length() - 1) ;
 				return Integer.valueOf(lasDigit) ;
 			}
@@ -85,22 +87,24 @@ public class ImageData
 		return new ImageData(filePath, comment, Long.parseLong(sDate)) ;
 	}
 
+	/**
+	 * Returns the next ID that will be used to store the image data.
+	 */
 	static public int getNextID(SharedPreferences sharedPref) 
 	{
 		Map<String, ? > all = sharedPref.getAll() ;
 
-		
 		int i=0;
 		int  idxMinStamp =0 ;
 		long  minTimeStamp = Long.MAX_VALUE ;
 		
 		String key   ;		
-		for(Map.Entry<String, ?> entries : all.entrySet()) 
+		for(Map.Entry<String, ?> entry : all.entrySet()) 
 		{
-			key = entries.getKey() ;
-			if(key.startsWith(KEY_DATE)) continue ;
+			key = entry.getKey() ;
+			if(!key.startsWith(KEY_DATE)) continue ;
 			
-			long timestamp = Long.parseLong(entries.getKey()) ;
+			long timestamp = Long.parseLong(String.valueOf(entry.getValue())) ;
 			if(timestamp<minTimeStamp) {
 				minTimeStamp = timestamp ;
 				idxMinStamp = i ;

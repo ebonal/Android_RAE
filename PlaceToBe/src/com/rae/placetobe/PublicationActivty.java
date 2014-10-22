@@ -30,34 +30,46 @@ public class PublicationActivty extends Activity
 		setContentView(R.layout.activity_publication_activty);		
 
 		mImageView   = (ImageView) findViewById(R.id.imageViewPhoto);
-		mCommentText = (EditText) findViewById(R.id.editTextComment);
+		mCommentText = (EditText)  findViewById(R.id.editTextComment);
 		
 		Intent intent = getIntent();
-		mCurrentPhotoPath = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+		mCurrentPhotoPath = intent.getStringExtra(MainActivity.EXTRA_FILE_PATH);
 		
 //    	GalleryUtil.addPic(this, mCurrentPhotoPath);
+	     // Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.fromFile(mCurrentPhotoFile));
+	}
 
-		
-		// Bundle extras = data.getExtras();
-		// Bitmap imageBitmap = (Bitmap) extras.get("data");
+	
+	/*
+	 * Le chargement de la photo se fait ici, car la taille de mImageView n'est pas encore defini dans le onCreate()
+	 *  mImageView.getWidth() == mImageView.getHeight() == 0 ;
+	 */
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus)
+	{
 		try 
 		{
         	Log.d(TAG,"path : " + mCurrentPhotoPath) ;
-
-			Bitmap imageBitmap = ImageUtil.decodeSampledBitmapFromResource(mCurrentPhotoPath, 640,  480) ;
+        	
+        	// !! BOB : La methode setPic de la doc officiel semble un peu erronée car elle ne produit pas forcement 
+        	// un scaleFactor qui soit un multiple de 2.
+        	// Pour rappel dans setPic() @ http://developer.android.com/training/camera/photobasics.html
+            // int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        	
+        	// @see http://developer.android.com/training/displaying-bitmaps/load-bitmap.html
+			Bitmap imageBitmap = ImageUtil.decodeSampledBitmapFromResource(mCurrentPhotoPath, mImageView.getWidth(),  mImageView.getHeight()) ;
         	Log.d(TAG,"imageBitmap : " + imageBitmap) ;
 			
-		     // Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.fromFile(mCurrentPhotoFile));
 			mImageView.setImageBitmap(imageBitmap);	
 		}
 		catch(Exception e) {
 			
 		}
-
 		
-		
-		
+		super.onWindowFocusChanged(hasFocus);
 	}
+
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)

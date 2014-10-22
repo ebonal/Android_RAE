@@ -31,13 +31,15 @@ public class ImageUtil
 	        STORAGE_DIR     /* directory */
 	    );
 	}
-	
-	static public String getPath(File image)
-	throws IOException {
-		return new StringBuilder(image.getAbsolutePath()).toString() ;
-	}
-	
 
+	/**
+	 * To tell the decoder to subsample the image, loading a smaller version into memory,
+     * set inSampleSize to true in your BitmapFactory.Options object.
+     * 
+     * For example, an image with resolution 2048x1536 that is decoded with an inSampleSize of 4 produces a bitmap of approximately 512x384.
+     * Loading this into memory uses 0.75MB rather than 12MB for the full image (assuming a bitmap configuration of ARGB_8888).
+     * Here’s a method to calculate a sample size value that is a power of two based on a target width and height :
+     */
 	static private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)
 	{
 	    // Raw height and width of image
@@ -45,8 +47,8 @@ public class ImageUtil
 	    final int width  = options.outWidth;
 	    int inSampleSize = 1;
 	
-	    if (height > reqHeight || width > reqWidth) {
-	
+	    if (height > reqHeight || width > reqWidth) 
+	    {	
 	        final int halfHeight = height / 2;
 	        final int halfWidth  = width / 2;
 	
@@ -60,10 +62,12 @@ public class ImageUtil
 	
 	    return inSampleSize;
 	}
-	
+
 	static public Bitmap decodeSampledBitmapFromResource(String pathName, int reqWidth, int reqHeight)
 	{ 
-	    // First decode with inJustDecodeBounds=true to check dimensions
+	   	Log.d(TAG, "reqWidth  : "+reqWidth + " reqHeight  : "+reqHeight) ;
+		
+		// First decode with inJustDecodeBounds=true to check dimensions
 	    final BitmapFactory.Options options = new BitmapFactory.Options();
 	    options.inJustDecodeBounds = true;
 	    
@@ -79,4 +83,6 @@ public class ImageUtil
 	    
 	    return  BitmapFactory.decodeFile(pathName, options) ;	    
 	}
+
+
 }
