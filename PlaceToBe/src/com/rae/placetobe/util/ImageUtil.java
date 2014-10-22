@@ -28,26 +28,27 @@ public class ImageUtil
 		return File.createTempFile(
 	        imageFileName,  /* prefix */
 	        ".jpg",         /* suffix */
-	        STORAGE_DIR      /* directory */
+	        STORAGE_DIR     /* directory */
 	    );
 	}
 	
 	static public String getPath(File image)
-	throws IOException  {
+	throws IOException {
 		return new StringBuilder(image.getAbsolutePath()).toString() ;
 	}
+	
 
 	static private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)
 	{
 	    // Raw height and width of image
 	    final int height = options.outHeight;
-	    final int width = options.outWidth;
+	    final int width  = options.outWidth;
 	    int inSampleSize = 1;
 	
 	    if (height > reqHeight || width > reqWidth) {
 	
 	        final int halfHeight = height / 2;
-	        final int halfWidth = width / 2;
+	        final int halfWidth  = width / 2;
 	
 	        // Calculate the largest inSampleSize value that is a power of 2 and keeps both
 	        // height and width larger than the requested height and width.
@@ -66,23 +67,16 @@ public class ImageUtil
 	    final BitmapFactory.Options options = new BitmapFactory.Options();
 	    options.inJustDecodeBounds = true;
 	    
-	    Bitmap bitMap = BitmapFactory.decodeFile(pathName, options) ;	    
-    	Log.d(TAG, "decodeFile 1 : " + bitMap) ;
-    	Log.d(TAG, "reqWidth     : " + reqWidth) ;
-    	Log.d(TAG, "reqHeight    : " + reqHeight) ;
+	    BitmapFactory.decodeFile(pathName, options) ;	    
 	    
 	    // Calculate inSampleSize
 	    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-	    // options.inSampleSize = 4 ;
 	    
     	Log.d(TAG, "inSampleSize  : " + options.inSampleSize) ;
-    	
-	    
+    		    
 	    // Decode bitmap with inSampleSize set
 	    options.inJustDecodeBounds = false;
 	    
-	    bitMap = BitmapFactory.decodeFile(pathName, options) ;	    
-    	Log.d(TAG, "decodeFile 2  : " + bitMap) ;
-    	return bitMap ;
+	    return  BitmapFactory.decodeFile(pathName, options) ;	    
 	}
 }

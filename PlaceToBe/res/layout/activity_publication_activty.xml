@@ -9,11 +9,25 @@
 	    tools:context="com.rae.shadowproject.MainActivity" 
         android:orientation="vertical" >
 
+    <EditText
+        android:id="@+id/editTextComment"
+        android:inputType="textMultiLine"
+        android:lines="6"
+    	android:minLines="4"
+		android:hint="@string/insertComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+    
     <ImageView
         android:id="@+id/imageViewPhoto"
 	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
+	    android:layout_height="wrap_content"
         android:contentDescription="@string/action_photo"
         android:src="@drawable/ic_launcher" />
+
 
 </LinearLayout>
