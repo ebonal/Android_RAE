@@ -4,8 +4,7 @@
     <string name="app_name">PlaceToBe</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
-    
     <string name="action_photo">Photo</string>
-    
+    <string name="title_activity_publication_activty">PublicationActivty</string>
+
 </resources>

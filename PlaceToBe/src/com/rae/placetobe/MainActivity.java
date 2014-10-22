@@ -1,26 +1,32 @@
 package com.rae.placetobe;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
+
+import com.rae.placetobe.util.ImageUtil;
 
 public class MainActivity extends Activity
 {
-	private ImageView mImageView;
+	
+	private static final String TAG = MainActivity.class.getSimpleName();
+	public final static String EXTRA_MESSAGE = TAG+".MESSAGE";
 
+	private String mCurrentPhotoPath; 
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		mImageView = (ImageView) findViewById(R.id.imageViewPhoto);
 	}
 
 	@Override
@@ -36,25 +42,65 @@ public class MainActivity extends Activity
 		dispatchTakePictureIntent();
 	}
 
-	static final int REQUEST_IMAGE_CAPTURE = 1;
+	static final int REQUEST_TAKE_PHOTO = 1;
 
 	private void dispatchTakePictureIntent()
 	{
-		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		if (takePictureIntent.resolveActivity(getPackageManager()) != null)
-		{
-			startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-		}
-	}
+	    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+	
+	    // Ensure that there's a camera activity to handle the intent
+	    if (takePictureIntent.resolveActivity(getPackageManager()) == null) return ;
+	   
+        // Create the File where the photo should go
 
+        try
+        {
+        	File mCurrentPhotoFile = ImageUtil.createImageFile();
+        	
+        	mCurrentPhotoPath = ImageUtil.getPath(mCurrentPhotoFile) ;
+        	
+        	Log.d(TAG, "mCurrentPhotoPath : " + mCurrentPhotoPath) ;
+        	        	
+            if(mCurrentPhotoFile != null) {
+            	Uri uri = Uri.fromFile(new File(mCurrentPhotoPath)) ;
+	            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+	            startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        }
+        catch (Exception ex) {
+            // Error occurred while creating the File
+            // ...
+        }
+ 	}
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK)
+    	Log.d(TAG,"onActivityResult") ;
+		if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK)
 		{
-			Bundle extras = data.getExtras();
-			Bitmap imageBitmap = (Bitmap) extras.get("data");
-			mImageView.setImageBitmap(imageBitmap);
+	    	Intent intent = new Intent(this, PublicationActivty.class);
+	    	intent.putExtra(EXTRA_MESSAGE, mCurrentPhotoPath);
+	        startActivity(intent);
+		}
+	}	
+	
+	
+	
+	
+	protected void onActivityResultXXX(int requestCode, int resultCode, Intent data)
+	{
+    	Log.d(TAG,"onActivityResult") ;
+    	
+		/*
+		Intent intent = new Intent(this, PublicationActivity.class);
+		intent.putExtra(EXTRA_MESSAGE, mCurrentPhotoPath);
+		*/
+		if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK)
+		{
+
+			
+			
 		}
 	}
 
