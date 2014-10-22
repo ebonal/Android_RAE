@@ -7,5 +7,13 @@
 
     
     <string name="action_photo">Photo</string>
+    <string-array name="main_nav_array">
+        <item>Capturer un media</item>
+        <item>Medias autour de moi</item>
+        <item>Medias de ceux que je suis</item>
+        <item>Mon compte</item>
+    </string-array>
+    <string name="drawer_open">Photo</string>
+    <string name="drawer_close">Photo</string>
     
 </resources>
