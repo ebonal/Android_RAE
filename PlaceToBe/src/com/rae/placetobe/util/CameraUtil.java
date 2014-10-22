@@ -12,9 +12,10 @@ public class CameraUtil
 {
 	static private final String TAG = CameraUtil.class.getSimpleName();
 	
-	static public final int REQUEST_TAKE_PHOTO = 1;
+	static public final int REQUEST_TAKE_PHOTO    = 10 ;
+	static public final int REQUEST_VIDEO_CAPTURE = 11 ;
 	
-	static public String startCaptureActivity(Activity caller)
+	static public String startImageCaptureActivity(Activity caller)
 	{
 	    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 	
@@ -42,4 +43,12 @@ public class CameraUtil
         
         return mCurrentPhotoPath ;
  	}
+	
+	static public void startVideoCaptureActivity(Activity caller)
+	{
+	    Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+	    if (takeVideoIntent.resolveActivity(caller.getPackageManager()) != null) {
+	        caller.startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
+	    }		
+	}
 }

@@ -15,8 +15,8 @@ public class GalleryUtil
 	 */
 	static public void addPic(Context context, String  photoPath)
 	{
-	    Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
 	    Uri contentUri = Uri.fromFile(new File(photoPath));
+	    Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
 	    mediaScanIntent.setData(contentUri);
 	    context.sendBroadcast(mediaScanIntent);
 	}

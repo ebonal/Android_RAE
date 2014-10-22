@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.rae.placetobe.util.GalleryUtil;
 import com.rae.placetobe.util.ImageData;
 import com.rae.placetobe.util.ImageUtil;
 
@@ -33,10 +34,7 @@ public class PublicationActivty extends Activity
 		mCommentText = (EditText)  findViewById(R.id.editTextComment);
 		
 		Intent intent = getIntent();
-		mCurrentPhotoPath = intent.getStringExtra(MainActivity.EXTRA_FILE_PATH);
-		
-//    	GalleryUtil.addPic(this, mCurrentPhotoPath);
-	     // Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.fromFile(mCurrentPhotoFile));
+		mCurrentPhotoPath = intent.getStringExtra(MainActivity.EXTRA_FILE_PATH);		
 	}
 
 	
@@ -91,6 +89,11 @@ public class PublicationActivty extends Activity
 		if(id==R.id.action_commit) 
 		{
 			ImageData.addPhoto(getPreferences(Context.MODE_PRIVATE), mCurrentPhotoPath, mCommentText.getText().toString()) ;
+			
+			// De-commenter cette ligne pour ajouter la photo dans la galerie du telephone
+	    	//GalleryUtil.addPic(this, mCurrentPhotoPath);
+
+			
 			finish();
 			return true ;
 		}
