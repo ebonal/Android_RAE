@@ -23,13 +23,57 @@
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:tabStripEnabled="true" >
+
             </TabWidget>
 
             <FrameLayout
                 android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:id="@+id/tabFollowed"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                        <EditText
+                            android:id="@+id/editTextAdd"
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="@string/account_edittext_add"
+                            android:inputType="textPersonName" />
+
+                        <ImageButton
+                            android:id="@+id/imageButtonAdd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:src="@android:drawable/ic_input_add" />
+                    </LinearLayout>
+
+                    <ListView
+                        android:id="@+id/listViewFollowed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+                    </ListView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tabFollowers"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/tabAccount"
@@ -51,10 +95,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:ems="10"
-                        android:inputType="textPersonName" >
-
-                        <requestFocus />
-                    </EditText>
+                        android:inputType="textPersonName" />
 
                     <TextView
                         android:id="@+id/textView2"
@@ -73,27 +114,14 @@
 
                     <Button
                         android:id="@+id/bt_save"
-                        android:layout_width="wrap_content"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
                         android:text="@string/account_bt_save" />
-
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/tabFollowed"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" 
-                    android:orientation="vertical">
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/tabFollowers"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" 
-                    android:orientation="vertical">
-                </LinearLayout>
             </FrameLayout>
+
         </LinearLayout>
     </TabHost>
 

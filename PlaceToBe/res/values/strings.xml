@@ -11,5 +11,6 @@
     <string name="account_label_email">Email :</string>
     <string name="account_label_name">Name :</string>
     <string name="account_bt_save">Save</string>
+    <string name="account_edittext_add">Add a new followed</string>
 
 </resources>

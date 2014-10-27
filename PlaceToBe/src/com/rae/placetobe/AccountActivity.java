@@ -1,5 +1,9 @@
 package com.rae.placetobe;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -7,8 +11,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
@@ -23,6 +29,7 @@ public class AccountActivity extends Activity
 	private Button btSave = (Button) findViewById(R.id.bt_save);
 	private EditText editTextName = (EditText) findViewById(R.id.editTextName);
 	private EditText editTextEmail = (EditText) findViewById(R.id.editTextEmail);
+	private ListView listFollowed = (ListView) findViewById(R.id.listViewFollowed);
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -37,6 +44,7 @@ public class AccountActivity extends Activity
 	    tabSpec = tabHost.newTabSpec("followers").setIndicator(getResources().getString(R.string.account_tab_followers));
 	    tabHost.addTab(tabSpec);
 	    
+	    // Onglet 1
 	    final SharedPreferences pref = getPreferences(MODE_PRIVATE);
 	    name = pref.getString("account_name", "");
 	    email = pref.getString("account_email", "");
@@ -54,6 +62,17 @@ public class AccountActivity extends Activity
     	    	editor.commit();
             }
         });
+	    
+	    // Onglet 2
+	    Set<String> prefListFollowed = pref.getStringSet("account_followed", new HashSet<String>());
+	    
+	    ArrayList<String> list = new ArrayList<String>();
+	    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, list);
+	    listFollowed.setAdapter(adapter);
+	    
+	    
+	    // Onglet 3
+	    
 	    
 	    
 	    
