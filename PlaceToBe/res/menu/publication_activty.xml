@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.rae.placetobe.PublicationActivty" >
+
+    <!-- 
+   <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_settings"/>
+	-->
+    
+    <!-- Cancel -->
+    <item android:id="@+id/action_cancel"
+         android:icon="@android:drawable/ic_menu_delete"
+          android:title="@string/action_cancel"
+          android:showAsAction="ifRoom" />
+    
+    <item android:id="@+id/action_commit"
+         android:icon="@android:drawable/ic_menu_add"
+          android:title="@string/action_valid"
+          android:showAsAction="always" />
+    
+</menu>

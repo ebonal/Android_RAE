@@ -1,27 +1,31 @@
 package com.rae.placetobe;
 
 import android.app.Activity;
-import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.rae.placetobe.util.CameraUtil;
+
+@SuppressWarnings("deprecation")
 public class MainActivity extends Activity
 {
-	private ImageView mImageView;
-	
+	private final static String TAG = MainActivity.class.getSimpleName();
+	public  final static String EXTRA_FILE_PATH = MainActivity.class.getPackage().getName()+".EXTRA_FILE_PATH";
+
+	private String mCurrentPhotoPath; 
+    
+
 	/** Variable pour le Menu tiroir */
 	// Vue pour mon menu tiroir
 	private DrawerLayout mDrawerLayout;
@@ -30,15 +34,14 @@ public class MainActivity extends Activity
 	// Variable pour afficher mon menu
 	private String[] mMainNavTitles;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.drawer_layout);
 
-		mImageView = (ImageView) findViewById(R.id.imageViewPhoto);
-		
+//		setContentView(R.layout.drawer_layout);
+		setContentView(R.layout.activity_main	);
+
 		// Initialisation des valeures pour le menu tiroir
 		mMainNavTitles = getResources().getStringArray(R.array.main_nav_array);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -74,6 +77,8 @@ public class MainActivity extends Activity
 
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        setContentView(R.layout.activity_main);
 	}
 
 	@Override
@@ -83,14 +88,26 @@ public class MainActivity extends Activity
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-    @Override
+    
+	@Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
         return super.onPrepareOptionsMenu(menu);
     }
+    
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) 
+    {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		
+		if (id == R.id.action_settings) {
+			return true;
+		}    	
+    	
          // The action bar home/up action should open or close the drawer.
          // ActionBarDrawerToggle will take care of this.
         if (mDrawerToggle.onOptionsItemSelected(item)) {
@@ -100,30 +117,40 @@ public class MainActivity extends Activity
     }
     
 
-	public void showPhoto(View view)
+	public void addPhoto(View view)
 	{
-		dispatchTakePictureIntent();
+		mCurrentPhotoPath = CameraUtil.startImageCaptureActivity(this) ;
 	}
-
-	static final int REQUEST_IMAGE_CAPTURE = 1;
-
-	private void dispatchTakePictureIntent()
+	
+	public void addVideo(View view)
 	{
-		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		if (takePictureIntent.resolveActivity(getPackageManager()) != null)
-		{
-			startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-		}
+		CameraUtil.startVideoCaptureActivity(this) ;
 	}
-
+	
+	public void showGallery(View view)
+	{
+		
+	
+	}
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK)
+    	Log.d(TAG,"onActivityResult") ;
+		super.onActivityResult(requestCode, resultCode, data);
+		
+    	if(requestCode == CameraUtil.REQUEST_TAKE_PHOTO && resultCode == RESULT_OK)
 		{
-			Bundle extras = data.getExtras();
-			Bitmap imageBitmap = (Bitmap) extras.get("data");
-			mImageView.setImageBitmap(imageBitmap);
+	    	Intent intent = new Intent(this, PublicationActivty.class);
+	    	intent.putExtra(EXTRA_FILE_PATH, mCurrentPhotoPath);
+	        startActivity(intent);
+	        return ;
+		}
+
+    	if(requestCode == CameraUtil.REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK)
+		{
+    		Toast.makeText(this, "YEP !", Toast.LENGTH_LONG).show() ;
+    		return ;
 		}
 	}
 
@@ -158,6 +185,8 @@ public class MainActivity extends Activity
 	// Swaps fragments in the main content view
 	private void selectItem(int position) {
 	    // TODO
-	}
+		
+	}	
+
 
 }

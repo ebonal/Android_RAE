@@ -2,18 +2,28 @@
 <resources>
 
     <string name="app_name">PlaceToBe</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
 
+    <string name="action_settings">Settings</string>
     
     <string name="action_photo">Photo</string>
+
     <string-array name="main_nav_array">
         <item>Capturer un media</item>
         <item>Medias autour de moi</item>
         <item>Medias de ceux que je suis</item>
         <item>Mon compte</item>
     </string-array>
+    
     <string name="drawer_open">Photo</string>
     <string name="drawer_close">Photo</string>
+    <string name="action_video">Video</string>
+    <string name="action_gallery">Gallery</string>
     
+    <string name="title_activity_publication_activty">PublicationActivty</string>
+    <string name="insertComment">Insert comment here !</string>
+    
+    
+    <string name="action_cancel">Cancel</string>
+    <string name="action_valid">Valid</string>
+              
 </resources>

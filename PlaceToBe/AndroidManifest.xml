@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.rae.placetobe"
     android:versionCode="1"
@@ -7,6 +7,8 @@
     <uses-sdk
         android:minSdkVersion="15"
         android:targetSdkVersion="21" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -23,6 +25,10 @@
             <meta-data
 	            android:name="android.support.PARENT_ACTIVITY"
 	            android:value="com.Android_RAE.PlaceToBe.MainActivity" />
+        </activity>
+        <activity
+            android:name=".PublicationActivty"
+            android:label="@string/title_activity_publication_activty" >
         </activity>
     </application>
 
