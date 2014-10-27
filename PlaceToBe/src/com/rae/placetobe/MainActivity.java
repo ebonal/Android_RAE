@@ -39,8 +39,7 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 
-//		setContentView(R.layout.drawer_layout);
-		setContentView(R.layout.activity_main	);
+		setContentView(R.layout.activity_main);
 
 		// Initialisation des valeures pour le menu tiroir
 		mMainNavTitles = getResources().getStringArray(R.array.main_nav_array);
@@ -78,7 +77,6 @@ public class MainActivity extends Activity
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        setContentView(R.layout.activity_main);
 	}
 
 	@Override
