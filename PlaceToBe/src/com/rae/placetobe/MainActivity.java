@@ -1,6 +1,7 @@
 package com.rae.placetobe;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.rae.placetobe.util.CameraUtil;
+import com.rae.placetobe.util.ImageData;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends Activity
@@ -23,6 +25,8 @@ public class MainActivity extends Activity
 	private final static String TAG = MainActivity.class.getSimpleName();
 	public  final static String EXTRA_FILE_PATH = MainActivity.class.getPackage().getName()+".EXTRA_FILE_PATH";
 
+	public final static String PREFERENCE_FILE_NAME = "ImageData" ;
+	
 	private String mCurrentPhotoPath; 
     
 
@@ -115,8 +119,7 @@ public class MainActivity extends Activity
     }
     
 
-	public void addPhoto(View view)
-	{
+	public void addPhoto(View view) {
 		mCurrentPhotoPath = CameraUtil.startImageCaptureActivity(this) ;
 	}
 	
@@ -127,8 +130,7 @@ public class MainActivity extends Activity
 	
 	public void showGallery(View view)
 	{
-		
-	
+		ImageData.dump(getSharedPreferences(PREFERENCE_FILE_NAME, Context.MODE_PRIVATE)) ;
 	}
 	
 	@Override

@@ -112,7 +112,7 @@ public class PublicationActivty extends Activity
 		
 		if(id==R.id.action_commit) 
 		{
-			ImageData.addPhoto(getPreferences(Context.MODE_PRIVATE), mCurrentPhotoPath, mCommentText.getText().toString()) ;
+			ImageData.addPhoto(getSharedPreferences(MainActivity.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE), mCurrentPhotoPath, mCommentText.getText().toString()) ;
 			
 			// De-commenter cette ligne pour ajouter la photo dans la galerie du telephone
 	    	//GalleryUtil.addPic(this, mCurrentPhotoPath);

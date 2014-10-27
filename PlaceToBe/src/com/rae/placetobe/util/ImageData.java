@@ -1,7 +1,10 @@
 package com.rae.placetobe.util;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.util.Log;
 
@@ -14,10 +17,14 @@ public class ImageData
 	static final private String KEY_COMMENT = "COMMENT" ;
 	static final private String KEY_DATE    = "DATE" ;
 
-	private String filePath  ;
-	private String comment   ;
-	private long   timestamp ;
+	final private Integer id  ;
+	final private String filePath  ;
+	final private String comment   ;
+	final private long   timestamp ;
 
+	public Integer getId() {
+		return id;
+	}
 	public String getFilePath() {
 		return filePath;
 	}
@@ -28,8 +35,9 @@ public class ImageData
 		return timestamp;
 	}
 	
-	private ImageData(String filePath, String comment, long timestamp)
+	private ImageData(Integer id, String filePath, String comment, long timestamp)
 	{
+		this.id = id ;
 		this.filePath = filePath ;
 		this.comment  = comment ; 
 		this.timestamp = timestamp ;
@@ -56,8 +64,8 @@ public class ImageData
 		editor.putString(KEY_COMMENT+"."+idx, comment);
 		editor.putString(KEY_DATE+"."+idx, String.valueOf(timestamp));		
 		editor.commit();
-		
-		return new ImageData(filePath, comment, timestamp) ;
+
+		return new ImageData(Integer.valueOf(idx), filePath, comment, timestamp) ;
 	}
 
 	static private Integer getIdForFilePath(SharedPreferences sharedPref, String filePath)
@@ -70,12 +78,73 @@ public class ImageData
 			key = entry.getKey() ;
 			if(key==null || key.startsWith(KEY_PATH)) continue ;
 			if(filePath.equals(key))  {
-				String lasDigit = key.substring(0, key.length() - 1) ;
-				return Integer.valueOf(lasDigit) ;
+				String lastDigit = key.substring(key.length()-1) ;
+				return Integer.valueOf(lastDigit) ;
 			}
 		}
 
 		return null; // No data found
+	}
+	
+	static public ImageData getImageData(SharedPreferences sharedPref, Integer searchId)
+	{
+		String filePath = sharedPref.getString(KEY_PATH+"."+searchId, "") ;
+		String comment  = sharedPref.getString(KEY_COMMENT+"."+searchId, "") ;
+		String sDate    = sharedPref.getString(KEY_DATE+"."+searchId, "") ;
+		return new ImageData(searchId, filePath, comment, Long.parseLong(sDate)) ;
+	}
+	
+	
+	@SuppressLint("UseSparseArrays")
+	static public Collection<ImageData> getAllImageDatas(SharedPreferences sharedPref)
+	{
+		Map<Integer, ImageData> datas = new HashMap<Integer, ImageData>() ;
+		ImageData data ;
+		
+		Map<String, ? > all = sharedPref.getAll() ;
+
+		String key   ;		
+		Integer id ;
+		for(Map.Entry<String, ?> entry : all.entrySet()) 
+		{
+			key = entry.getKey() ;
+			Log.d(TAG, "KEY " + key) ;
+			if(key==null || key.isEmpty()) continue ;
+			if(!(key.startsWith(KEY_COMMENT) || key.startsWith(KEY_DATE) || key.startsWith(KEY_PATH)))
+				continue ; // Not a image shared preference
+				
+			String lastDigit = key.substring(key.length()-1) ;
+			id = Integer.valueOf(lastDigit) ;
+
+			data = datas.get(id) ;
+			if(data!=null) continue ; // Already in 
+			
+			data = getImageData(sharedPref, id) ;
+			datas.put(id, data) ;
+		}
+		
+		return datas.values() ;
+	}
+	
+	static public void dump(SharedPreferences sharedPref)
+	{
+    	Log.d(TAG,"dump :" + sharedPref) ;
+    	
+		Map<String,?> keys = sharedPref.getAll();
+		for(Map.Entry<String,?> entry : keys.entrySet()){
+            Log.d("map values",entry.getKey() + ": " + entry.getValue().toString());            
+		}
+		/*
+		Collection<ImageData> allDatas = getAllImageDatas(sharedPref) ;
+		for(ImageData data : allDatas) 
+		{
+			Log.d(TAG, "ID " + data.getId()) ;
+			Log.d(TAG, "PATH " + data.getFilePath()) ;
+			Log.d(TAG, "COMMENT " + data.getComment()) ;
+			Log.d(TAG, "TIMESTAMP" + data.getTimestamp()) ;
+			Log.d(TAG, "") ;
+		}
+		*/
 	}
 
 	static public ImageData getDataForFilePath(SharedPreferences sharedPref, String filePath)
@@ -84,7 +153,7 @@ public class ImageData
 		if(idx==null) return null ; // Not found		
 		String comment = sharedPref.getString(KEY_COMMENT+"."+idx, "") ;
 		String sDate   = sharedPref.getString(KEY_DATE+"."+idx, "") ;
-		return new ImageData(filePath, comment, Long.parseLong(sDate)) ;
+		return new ImageData(idx, filePath, comment, Long.parseLong(sDate)) ;
 	}
 
 	/**
