@@ -21,7 +21,13 @@
 
         <requestFocus />
     </EditText>
-    
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="toggleFilter"
+        android:text="@string/toggleFilter" />
+        
     <ImageView
         android:id="@+id/imageViewPhoto"
 	    android:layout_width="match_parent"

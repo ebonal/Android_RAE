@@ -8,6 +8,10 @@ import java.util.Date;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.os.Environment;
 import android.util.Log;
 
@@ -82,6 +86,19 @@ public class ImageUtil
 	    options.inJustDecodeBounds = false;
 	    
 	    return  BitmapFactory.decodeFile(pathName, options) ;	    
+	}
+	
+	static public Bitmap applyBlackAndWithFilter(Bitmap source)
+	{
+		
+		Bitmap bmpMonochrome = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(bmpMonochrome);
+		ColorMatrix ma = new ColorMatrix();
+		ma.setSaturation(0);
+		Paint paint = new Paint();
+		paint.setColorFilter(new ColorMatrixColorFilter(ma));
+		canvas.drawBitmap(source, 0, 0, paint);		
+		return bmpMonochrome ;
 	}
 
 

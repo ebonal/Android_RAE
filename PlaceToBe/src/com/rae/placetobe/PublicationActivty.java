@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -21,6 +22,10 @@ public class PublicationActivty extends Activity
 	private ImageView mImageView;
 	private EditText  mCommentText;
 
+	private Bitmap originalImageBitmap ;
+	private Bitmap whiteAndBlackImageBitmap = null ; // Lazy initialization
+	private Bitmap currentBitmap ;
+	
 	private String mCurrentPhotoPath; 
 	
 	@Override
@@ -35,7 +40,7 @@ public class PublicationActivty extends Activity
 		Intent intent = getIntent();
 		mCurrentPhotoPath = intent.getStringExtra(MainActivity.EXTRA_FILE_PATH);		
 	}
-
+	
 	
 	/*
 	 * Le chargement de la photo se fait ici, car la taille de mImageView n'est pas encore defini dans le onCreate()
@@ -54,10 +59,12 @@ public class PublicationActivty extends Activity
             // int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
         	
         	// @see http://developer.android.com/training/displaying-bitmaps/load-bitmap.html
-			Bitmap imageBitmap = ImageUtil.decodeSampledBitmapFromResource(mCurrentPhotoPath, mImageView.getWidth(),  mImageView.getHeight()) ;
-        	Log.d(TAG,"imageBitmap : " + imageBitmap) ;
-			
-			mImageView.setImageBitmap(imageBitmap);	
+        	originalImageBitmap = ImageUtil.decodeSampledBitmapFromResource(mCurrentPhotoPath, mImageView.getWidth(),  mImageView.getHeight()) ;
+           	Log.d(TAG,"imageBitmap : " + originalImageBitmap) ;
+
+           	applyCurrentBitmap(originalImageBitmap);
+ 			
+			mImageView.setImageBitmap(originalImageBitmap);	
 		}
 		catch(Exception e) {
 			
@@ -66,6 +73,24 @@ public class PublicationActivty extends Activity
 		super.onWindowFocusChanged(hasFocus);
 	}
 
+	public void toggleFilter(View view) 
+	{
+		if(currentBitmap==originalImageBitmap) {
+			// Toggle to black and white
+			if(whiteAndBlackImageBitmap==null) 
+				whiteAndBlackImageBitmap = ImageUtil.applyBlackAndWithFilter(originalImageBitmap) ;
+			applyCurrentBitmap(whiteAndBlackImageBitmap);
+			return ;
+		}
+		
+		applyCurrentBitmap(originalImageBitmap);
+	}
+
+	private void applyCurrentBitmap(Bitmap newCurrentBitmap) 
+	{
+		currentBitmap = newCurrentBitmap ;
+		mImageView.setImageBitmap(currentBitmap);			
+	}
 
 
 	@Override
