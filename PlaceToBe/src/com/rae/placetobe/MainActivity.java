@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -171,6 +172,23 @@ public class MainActivity extends Activity
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 	
+    public void launchNewActivity(View view,String activity) {
+	   	String label = "com.rae.placetobe." + activity;
+	   	
+	   	Class<?> labelClass = null;
+	   	if(label != null) {
+	   	    try {
+	   	    	labelClass = Class.forName(label);
+	   	    } catch (ClassNotFoundException e) {
+	   	        // TODO Auto-generated catch block
+	   	        e.printStackTrace();
+	   	    }
+	   	}
+	   	// on instancie un nouvel Intent
+	   	Intent intent = new Intent(this, labelClass);
+	   	// on lance l'activit?
+	   	startActivity(intent);
+   }
 	
 	// Swaps fragments in the main content view
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -179,6 +197,9 @@ public class MainActivity extends Activity
 	    	switch(position){
 				case 0 : 
 					addPhoto(view);
+					break;
+				case 3 : 
+					 launchNewActivity(view,"HistoryActivity");
 					break;
 				default: 
 					break;
