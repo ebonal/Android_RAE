@@ -176,15 +176,14 @@ public class MainActivity extends Activity
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 	    @Override
 	    public void onItemClick(AdapterView parent, View view, int position, long id) {
-	        selectItem(position);
+	    	switch(position){
+				case 0 : 
+					addPhoto(view);
+					break;
+				default: 
+					break;
+			}
 	    }
 	}
-	
-	// Swaps fragments in the main content view
-	private void selectItem(int position) {
-	    // TODO
-		
-	}	
-
 
 }
