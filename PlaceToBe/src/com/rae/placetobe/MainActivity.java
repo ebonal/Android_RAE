@@ -1,7 +1,6 @@
 package com.rae.placetobe;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -16,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.rae.placetobe.util.AppUtil;
 import com.rae.placetobe.util.CameraUtil;
 import com.rae.placetobe.util.ImageData;
 
@@ -25,7 +25,7 @@ public class MainActivity extends Activity
 	private final static String TAG = MainActivity.class.getSimpleName();
 	public  final static String EXTRA_FILE_PATH = MainActivity.class.getPackage().getName()+".EXTRA_FILE_PATH";
 
-	public final static String PREFERENCE_FILE_NAME = "ImageData" ;
+
 	
 	private String mCurrentPhotoPath; 
     
@@ -130,7 +130,7 @@ public class MainActivity extends Activity
 	
 	public void showGallery(View view)
 	{
-		ImageData.dump(getSharedPreferences(PREFERENCE_FILE_NAME, Context.MODE_PRIVATE)) ;
+		ImageData.dump(AppUtil.getApplicationPreferences(this)) ;
 	}
 	
 	@Override
@@ -154,12 +154,7 @@ public class MainActivity extends Activity
 		}
 	}
 
-	
-	
-	
 	/** Menu tiroir */
-	
-    
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -175,7 +170,8 @@ public class MainActivity extends Activity
 	
 	
 	// Swaps fragments in the main content view
-	private class DrawerItemClickListener implements ListView.OnItemClickListener {
+	private class DrawerItemClickListener implements ListView.OnItemClickListener
+	{
 	    @Override
 	    public void onItemClick(AdapterView parent, View view, int position, long id) {
 	    	switch(position){

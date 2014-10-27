@@ -1,7 +1,6 @@
 package com.rae.placetobe;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.rae.placetobe.util.AppUtil;
 import com.rae.placetobe.util.ImageData;
 import com.rae.placetobe.util.ImageUtil;
 
@@ -112,7 +112,7 @@ public class PublicationActivty extends Activity
 		
 		if(id==R.id.action_commit) 
 		{
-			ImageData.addPhoto(getSharedPreferences(MainActivity.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE), mCurrentPhotoPath, mCommentText.getText().toString()) ;
+			ImageData.addPhoto(AppUtil.getApplicationPreferences(this), mCurrentPhotoPath, mCommentText.getText().toString()) ;
 			
 			// De-commenter cette ligne pour ajouter la photo dans la galerie du telephone
 	    	//GalleryUtil.addPic(this, mCurrentPhotoPath);
