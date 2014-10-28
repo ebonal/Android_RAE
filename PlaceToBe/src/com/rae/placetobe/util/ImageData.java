@@ -1,28 +1,36 @@
 package com.rae.placetobe.util;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
+import android.util.SparseArray;
 
-
+/**
+ * Manage a list of 10 pictures and their associated data.
+ * 
+ * There is 3 shared preferences used for each picture.
+ * For exemple for the second picture (index is zero based):
+ * 
+ *   PATH.1    = /<filePath>/image.jpg
+ *   COMMENT.1 = User's comment
+ *   DATE.1    = The timestamp
+ *
+ */
 public class ImageData
 {
-	private static final String TAG = ImageData.class.getSimpleName();
+//	private static final String TAG = ImageData.class.getSimpleName();
 	
 	static final private String KEY_PATH    = "PATH" ;
 	static final private String KEY_COMMENT = "COMMENT" ;
 	static final private String KEY_DATE    = "DATE" ;
 
-	final private Integer id  ;
+	final private int    id  ;
 	final private String filePath  ;
 	final private String comment   ;
 	final private long   timestamp ;
 
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 	public String getFilePath() {
@@ -35,86 +43,66 @@ public class ImageData
 		return timestamp;
 	}
 	
-	private ImageData(Integer id, String filePath, String comment, long timestamp)
+	// private constructor ensure the use of the #addPhoto factory method.
+	private ImageData(int id, String filePath, String comment, long timestamp)
 	{
-		this.id = id ;
-		this.filePath = filePath ;
-		this.comment  = comment ; 
+		this.id        = id ;
+		this.filePath  = filePath ;
+		this.comment   = comment ; 
 		this.timestamp = timestamp ;
 	}
 	
-	/*
-	 * Stockage des infos photos dans le SharedPreferences 
-	 * 
-	 *  PATH.1    =  Photo 2 path 
-	 *  COMMENT.1 =  Photo 2 commment
-	 *  DATE.1    =  Photo 2 date  
-	 * 
+	/**
+	 * Add a photo to the list
 	 */
-
-	static public ImageData addPhoto(SharedPreferences sharedPref, String filePath, String comment)
+	static public ImageData addPhoto(Context context, String filePath, String comment)
 	{
+		SharedPreferences sharedPref = SharedPreferencesUtil.getImageDataPreferences(context) ;
 		int idx = getNextID(sharedPref) ;
-    	Log.d(TAG,"getNextID : " + idx) ;
     	
 		long timestamp = System.currentTimeMillis() ;
 		
 		SharedPreferences.Editor editor = sharedPref.edit();
-		editor.putString(KEY_PATH+"."+idx, filePath);
+		editor.putString(KEY_PATH   +"."+idx, filePath);
 		editor.putString(KEY_COMMENT+"."+idx, comment);
-		editor.putString(KEY_DATE+"."+idx, String.valueOf(timestamp));		
+		editor.putString(KEY_DATE   +"."+idx, String.valueOf(timestamp));		
 		editor.commit();
 
 		return new ImageData(Integer.valueOf(idx), filePath, comment, timestamp) ;
 	}
 
-	static private Integer getIdForFilePath(SharedPreferences sharedPref, String filePath)
+	/**
+	 * Returns the data for a specified image
+	 */
+	static public ImageData getImageData(SharedPreferences sharedPref, int searchId)
 	{
-		Map<String, ? > all = sharedPref.getAll() ;
-
-		String key   ;		
-		for(Map.Entry<String, ?> entry : all.entrySet()) 
-		{
-			key = entry.getKey() ;
-			if(key==null || key.startsWith(KEY_PATH)) continue ;
-			if(filePath.equals(key))  {
-				String lastDigit = key.substring(key.length()-1) ;
-				return Integer.valueOf(lastDigit) ;
-			}
-		}
-
-		return null; // No data found
-	}
-	
-	static public ImageData getImageData(SharedPreferences sharedPref, Integer searchId)
-	{
-		String filePath = sharedPref.getString(KEY_PATH+"."+searchId, "") ;
+		String filePath = sharedPref.getString(KEY_PATH   +"."+searchId, "") ;
 		String comment  = sharedPref.getString(KEY_COMMENT+"."+searchId, "") ;
-		String sDate    = sharedPref.getString(KEY_DATE+"."+searchId, "") ;
+		String sDate    = sharedPref.getString(KEY_DATE   +"."+searchId, "") ;
 		return new ImageData(searchId, filePath, comment, Long.parseLong(sDate)) ;
 	}
-	
-	
-	@SuppressLint("UseSparseArrays")
-	static public Collection<ImageData> getAllImageDatas(SharedPreferences sharedPref)
-	{
-		Map<Integer, ImageData> datas = new HashMap<Integer, ImageData>() ;
-		ImageData data ;
 		
-		Map<String, ? > all = sharedPref.getAll() ;
-
-		String key   ;		
-		Integer id ;
-		for(Map.Entry<String, ?> entry : all.entrySet()) 
+	/**
+	 * Returns the list of image's data
+	 */
+	static public SparseArray<ImageData> getAllImageDatas(Context context)
+	{
+		SharedPreferences sharedPref = SharedPreferencesUtil.getImageDataPreferences(context) ;
+		SparseArray<ImageData> datas = new SparseArray<ImageData>(10) ;
+		
+		ImageData data ;		
+		String key ;		
+		int id ;
+		
+		for(Map.Entry<String, ?> entry : sharedPref.getAll().entrySet()) 
 		{
 			key = entry.getKey() ;
-			Log.d(TAG, "KEY " + key) ;
 			if(key==null || key.isEmpty()) continue ;
 			if(!(key.startsWith(KEY_COMMENT) || key.startsWith(KEY_DATE) || key.startsWith(KEY_PATH)))
 				continue ; // Not a image shared preference
 				
 			String lastDigit = key.substring(key.length()-1) ;
-			id = Integer.valueOf(lastDigit) ;
+			id = Integer.parseInt(lastDigit) ;
 
 			data = datas.get(id) ;
 			if(data!=null) continue ; // Already in 
@@ -123,66 +111,34 @@ public class ImageData
 			datas.put(id, data) ;
 		}
 		
-		return datas.values() ;
+		return datas; //.values() ;
 	}
 	
-	static public void dump(SharedPreferences sharedPref)
-	{
-    	Log.d(TAG,"dump :" + sharedPref) ;
-    	
-		Map<String,?> keys = sharedPref.getAll();
-		for(Map.Entry<String,?> entry : keys.entrySet()){
-            Log.d("map values",entry.getKey() + ": " + entry.getValue().toString());            
-		}
-		/*
-		Collection<ImageData> allDatas = getAllImageDatas(sharedPref) ;
-		for(ImageData data : allDatas) 
-		{
-			Log.d(TAG, "ID " + data.getId()) ;
-			Log.d(TAG, "PATH " + data.getFilePath()) ;
-			Log.d(TAG, "COMMENT " + data.getComment()) ;
-			Log.d(TAG, "TIMESTAMP" + data.getTimestamp()) ;
-			Log.d(TAG, "") ;
-		}
-		*/
-	}
-
-	static public ImageData getDataForFilePath(SharedPreferences sharedPref, String filePath)
-	{
-		Integer idx = getIdForFilePath(sharedPref, filePath) ;
-		if(idx==null) return null ; // Not found		
-		String comment = sharedPref.getString(KEY_COMMENT+"."+idx, "") ;
-		String sDate   = sharedPref.getString(KEY_DATE+"."+idx, "") ;
-		return new ImageData(idx, filePath, comment, Long.parseLong(sDate)) ;
-	}
-
 	/**
 	 * Returns the next ID that will be used to store the image data.
 	 */
-	static public int getNextID(SharedPreferences sharedPref) 
+	static private int getNextID(SharedPreferences sharedPref) 
 	{
-		Map<String, ? > all = sharedPref.getAll() ;
-
-		int i=0;
-		int  idxMinStamp =0 ;
+		int   i = 0;
+		int   idxMinStamp = 0 ;
 		long  minTimeStamp = Long.MAX_VALUE ;
 		
 		String key   ;		
-		for(Map.Entry<String, ?> entry : all.entrySet()) 
+		for(Map.Entry<String, ?> entry :  sharedPref.getAll().entrySet()) 
 		{
 			key = entry.getKey() ;
-			if(!key.startsWith(KEY_DATE)) continue ;
+			if(key==null || !key.startsWith(KEY_DATE)) continue ; // Checking all timestamp
 			
 			long timestamp = Long.parseLong(String.valueOf(entry.getValue())) ;
-			if(timestamp<minTimeStamp) {
+			if(timestamp<minTimeStamp) { // check if the image is the oldest
 				minTimeStamp = timestamp ;
-				idxMinStamp = i ;
+				idxMinStamp  = i ; 
 			}
 		
 			i++ ;
 		}
 		
-		if(i<9) return i ;
-		return idxMinStamp ;
+		if(i<9) return i ; // Returns i if less than 10 entries
+		return idxMinStamp ; // Returns the ID of the oldest photo
 	}
 }

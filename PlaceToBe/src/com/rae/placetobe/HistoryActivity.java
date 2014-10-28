@@ -1,14 +1,11 @@
 package com.rae.placetobe;
 
-import java.io.File;
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +16,14 @@ import android.widget.TextView;
 
 import com.rae.placetobe.util.ImageData;
 
-public class HistoryActivity extends Activity {
-	
+public class HistoryActivity extends Activity
+{
 	// create a gridview
 	private GridView gridview;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_history);
 		
@@ -37,15 +35,15 @@ public class HistoryActivity extends Activity {
 	
 	
 	// Custom adapter to implements item in my gridview
-	public class ImageAdapter extends BaseAdapter {
-	    private ArrayList<ImageData> imageDataList = new ArrayList<ImageData>();
-	    private LayoutInflater inflater;
+	public class ImageAdapter extends BaseAdapter 
+	{
+	    final private SparseArray<ImageData> imageDataList ;
+	    final private LayoutInflater inflater ;
 	    
 	    // Init my inflater for inflate my custom item view and my list of imageData
 	    public ImageAdapter(Context context) {
 	        inflater = LayoutInflater.from(context);
-	        SharedPreferences sharePref = context.getSharedPreferences(MainActivity.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE) ;
-	        imageDataList.addAll(ImageData.getAllImageDatas(sharePref)) ;
+	        imageDataList = ImageData.getAllImageDatas(context) ;
 	    }
 
 	    public int getCount() {
@@ -65,28 +63,24 @@ public class HistoryActivity extends Activity {
 	    public View getView(int position, View convertView, ViewGroup parent) 
 	    {
 	        View gridViewItem = convertView;
-	        ImageView picture;
-	        TextView comment;
 	        
 	        // if it's not recycled, initialize some attributes
-	        if (gridViewItem == null) 
-	        {  
+	        if (gridViewItem == null) {  
 	        	gridViewItem = inflater.inflate(R.layout.history_gridview_item, parent, false);
 	        	gridViewItem.setTag(R.id.picture, gridViewItem.findViewById(R.id.picture));
 	        	gridViewItem.setTag(R.id.text, gridViewItem.findViewById(R.id.text));
 	        } 
 	        
-	        // get the view to implement
-	        picture = (ImageView)gridViewItem.getTag(R.id.picture);
-	        comment = (TextView)gridViewItem.getTag(R.id.text);
+	        // Get the view to implement
+	        ImageView picture = (ImageView)gridViewItem.getTag(R.id.picture);
+	        TextView comment  = (TextView)gridViewItem.getTag(R.id.text);
 	        
-	        // create bitmap with the file path item
-	        File imgFile = new  File(imageDataList.get(position).getFilePath());
 	        BitmapFactory.Options optionsBitmapFactory = new BitmapFactory.Options();
 	        optionsBitmapFactory.inSampleSize = 8;
-            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath(),optionsBitmapFactory);
-            
-            // set my value to the view
+	        // Create bitmap with the file path item
+            Bitmap myBitmap = BitmapFactory.decodeFile(imageDataList.get(position).getFilePath(), optionsBitmapFactory);
+                       
+            // Set my value to the view
             picture.setImageBitmap(myBitmap);
             comment.setText(imageDataList.get(position).getComment());
 
