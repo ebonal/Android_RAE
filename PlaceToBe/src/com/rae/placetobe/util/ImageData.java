@@ -68,6 +68,7 @@ public class ImageData
 		return new ImageData(Integer.valueOf(idx), filePath, comment, timestamp) ;
 	}
 
+	// TODO : NOT USED
 	static private Integer getIdForFilePath(SharedPreferences sharedPref, String filePath)
 	{
 		Map<String, ? > all = sharedPref.getAll() ;
@@ -147,6 +148,7 @@ public class ImageData
 		*/
 	}
 
+	// TODO : NOT USED
 	static public ImageData getDataForFilePath(SharedPreferences sharedPref, String filePath)
 	{
 		Integer idx = getIdForFilePath(sharedPref, filePath) ;
