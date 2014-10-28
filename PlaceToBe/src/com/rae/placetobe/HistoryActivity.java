@@ -40,7 +40,8 @@ public class HistoryActivity extends Activity {
 	public class ImageAdapter extends BaseAdapter {
 	    private ArrayList<ImageData> imageDataList = new ArrayList<ImageData>();
 	    private LayoutInflater inflater;
-
+	    
+	    // Init my inflater for inflate my custom item view and my list of imageData
 	    public ImageAdapter(Context context) {
 	        inflater = LayoutInflater.from(context);
 	        SharedPreferences sharePref = context.getSharedPreferences(MainActivity.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE) ;
