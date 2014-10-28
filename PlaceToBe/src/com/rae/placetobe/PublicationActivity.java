@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -31,8 +31,10 @@ public class PublicationActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.activity_publication);		
-
+		setTitle("");
+		
 		mImageView   = (ImageView) findViewById(R.id.imageViewPhoto);
 		mCommentText = (EditText)  findViewById(R.id.editTextComment);
 		
@@ -70,7 +72,7 @@ public class PublicationActivity extends Activity
 		super.onWindowFocusChanged(hasFocus);
 	}
 
-	public void toggleFilter(View view) 
+	private void toggleFilter() 
 	{
 		if(currentBitmap==originalImageBitmap) {
 			// Toggle to black and white
@@ -105,29 +107,23 @@ public class PublicationActivity extends Activity
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		
-		if(id==R.id.action_commit) 
-		{
+		if(id==R.id.action_toggle) {
+			toggleFilter();
+		}
+		
+		if(id==R.id.action_commit)  {
 			ImageData.addPhoto(SharedPreferencesUtil.getImageDataPreferences(this), mCurrentPhotoPath, mCommentText.getText().toString()) ;
-			
 			// Uncomment this line to add the picture to the phone gallery
-	    	// GalleryUtil.addPic(this, mCurrentPhotoPath);
-			
+	    	// GalleryUtil.addPic(this, mCurrentPhotoPath);			
 			finish();
 			return true ;
 		}
 		
-		if(id==R.id.action_cancel) 
-		{
+		if(id==R.id.action_cancel) {
 			finish();
 			return true ;
 		}
-		
-		// TODO
-		if (id == R.id.action_settings)
-		{
-			return true;
-		}
-		
+				
 		return super.onOptionsItemSelected(item);
 	}
 }

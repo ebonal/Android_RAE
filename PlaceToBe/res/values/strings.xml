@@ -21,8 +21,7 @@
     <string name="title_activity_publication_activty">PublicationActivty</string>
     <string name="insertComment">Insert comment here !</string>
     
-    <string name="toggleFilter">Toggle filter</string>
-    
+    <string name="action_toggle">Toggle</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_valid">Valid</string>
               

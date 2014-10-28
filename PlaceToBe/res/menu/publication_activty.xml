@@ -10,11 +10,15 @@
         android:title="@string/action_settings"/>
 	-->
     
-    <!-- Cancel -->
+    <item android:id="@+id/action_toggle"
+          android:icon="@drawable/ic_color_lens_white_36dp"
+          android:title="@string/action_toggle"
+          android:showAsAction="always" />
+
     <item android:id="@+id/action_cancel"
          android:icon="@android:drawable/ic_menu_delete"
           android:title="@string/action_cancel"
-          android:showAsAction="ifRoom" />
+          android:showAsAction="always" />
     
     <item android:id="@+id/action_commit"
          android:icon="@android:drawable/ic_menu_add"
