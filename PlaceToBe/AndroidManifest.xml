@@ -27,7 +27,7 @@
 	            android:value="com.Android_RAE.PlaceToBe.MainActivity" />
         </activity>
         <activity
-            android:name=".PublicationActivty"
+            android:name=".PublicationActivity"
             android:label="@string/title_activity_publication_activty" >
         </activity>
     </application>

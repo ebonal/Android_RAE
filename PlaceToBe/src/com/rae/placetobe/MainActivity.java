@@ -15,9 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.rae.placetobe.util.AppUtil;
 import com.rae.placetobe.util.CameraUtil;
-import com.rae.placetobe.util.ImageData;
+import com.rae.placetobe.util.SharedPreferencesUtil;
 
 //onCreate
 //onSaveInstanceState
@@ -31,11 +30,8 @@ public class MainActivity extends Activity
 {
 	private final static String TAG = MainActivity.class.getSimpleName();
 	public  final static String EXTRA_FILE_PATH = MainActivity.class.getPackage().getName()+".EXTRA_FILE_PATH";
-
-
 	
 	private String mCurrentPhotoPath; 
-    
 
 	/** Variable pour le Menu tiroir */
 	// Vue pour mon menu tiroir
@@ -130,14 +126,12 @@ public class MainActivity extends Activity
 		mCurrentPhotoPath = CameraUtil.startImageCaptureActivity(this) ;
 	}
 	
-	public void addVideo(View view)
-	{
+	public void addVideo(View view) {
 		CameraUtil.startVideoCaptureActivity(this) ;
 	}
 	
-	public void showGallery(View view)
-	{
-		ImageData.dump(AppUtil.getApplicationPreferences(this)) ;
+	public void showGallery(View view) {
+		SharedPreferencesUtil.dump(SharedPreferencesUtil.getImageDataPreferences(this)) ;
 	}
 	
 	@Override
@@ -148,7 +142,7 @@ public class MainActivity extends Activity
 		
     	if(requestCode == CameraUtil.REQUEST_TAKE_PHOTO && resultCode == RESULT_OK)
 		{
-	    	Intent intent = new Intent(this, PublicationActivty.class);
+	    	Intent intent = new Intent(this, PublicationActivity.class);
 	    	intent.putExtra(EXTRA_FILE_PATH, mCurrentPhotoPath);
 	        startActivity(intent);
 	        return ;

@@ -31,14 +31,13 @@ public class CameraUtil
             if(mCurrentPhotoFile == null) return null ;
             
             mCurrentPhotoPath = mCurrentPhotoFile.getAbsolutePath() ;
-            Log.d(TAG, "mCurrentPhotoPath : " + mCurrentPhotoPath) ;
         	        	
         	Uri uri = Uri.fromFile(mCurrentPhotoFile) ;
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
             caller.startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
         }
         catch (Exception ex) {
-        	Log.e(TAG, "Error on startCaptureActivity", ex) ;
+        	Log.e(TAG, "Error on startImageCaptureActivity", ex) ;
         }
         
         return mCurrentPhotoPath ;

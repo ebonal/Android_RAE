@@ -11,7 +11,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.media.ExifInterface;
 import android.os.Environment;
 import android.util.Log;
 
@@ -54,7 +56,7 @@ public class ImageUtil
 	    if (height > reqHeight || width > reqWidth) 
 	    {	
 	        final int halfHeight = height / 2;
-	        final int halfWidth  = width / 2;
+	        final int halfWidth  = width  / 2;
 	
 	        // Calculate the largest inSampleSize value that is a power of 2 and keeps both
 	        // height and width larger than the requested height and width.
@@ -74,23 +76,30 @@ public class ImageUtil
 		// First decode with inJustDecodeBounds=true to check dimensions
 	    final BitmapFactory.Options options = new BitmapFactory.Options();
 	    options.inJustDecodeBounds = true;
-	    
 	    BitmapFactory.decodeFile(pathName, options) ;	    
 	    
 	    // Calculate inSampleSize
 	    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+    	Log.d(TAG, "calculated sample size  : " + options.inSampleSize) ;
 	    
-    	Log.d(TAG, "inSampleSize  : " + options.inSampleSize) ;
-    		    
-	    // Decode bitmap with inSampleSize set
 	    options.inJustDecodeBounds = false;
 	    
-	    return  BitmapFactory.decodeFile(pathName, options) ;	    
+    		    
+	    Bitmap bitmap = BitmapFactory.decodeFile(pathName, options) ;
+	    
+	    // Decode bitmap with inSampleSize set
+	    int orientationInDegrees = computeBitmapOriendegreesInDegrees(pathName) ;
+		if (orientationInDegrees != 0) {
+			Matrix matrix = new Matrix();
+			matrix.preRotate(orientationInDegrees);
+			bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+		}
+		
+		return bitmap ;
 	}
 	
-	static public Bitmap applyBlackAndWithFilter(Bitmap source)
+	static public Bitmap applyBlackAndWithFilter(Bitmap source) 
 	{
-		
 		Bitmap bmpMonochrome = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bmpMonochrome);
 		ColorMatrix ma = new ColorMatrix();
@@ -100,6 +109,25 @@ public class ImageUtil
 		canvas.drawBitmap(source, 0, 0, paint);		
 		return bmpMonochrome ;
 	}
-
-
+	
+	static private int computeBitmapOriendegreesInDegrees(String picturePath) 
+	{
+		try
+		{
+			ExifInterface exif = new ExifInterface(picturePath);
+			int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+			
+			int bitmapOriendegreesInDegrees = 0 ;
+		    if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; } 
+		    else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; } 
+		    else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }            
+			return bitmapOriendegreesInDegrees;
+			
+		} 
+		catch (Exception e)  {
+			Log.d(TAG, "computeBitmapOriendegreesInDegrees", e) ;
+		}
+		
+		return 0;
+	}
 }

@@ -10,7 +10,7 @@ import android.net.Uri;
 public class GalleryUtil
 {
 	/**
-	 * invoke the system's media scanner to add your photo to the Media Provider's database,
+	 * Invoke the system's media scanner to add your photo to the Media Provider's database,
 	 * making it available in the Android Gallery application and to other apps.
 	 */
 	static public void addPic(Context context, String  photoPath)

@@ -1,7 +1,6 @@
 package com.rae.placetobe;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,13 +10,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.rae.placetobe.util.AppUtil;
 import com.rae.placetobe.util.ImageData;
 import com.rae.placetobe.util.ImageUtil;
+import com.rae.placetobe.util.SharedPreferencesUtil;
 
-public class PublicationActivty extends Activity
+public class PublicationActivity extends Activity
 {
-	private static final String TAG = PublicationActivty.class.getSimpleName();
+	private static final String TAG = PublicationActivity.class.getSimpleName();
 	
 	private ImageView mImageView;
 	private EditText  mCommentText;
@@ -32,18 +31,17 @@ public class PublicationActivty extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_publication_activty);		
+		setContentView(R.layout.activity_publication);		
 
 		mImageView   = (ImageView) findViewById(R.id.imageViewPhoto);
 		mCommentText = (EditText)  findViewById(R.id.editTextComment);
 		
-		Intent intent = getIntent();
-		mCurrentPhotoPath = intent.getStringExtra(MainActivity.EXTRA_FILE_PATH);		
+		mCurrentPhotoPath = getIntent().getStringExtra(MainActivity.EXTRA_FILE_PATH);		
 	}
 	
 	
 	/*
-	 * Le chargement de la photo se fait ici, car la taille de mImageView n'est pas encore defini dans le onCreate()
+	 * The image is loaded here because the size of the imageView is undefined in the onCreate() method.
 	 *  mImageView.getWidth() == mImageView.getHeight() == 0 ;
 	 */
 	@Override
@@ -51,13 +49,12 @@ public class PublicationActivty extends Activity
 	{
 		try 
 		{
-        	Log.d(TAG,"path : " + mCurrentPhotoPath) ;
-        	
-        	// !! BOB : La methode setPic de la doc officiel semble un peu erronée car elle ne produit pas forcement 
-        	// un scaleFactor qui soit un multiple de 2.
-        	// Pour rappel dans setPic() @ http://developer.android.com/training/camera/photobasics.html
+        	// BOB : The original setPic() method in the official documentation is buggy, 
+			// openGL texture size on older phone MUST be a power of 2.
+        	// original setPic() : see  @ http://developer.android.com/training/camera/photobasics.html
             // int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
         	
+			// The correct version is from here :
         	// @see http://developer.android.com/training/displaying-bitmaps/load-bitmap.html
         	originalImageBitmap = ImageUtil.decodeSampledBitmapFromResource(mCurrentPhotoPath, mImageView.getWidth(),  mImageView.getHeight()) ;
            	Log.d(TAG,"imageBitmap : " + originalImageBitmap) ;
@@ -67,7 +64,7 @@ public class PublicationActivty extends Activity
 			mImageView.setImageBitmap(originalImageBitmap);	
 		}
 		catch(Exception e) {
-			
+			Log.e(TAG, "onWindowFocusChanged", e) ;
 		}
 		
 		super.onWindowFocusChanged(hasFocus);
@@ -92,13 +89,11 @@ public class PublicationActivty extends Activity
 		mImageView.setImageBitmap(currentBitmap);			
 	}
 
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.publication_activty, menu);
-		
 		return true;
 	}
 
@@ -112,11 +107,10 @@ public class PublicationActivty extends Activity
 		
 		if(id==R.id.action_commit) 
 		{
-			ImageData.addPhoto(AppUtil.getApplicationPreferences(this), mCurrentPhotoPath, mCommentText.getText().toString()) ;
+			ImageData.addPhoto(SharedPreferencesUtil.getImageDataPreferences(this), mCurrentPhotoPath, mCommentText.getText().toString()) ;
 			
-			// De-commenter cette ligne pour ajouter la photo dans la galerie du telephone
-	    	//GalleryUtil.addPic(this, mCurrentPhotoPath);
-
+			// Uncomment this line to add the picture to the phone gallery
+	    	// GalleryUtil.addPic(this, mCurrentPhotoPath);
 			
 			finish();
 			return true ;
