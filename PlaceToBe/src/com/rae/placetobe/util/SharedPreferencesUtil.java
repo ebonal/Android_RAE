@@ -12,10 +12,16 @@ public class SharedPreferencesUtil
 	
 	public final static String PREFERENCE_FILE_NAME = "ImageData" ;
 	
+	/**
+	 * Retrieves the Shared Preferences where the image data are saved
+	 */
 	static public SharedPreferences getImageDataPreferences(Context context)  {
 		return context.getSharedPreferences(PREFERENCE_FILE_NAME, Context.MODE_PRIVATE)  ;
 	}
 	
+	/**
+	 * Utility method to see the content of shared preferences
+	 */
 	static public void dump(SharedPreferences sharedPreferences)
 	{
         Log.d(TAG, "<< START DUMP >>");            

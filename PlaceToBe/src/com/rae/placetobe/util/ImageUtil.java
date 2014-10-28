@@ -26,6 +26,9 @@ public class ImageUtil
 	
     static final File STORAGE_DIR = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
+    /**
+     * Create a JPEG file name using the current timestamp
+     */
 	static public File createImageFile()
 	throws IOException 
 	{
@@ -69,6 +72,10 @@ public class ImageUtil
 	    return inSampleSize;
 	}
 
+	
+	/**
+	 * Re-scale and rotate the bitmap from the camera 
+	 */
 	static public Bitmap decodeSampledBitmapFromResource(String pathName, int reqWidth, int reqHeight)
 	{ 
 	   	Log.d(TAG, "reqWidth  : "+reqWidth + " reqHeight  : "+reqHeight) ;
@@ -83,7 +90,6 @@ public class ImageUtil
     	Log.d(TAG, "calculated sample size  : " + options.inSampleSize) ;
 	    
 	    options.inJustDecodeBounds = false;
-	    
     		    
 	    Bitmap bitmap = BitmapFactory.decodeFile(pathName, options) ;
 	    
@@ -98,6 +104,9 @@ public class ImageUtil
 		return bitmap ;
 	}
 	
+	/**
+	 * Apply a Black and White filter
+	 */
 	static public Bitmap applyBlackAndWithFilter(Bitmap source) 
 	{
 		Bitmap bmpMonochrome = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
@@ -110,6 +119,9 @@ public class ImageUtil
 		return bmpMonochrome ;
 	}
 	
+	/**
+	 * Gets EXIF information from the image file if available
+	 */
 	static private int computeBitmapOriendegreesInDegrees(String picturePath) 
 	{
 		try

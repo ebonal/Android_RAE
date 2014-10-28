@@ -18,14 +18,8 @@ import android.widget.Toast;
 import com.rae.placetobe.util.CameraUtil;
 import com.rae.placetobe.util.SharedPreferencesUtil;
 
-//onCreate
-//onSaveInstanceState
-//onRestoreInstanceState
-
-
 
 @SuppressWarnings("deprecation")
-
 public class MainActivity extends Activity
 {
 	private final static String TAG = MainActivity.class.getSimpleName();
