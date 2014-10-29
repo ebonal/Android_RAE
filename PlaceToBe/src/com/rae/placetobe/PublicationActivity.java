@@ -15,6 +15,7 @@ import butterknife.InjectView;
 
 import com.rae.placetobe.util.ImageData;
 import com.rae.placetobe.util.ImageUtil;
+import com.rae.placetobe.util.SharedPreferencesUtil;
 
 public class PublicationActivity extends Activity
 {
@@ -27,40 +28,33 @@ public class PublicationActivity extends Activity
 	private Bitmap whiteAndBlackImageBitmap = null ; // Lazy initialization
 	
 	private String mCurrentPhotoPath; 
-	
-	final static private String BUNDLE_BLACK_AND_WHITE = "BUNDLE_BW" ;
-	final static private String BUNDLE_FILE_PATH       = "BUNDLE_FILE_PATH" ;
-	
 	private Boolean blackAndWhite = Boolean.FALSE ;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+       	Log.d(TAG, "onCreate()") ;
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_publication);		
 		ButterKnife.inject(this);		
 		
 		setTitle("");
-		if(savedInstanceState!=null && savedInstanceState.containsKey(BUNDLE_BLACK_AND_WHITE))
-			blackAndWhite = savedInstanceState.getBoolean(BUNDLE_BLACK_AND_WHITE) ;
-		
-		if(savedInstanceState!=null && savedInstanceState.containsKey(BUNDLE_FILE_PATH))
-			mCurrentPhotoPath = savedInstanceState.getString(BUNDLE_FILE_PATH) ;
-		else
-			mCurrentPhotoPath = getIntent().getStringExtra(MainActivity.EXTRA_FILE_PATH);
+		mCurrentPhotoPath = SharedPreferencesUtil.restoreFilePath(this) ;
+		blackAndWhite     = SharedPreferencesUtil.restoreBlackAndWhite(this); 
 	}
 	
 	
-	
+	// onSaveInstanceState are not always called see : http://developer.android.com/reference/android/app/Activity.html
+	// so each time the activity is paused, the data are NOW saved in the shared preferences.
 	@Override
-	protected void onSaveInstanceState(Bundle outState)
+	protected void onPause()
 	{
-		super.onSaveInstanceState(outState);	
-		outState.putBoolean(BUNDLE_BLACK_AND_WHITE, blackAndWhite);
-		outState.putString (BUNDLE_FILE_PATH      , mCurrentPhotoPath);
+       	Log.d(TAG, "onPause()") ;
+		super.onPause();
+		SharedPreferencesUtil.backupBlackAndWhite(this, blackAndWhite);
+		// Note : mCurrentPhotoPath is saved on MainActivity
 	}
-
 
 	/*
 	 * The image is loaded here because the size of the imageView is undefined in the onCreate() method.
@@ -82,12 +76,6 @@ public class PublicationActivity extends Activity
            	Log.d(TAG,"imageBitmap : " + originalImageBitmap) ;
 
            	setViewBitmap(blackAndWhite);
-           	
-           	if(blackAndWhite) {
-           		if(whiteAndBlackImageBitmap==null)	whiteAndBlackImageBitmap = ImageUtil.applyBlackAndWithFilter(originalImageBitmap) ;
-           		mImageView.setImageBitmap(whiteAndBlackImageBitmap);
-           	}
-           	else mImageView.setImageBitmap(originalImageBitmap);
 		}
 		catch(Exception e) {
 			Log.e(TAG, "onWindowFocusChanged", e) ;
@@ -114,7 +102,7 @@ public class PublicationActivity extends Activity
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.publication_activty, menu);
+		getMenuInflater().inflate(R.menu.publication_menu, menu);
 		return true;
 	}
 
@@ -138,6 +126,8 @@ public class PublicationActivity extends Activity
 		        }
 		    });
 		}
+
+		// onSub
 		
 		if(id==R.id.action_commit)  {
 			ImageData.addPhoto(this, mCurrentPhotoPath, mCommentText.getText().toString()) ;

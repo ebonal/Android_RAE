@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.rae.placetobe"
     android:versionCode="1"
@@ -33,22 +32,23 @@
             android:label="@string/title_activity_publication_activty" >
         </activity>
         <activity
-            android:name=".HistoryActivity"
+            android:name=".history.HistoryActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_history" >
         </activity>
-        <activity
-            android:name=".AccountFragment" >
+        <activity android:name=".account.AccountFragment" >
         </activity>
         <activity
-            android:name=".TabsActivity"
+            android:name=".account.TabsActivity"
             android:label="@string/title_activity_tab" >
         </activity>
-        <activity
-            android:name=".FollowedFragment" >
+        <activity android:name=".account.FollowedFragment" >
+        </activity>
+        <activity android:name=".account.FollowersFragment" >
         </activity>
         <activity
-            android:name=".FollowersFragment" >
+            android:name=".AbstractDrawerActivity"
+            android:label="@string/title_activity_drawer" >
         </activity>
     </application>
 

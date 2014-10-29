@@ -15,39 +15,37 @@ public class CameraUtil
 	static public final int REQUEST_TAKE_PHOTO    = 10 ;
 	static public final int REQUEST_VIDEO_CAPTURE = 11 ;
 	
-	static public String startImageCaptureActivity(Activity caller)
+	static public void startImageCaptureActivity(Activity activity)
 	{
 	    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 	
 	    // Ensure that there's a camera activity to handle the intent
-	    if (takePictureIntent.resolveActivity(caller.getPackageManager()) == null) return null ;
+	    if (takePictureIntent.resolveActivity(activity.getPackageManager()) == null) return ;
 	   
-        // Create the File where the photo should go
-	    String mCurrentPhotoPath = null ;
-	    
         try
         {
+            // Creates the File where the photo should go	    
         	File mCurrentPhotoFile = ImageUtil.createImageFile();
-            if(mCurrentPhotoFile == null) return null ;
-            
-            mCurrentPhotoPath = mCurrentPhotoFile.getAbsolutePath() ;
+            if(mCurrentPhotoFile == null) {
+                SharedPreferencesUtil.backupFilePath(activity, null);
+            	return ;
+            }
+            SharedPreferencesUtil.backupFilePath(activity, mCurrentPhotoFile.getAbsolutePath());
         	        	
         	Uri uri = Uri.fromFile(mCurrentPhotoFile) ;
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-            caller.startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            activity.startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
         }
         catch (Exception ex) {
         	Log.e(TAG, "Error on startImageCaptureActivity", ex) ;
         }
-        
-        return mCurrentPhotoPath ;
  	}
 	
-	static public void startVideoCaptureActivity(Activity caller)
+	static public void startVideoCaptureActivity(Activity activity)
 	{
 	    Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-	    if (takeVideoIntent.resolveActivity(caller.getPackageManager()) != null) {
-	        caller.startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
+	    if (takeVideoIntent.resolveActivity(activity.getPackageManager()) != null) {
+	    	activity.startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
 	    }		
 	}
 }

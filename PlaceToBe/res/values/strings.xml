@@ -13,6 +13,9 @@
         <item>Mon compte</item>
     </string-array>
 
+    
+    <string name="discover_share">Discover | Share | &#8230;</string>
+    
     <string name="drawer_open">Photo</string>
     <string name="drawer_close">Photo</string>
     <string name="action_video">Video</string>
@@ -33,5 +36,6 @@
     <string name="account_edittext_add">Add a new followed</string>
     <string name="title_activity_tab">TabActivity</string>
     <string name="action_toggle">Toggle</string>
+    <string name="title_activity_drawer">DrawerActivity</string>
 
 </resources>

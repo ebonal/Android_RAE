@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.rae.placetobe.MainActivity" >
+    tools:context="com.rae.placetobe.DrawerActivity" >
 
     <item
         android:id="@+id/action_settings"

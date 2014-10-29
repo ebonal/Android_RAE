@@ -74,7 +74,7 @@ public class ImageUtil
 
 	
 	/**
-	 * Re-scale and rotate the bitmap from the camera 
+	 * Re-scale the bitmap from the camera 
 	 */
 	static public Bitmap decodeSampledBitmapFromResource(String pathName, int reqWidth, int reqHeight)
 	{ 
@@ -87,8 +87,10 @@ public class ImageUtil
 	    
 	    // Calculate inSampleSize
 	    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-    	Log.d(TAG, "calculated sample size  : " + options.inSampleSize) ;
-	    
+    	Log.d(TAG, "Calculated sample size  : " + options.inSampleSize) ;
+    	if(options.inSampleSize < 2) options.inSampleSize = 2 ; // min sample size
+    	
+    	
 	    options.inJustDecodeBounds = false;		    
 	    Bitmap bitmap = BitmapFactory.decodeFile(pathName, options) ;
 	    
@@ -100,22 +102,7 @@ public class ImageUtil
 			bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 		}
 		
-		return bitmap ;
-	}
-	
-	/**
-	 * Apply a Black and White filter
-	 */
-	static public Bitmap applyBlackAndWithFilter(Bitmap source) 
-	{
-		Bitmap bmpMonochrome = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(bmpMonochrome);
-		ColorMatrix ma = new ColorMatrix();
-		ma.setSaturation(0);
-		Paint paint = new Paint();
-		paint.setColorFilter(new ColorMatrixColorFilter(ma));
-		canvas.drawBitmap(source, 0, 0, paint);		
-		return bmpMonochrome ;
+		return bitmap ;	    
 	}
 	
 	/**
@@ -141,4 +128,20 @@ public class ImageUtil
 		
 		return 0;
 	}
+	
+	/**
+	 * Apply a Black and White filter
+	 */
+	static public Bitmap applyBlackAndWithFilter(Bitmap source) 
+	{
+		Bitmap bmpMonochrome = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(bmpMonochrome);
+		ColorMatrix ma = new ColorMatrix();
+		ma.setSaturation(0);
+		Paint paint = new Paint();
+		paint.setColorFilter(new ColorMatrixColorFilter(ma));
+		canvas.drawBitmap(source, 0, 0, paint);		
+		return bmpMonochrome ;
+	}
+
 }

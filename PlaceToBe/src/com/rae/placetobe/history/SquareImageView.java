@@ -1,4 +1,4 @@
-package com.rae.placetobe;
+package com.rae.placetobe.history;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -29,6 +29,11 @@ public class SquareImageView extends ImageView
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(getMeasuredWidth(), getMeasuredWidth()); //Snap to width
+        
+        int width  = getMeasuredWidth() ;
+        int height = getMeasuredHeight() ;
+        
+        int minMeasure = width<height?width:height ;  
+        setMeasuredDimension(minMeasure, minMeasure); //Snap to width
     }
 }

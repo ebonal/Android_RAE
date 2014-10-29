@@ -4,12 +4,13 @@
     android:layout_height="match_parent"
     android:padding="5dp" >
 
-    <com.rae.placetobe.SquareImageView
+    <com.rae.placetobe.history.SquareImageView
         android:id="@+id/picture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         />
+    
     <TextView
         android:id="@+id/text"
         android:layout_width="match_parent"
@@ -22,4 +23,5 @@
         android:textColor="@android:color/white"
         android:background="#55000000"
         />
+    
 </FrameLayout>

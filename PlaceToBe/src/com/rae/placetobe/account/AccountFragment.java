@@ -1,4 +1,4 @@
-package com.rae.placetobe;
+package com.rae.placetobe.account;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.rae.placetobe.R;
 import com.rae.placetobe.util.SharedPreferencesUtil;
 
 public class AccountFragment extends Fragment

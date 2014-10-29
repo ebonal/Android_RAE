@@ -1,6 +1,7 @@
-package com.rae.placetobe;
+package com.rae.placetobe.account;
 
-import com.rae.placetobe.AccountFragment;
+import com.rae.placetobe.account.AccountFragment;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;

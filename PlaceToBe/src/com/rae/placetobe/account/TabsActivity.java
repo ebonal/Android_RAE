@@ -1,25 +1,33 @@
-package com.rae.placetobe;
+package com.rae.placetobe.account;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 
-public class TabsActivity extends FragmentActivity implements
+import com.rae.placetobe.AbstractDrawerActivity;
+import com.rae.placetobe.R;
+
+
+@SuppressWarnings("deprecation")
+public class TabsActivity extends AbstractDrawerActivity implements
 		ActionBar.TabListener
 {
-
+	
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
-	
+
+	@Override
+	protected int getContentViewId() {
+		return R.layout.activity_tab;
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_tab);
+		super.onCreate(savedInstanceState); // Will inflate the layout using getContentViewId()
 
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.pager);
@@ -85,5 +93,4 @@ public class TabsActivity extends FragmentActivity implements
 	public void onTabUnselected(Tab tab, FragmentTransaction ft)
 	{
 	}
-
 }

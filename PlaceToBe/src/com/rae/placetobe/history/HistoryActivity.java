@@ -1,6 +1,5 @@
-package com.rae.placetobe;
+package com.rae.placetobe.history;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -16,27 +15,28 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.rae.placetobe.AbstractDrawerActivity;
+import com.rae.placetobe.R;
 import com.rae.placetobe.util.ImageData;
 
-public class HistoryActivity extends Activity
+public class HistoryActivity extends AbstractDrawerActivity
 {
-	// create a gridview
 	private GridView gridview;
-	private SparseArray<ImageData> imageDataList ;
+
+	@Override
+	protected int getContentViewId() {
+		return R.layout.activity_history;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_history);
-		
-		// get my list of imageData in sharedPref
-		imageDataList = ImageData.getAllImageDatas(getBaseContext());
+		super.onCreate(savedInstanceState); // Will inflate the layout using getContentViewId()
 		
 		// get my gridview in my layout
 		gridview = (GridView) findViewById(R.id.gridview);
 		// set custom adapter to my gridview
-	    gridview.setAdapter(new ImageAdapter(this,R.layout.history_gridview_item,imageDataList));
+	    gridview.setAdapter(new ImageAdapter(this,R.layout.history_gridview_item));
 	}
 
 	@Override
@@ -59,9 +59,10 @@ public class HistoryActivity extends Activity
 	    final private LayoutInflater inflater ;
 	    
 	    // Init my inflater for inflate my custom item view and my list of imageData
-	    public ImageAdapter(Context context, int textViewResourceId, SparseArray<ImageData> imageList) {
+	    public ImageAdapter(Context context, int textViewResourceId) {
 	        inflater = LayoutInflater.from(context);
-	        imageDataList = imageList ;
+			// get my list of imageData in sharedPref
+	        imageDataList = ImageData.getAllImageDatas(getBaseContext()) ;
 	    }
 	    
 	    // Object to stock gridViewItem data
