@@ -2,6 +2,7 @@ package com.rae.placetobe;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -33,6 +34,19 @@ public class HistoryActivity extends Activity
 	    gridview.setAdapter(new ImageAdapter(this));
 	}
 	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) 
+	{
+	    super.onConfigurationChanged(newConfig);
+
+	    // Checks the orientation of the screen and change the num of columns 
+	    if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+	    	gridview.setNumColumns(3);
+	    } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+	    	gridview.setNumColumns(2);
+	    }
+	}
+	
 	
 	// Custom adapter to implements item in my gridview
 	public class ImageAdapter extends BaseAdapter 
@@ -44,6 +58,16 @@ public class HistoryActivity extends Activity
 	    public ImageAdapter(Context context) {
 	        inflater = LayoutInflater.from(context);
 	        imageDataList = ImageData.getAllImageDatas(context) ;
+	    }
+	    
+	    @Override
+	    public boolean areAllItemsEnabled() {
+	        return false;
+	    }
+
+	    @Override
+	    public boolean isEnabled(int position) {
+	        return false;
 	    }
 
 	    public int getCount() {

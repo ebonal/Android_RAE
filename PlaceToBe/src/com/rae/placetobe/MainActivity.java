@@ -26,8 +26,7 @@ public class MainActivity extends Activity
 	
 	private String mCurrentPhotoPath; 
 
-	/** Variable pour le Menu tiroir */
-	// Vue pour mon menu tiroir
+	// Variable pour le Menu tiroir
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -178,6 +177,8 @@ public class MainActivity extends Activity
 				default: 
 					break;
 			}
+	    	mDrawerList.clearChoices();
+	    	mDrawerLayout.closeDrawers();
 	    }
 	}
 
