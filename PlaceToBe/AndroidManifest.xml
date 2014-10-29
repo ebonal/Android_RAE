@@ -37,20 +37,17 @@
             android:label="@string/title_activity_history" >
         </activity>
         <activity
-            android:name=".AccountFragment"
-            android:label="@string/title_activity_account" >
+            android:name=".AccountFragment" >
         </activity>
         <activity
             android:name=".TabsActivity"
             android:label="@string/title_activity_tab" >
         </activity>
         <activity
-            android:name=".FollowedFragment"
-            android:label="@string/title_activity_followed_fragment" >
+            android:name=".FollowedFragment" >
         </activity>
         <activity
-            android:name=".FollowersFragment"
-            android:label="@string/title_activity_followers_fragment" >
+            android:name=".FollowersFragment" >
         </activity>
     </application>
 
