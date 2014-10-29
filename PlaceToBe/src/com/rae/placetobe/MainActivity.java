@@ -166,6 +166,8 @@ public class MainActivity extends Activity
 	    @Override
 	    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 	    {
+	    	mDrawerLayout.closeDrawers();
+	    	mDrawerList.clearChoices();
 	    	switch(position)
 	    	{
 				case 0 : 
@@ -177,8 +179,6 @@ public class MainActivity extends Activity
 				default: 
 					break;
 			}
-	    	mDrawerList.clearChoices();
-	    	mDrawerLayout.closeDrawers();
 	    }
 	}
 
