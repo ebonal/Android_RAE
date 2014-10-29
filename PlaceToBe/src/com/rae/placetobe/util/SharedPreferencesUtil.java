@@ -24,7 +24,7 @@ public class SharedPreferencesUtil
 	 * Retrieves the Shared Preferences for user Account
 	 */
 	static public SharedPreferences getAccountDataPreferences(Context context)  {
-		return context.getSharedPreferences(PREFERENCE_FILE_NAME_IMAGE, Context.MODE_PRIVATE)  ;
+		return context.getSharedPreferences(PREFERENCE_FILE_NAME_ACCOUNT, Context.MODE_PRIVATE)  ;
 	}
 	
 	/**
