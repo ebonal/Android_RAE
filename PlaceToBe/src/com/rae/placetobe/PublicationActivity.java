@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 import com.rae.placetobe.util.ImageData;
 import com.rae.placetobe.util.ImageUtil;
@@ -18,8 +20,8 @@ public class PublicationActivity extends Activity
 {
 	private static final String TAG = PublicationActivity.class.getSimpleName();
 	
-	private ImageView mImageView;
-	private EditText  mCommentText;
+	@InjectView(R.id.imageViewPhoto)  ImageView mImageView;
+	@InjectView(R.id.editTextComment) EditText  mCommentText;
 
 	private Bitmap originalImageBitmap ;
 	private Bitmap whiteAndBlackImageBitmap = null ; // Lazy initialization
@@ -37,11 +39,9 @@ public class PublicationActivity extends Activity
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_publication);		
-		setTitle("");
+		ButterKnife.inject(this);		
 		
-		mImageView   = (ImageView) findViewById(R.id.imageViewPhoto);
-		mCommentText = (EditText)  findViewById(R.id.editTextComment);
-
+		setTitle("");
 		if(savedInstanceState!=null && savedInstanceState.containsKey(BUNDLE_BLACK_AND_WHITE))
 			blackAndWhite = savedInstanceState.getBoolean(BUNDLE_BLACK_AND_WHITE) ;
 		
@@ -58,6 +58,7 @@ public class PublicationActivity extends Activity
 	{
 		super.onSaveInstanceState(outState);	
 		outState.putBoolean(BUNDLE_BLACK_AND_WHITE, blackAndWhite);
+		outState.putString (BUNDLE_FILE_PATH      , mCurrentPhotoPath);
 	}
 
 
