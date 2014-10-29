@@ -17,6 +17,8 @@ public class SharedPreferencesUtil
 	final static private String BACKUP_BLACK_AND_WHITE = "BACKUP_BLACK_AND_WHITE" ;
 	final static private String BACKUP_FILE_PATH       = "BACKUP_FILE_PATH" ;
 	
+	final static private String ACCOUNT_NAME = "ACCOUNT_NAME" ;
+	final static private String ACCOUNT_MAIL = "ACCOUNT_MAIL" ;
 	
 	/**
 	 * Retrieves the Shared Preferences where the image data are saved
@@ -32,10 +34,30 @@ public class SharedPreferencesUtil
 		return context.getSharedPreferences(PREFERENCE_FILE_NAME_ACCOUNT, Context.MODE_PRIVATE)  ;
 	}
 	
+	static public void accountSave(Context context, String name, String mail) 
+	{
+    	SharedPreferences.Editor editor = getAccountDataPreferences(context).edit();
+    	if(name==null || name.isEmpty()) editor.remove   (ACCOUNT_NAME) ;
+    	else							 editor.putString(ACCOUNT_NAME, name);
+    	if(mail==null || mail.isEmpty()) editor.remove   (ACCOUNT_MAIL) ;
+    	else							 editor.putString(ACCOUNT_MAIL, mail);
+	    editor.commit() ;
+	}
+	
+	static public String getAccountName(Context context)  {
+    	SharedPreferences pref = getAccountDataPreferences(context);
+    	return pref.getString(ACCOUNT_NAME, "") ;
+	}
+	static public String getAccountMail(Context context)  {
+    	SharedPreferences pref = getAccountDataPreferences(context);
+    	return pref.getString(ACCOUNT_MAIL, "") ;
+	}
+	
+	
 	/**
-	 * Retrieves the Shared Preferences for user Account
+	 * Retrieves the Shared Preferences for backup
 	 */
-	static private SharedPreferences getBackupPreferences(Context context)  {
+	static public SharedPreferences getBackupPreferences(Context context)  {
 		return context.getSharedPreferences(PREFERENCE_FILE_NAME_BACKUP, Context.MODE_PRIVATE)  ;
 	}
 

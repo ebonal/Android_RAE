@@ -1,7 +1,5 @@
 package com.rae.placetobe.account;
 
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -30,31 +28,26 @@ public class AccountFragment extends Fragment
 		// View creation from the layout
 		View rootView = inflater.inflate(R.layout.fragment_account, container, false);
 		
-		final SharedPreferences pref = SharedPreferencesUtil.getAccountDataPreferences(getActivity());
-	    name = pref.getString("account_name", "");
-	    email = pref.getString("account_email", "");
-	    
+	    name  = SharedPreferencesUtil.getAccountName(getActivity()) ; 
+	    email = SharedPreferencesUtil.getAccountMail(getActivity()) ; 
+	    	    
 	    editTextName = (EditText) rootView.findViewById(R.id.editTextName);
 	    editTextEmail = (EditText) rootView.findViewById(R.id.editTextEmail);
 	    
-	    if (name != "")
-	    	editTextName.setText(name);
-	    if (email != "")
-	    	editTextEmail.setText(email);
+	    editTextName.setText(name);
+    	editTextEmail.setText(email);
 	    
 	    // On clic we save name and email values in preferences
 	    btSave = (Button) rootView.findViewById(R.id.bt_save);
 	    btSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	Editor editor = pref.edit();	
-    	    	editor.putString("account_name", editTextName.getText().toString());
-    	    	editor.putString("account_email", editTextEmail.getText().toString());
-    	    	editor.commit();
+            	String name =  editTextName.getText().toString() ;
+            	String mail = editTextEmail.getText().toString() ;
+            	SharedPreferencesUtil.accountSave(getActivity(), name, mail);
     	    	Toast.makeText(getActivity(), "Validé !", Toast.LENGTH_SHORT).show();
             }
         });
 	    
 		return rootView;
 	}
-
 }
