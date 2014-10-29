@@ -14,12 +14,7 @@ public class TabsActivity extends FragmentActivity implements
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
-	// Tab titles
-	private String[] tabs = {
-			getResources().getString(R.string.account_tab_account),
-			getResources().getString(R.string.account_tab_followed),
-			getResources().getString(R.string.account_tab_followers) };
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -36,6 +31,11 @@ public class TabsActivity extends FragmentActivity implements
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		// Adding Tabs
+		String[] tabs = {
+				getResources().getString(R.string.account_tab_account),
+				getResources().getString(R.string.account_tab_followed),
+				getResources().getString(R.string.account_tab_followers) };
+
 		for (String tab_name : tabs)
 		{
 			actionBar.addTab(actionBar.newTab().setText(tab_name)

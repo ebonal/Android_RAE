@@ -24,7 +24,7 @@ public class FollowedFragment extends Fragment
 		list = pref.getString("list_followed", "");
 		
 		if (list == "")
-			Toast.makeText(getActivity(), "Vide!", Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), "Followed List empty !", Toast.LENGTH_LONG).show();
 		
 		
 	    

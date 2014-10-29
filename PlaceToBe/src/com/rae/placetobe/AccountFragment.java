@@ -55,18 +55,5 @@ public class AccountFragment extends Fragment
 	    
 		return rootView;
 	}
-	/*
-
-	    // Tab 2
-	    Set<String> prefListFollowed = pref.getStringSet("account_followed", new HashSet<String>());
-	    
-	    ArrayList<String> list = new ArrayList<String>();
-	    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, list);
-	    
-	    listFollowed = (ListView) findViewById(R.id.listViewFollowed);
-	    listFollowed.setAdapter(adapter);
-	    
-	}*/
-
 
 }
