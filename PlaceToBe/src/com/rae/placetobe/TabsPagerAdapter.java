@@ -18,9 +18,9 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 		case 0:
 			return new AccountFragment();
 		case 1:
-			return new AccountFragment();
+			return new FollowedFragment();
 		case 2:
-			return new AccountFragment();
+			return new FollowersFragment();
 		}
 
 		return null;

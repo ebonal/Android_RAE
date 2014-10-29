@@ -19,7 +19,6 @@
     <string name="action_gallery">Gallery</string>
     <string name="title_activity_publication_activty">PublicationActivty</string>
     <string name="insertComment">Insert comment here !</string>
-
     <string name="toggleFilter">Toggle filter</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_valid">Valid</string>
@@ -28,12 +27,11 @@
     <string name="account_tab_account">Account</string>
     <string name="account_tab_followed">Followed</string>
     <string name="account_tab_followers">Followers</string>
-    <string name="title_activity_account">AccountActivity</string>
     <string name="account_label_email">Email :</string>
     <string name="account_label_name">Name :</string>
     <string name="account_bt_save">Save</string>
     <string name="account_edittext_add">Add a new followed</string>
-    <string name="title_activity_tab">TabActivity</string>    
+    <string name="title_activity_tab">TabActivity</string>
     <string name="action_toggle">Toggle</string>
 
 </resources>

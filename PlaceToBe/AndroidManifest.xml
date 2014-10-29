@@ -44,6 +44,14 @@
             android:name=".TabsActivity"
             android:label="@string/title_activity_tab" >
         </activity>
+        <activity
+            android:name=".FollowedFragment"
+            android:label="@string/title_activity_followed_fragment" >
+        </activity>
+        <activity
+            android:name=".FollowersFragment"
+            android:label="@string/title_activity_followers_fragment" >
+        </activity>
     </application>
 
 </manifest>

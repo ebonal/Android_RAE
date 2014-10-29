@@ -1,0 +1,17 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/FollowersRelativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#66FF99" >
+
+		 <TextView
+		     android:id="@+id/textView2"
+		     android:layout_width="wrap_content"
+		     android:layout_height="wrap_content"
+		     android:layout_centerHorizontal="true"
+		     android:layout_centerVertical="true"
+		     android:text="Liste des Followers"
+		     android:textSize="16sp" />
+
+</RelativeLayout>

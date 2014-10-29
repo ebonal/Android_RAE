@@ -15,7 +15,10 @@ public class TabsActivity extends FragmentActivity implements
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
 	// Tab titles
-	private String[] tabs = { "Top Rated", "Games", "Movies" };
+	private String[] tabs = {
+			getResources().getString(R.string.account_tab_account),
+			getResources().getString(R.string.account_tab_followed),
+			getResources().getString(R.string.account_tab_followers) };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
