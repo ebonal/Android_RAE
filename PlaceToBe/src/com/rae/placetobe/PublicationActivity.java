@@ -23,9 +23,13 @@ public class PublicationActivity extends Activity
 
 	private Bitmap originalImageBitmap ;
 	private Bitmap whiteAndBlackImageBitmap = null ; // Lazy initialization
-	private Bitmap currentBitmap ;
 	
 	private String mCurrentPhotoPath; 
+	
+	final static private String BUNDLE_BLACK_AND_WHITE = "BUNDLE_BW" ;
+	final static private String BUNDLE_FILE_PATH       = "BUNDLE_FILE_PATH" ;
+	
+	private Boolean blackAndWhite = Boolean.FALSE ;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -37,11 +41,26 @@ public class PublicationActivity extends Activity
 		
 		mImageView   = (ImageView) findViewById(R.id.imageViewPhoto);
 		mCommentText = (EditText)  findViewById(R.id.editTextComment);
+
+		if(savedInstanceState!=null && savedInstanceState.containsKey(BUNDLE_BLACK_AND_WHITE))
+			blackAndWhite = savedInstanceState.getBoolean(BUNDLE_BLACK_AND_WHITE) ;
 		
-		mCurrentPhotoPath = getIntent().getStringExtra(MainActivity.EXTRA_FILE_PATH);
+		if(savedInstanceState!=null && savedInstanceState.containsKey(BUNDLE_FILE_PATH))
+			mCurrentPhotoPath = savedInstanceState.getString(BUNDLE_FILE_PATH) ;
+		else
+			mCurrentPhotoPath = getIntent().getStringExtra(MainActivity.EXTRA_FILE_PATH);
 	}
 	
 	
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);	
+		outState.putBoolean(BUNDLE_BLACK_AND_WHITE, blackAndWhite);
+	}
+
+
 	/*
 	 * The image is loaded here because the size of the imageView is undefined in the onCreate() method.
 	 *  mImageView.getWidth() == mImageView.getHeight() == 0 ;
@@ -61,9 +80,13 @@ public class PublicationActivity extends Activity
         	originalImageBitmap = ImageUtil.decodeSampledBitmapFromResource(mCurrentPhotoPath, mImageView.getWidth(),  mImageView.getHeight()) ;
            	Log.d(TAG,"imageBitmap : " + originalImageBitmap) ;
 
-           	applyCurrentBitmap(originalImageBitmap);
- 			
-			mImageView.setImageBitmap(originalImageBitmap);	
+           	setViewBitmap(blackAndWhite);
+           	
+           	if(blackAndWhite) {
+           		if(whiteAndBlackImageBitmap==null)	whiteAndBlackImageBitmap = ImageUtil.applyBlackAndWithFilter(originalImageBitmap) ;
+           		mImageView.setImageBitmap(whiteAndBlackImageBitmap);
+           	}
+           	else mImageView.setImageBitmap(originalImageBitmap);
 		}
 		catch(Exception e) {
 			Log.e(TAG, "onWindowFocusChanged", e) ;
@@ -71,24 +94,19 @@ public class PublicationActivity extends Activity
 		
 		super.onWindowFocusChanged(hasFocus);
 	}
-
-	private void toggleFilter() 
+	
+	private void setViewBitmap(boolean bAndW) 
 	{
-		if(currentBitmap==originalImageBitmap) {
+		if(bAndW) {
 			// Toggle to black and white
 			if(whiteAndBlackImageBitmap==null) 
 				whiteAndBlackImageBitmap = ImageUtil.applyBlackAndWithFilter(originalImageBitmap) ;
-			applyCurrentBitmap(whiteAndBlackImageBitmap);
+			
+			mImageView.setImageBitmap(whiteAndBlackImageBitmap);			
 			return ;
 		}
 		
-		applyCurrentBitmap(originalImageBitmap);
-	}
-
-	private void applyCurrentBitmap(Bitmap newCurrentBitmap) 
-	{
-		currentBitmap = newCurrentBitmap ;
-		mImageView.setImageBitmap(currentBitmap);			
+		mImageView.setImageBitmap(originalImageBitmap);					
 	}
 
 	@Override
@@ -107,13 +125,15 @@ public class PublicationActivity extends Activity
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		
-		if(id==R.id.action_toggle) {
-
-			String[] names = { "Toggle" } ;
-		    Observable.from(names).subscribe(new Action1<String>() {
+		if(id==R.id.action_toggle) 
+		{
+			blackAndWhite = !blackAndWhite ;
+			
+			Boolean[] filters = { blackAndWhite } ;
+		    Observable.from(filters).subscribe(new Action1<Boolean>() {
 		        @Override
-		        public void call(String s) {
-					toggleFilter();
+		        public void call(Boolean bw) {
+		        	setViewBitmap(bw);
 		        }
 		    });
 		}
