@@ -1,0 +1,54 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#6699FF" >
+
+		 <Button
+		     android:id="@+id/bt_save"
+		     android:layout_width="100dp"
+		     android:layout_height="wrap_content"
+		     android:layout_alignParentBottom="true"
+		     android:layout_centerHorizontal="true"
+		     android:layout_marginBottom="116dp"
+		     android:text="@string/account_bt_save" />
+
+		 <EditText
+		     android:id="@+id/editTextName"
+		     android:layout_width="wrap_content"
+		     android:layout_height="wrap_content"
+		     android:layout_below="@+id/textView1"
+		     android:layout_centerHorizontal="true"
+		     android:ems="10"
+		     android:inputType="textPersonName" />
+
+		 <EditText
+		     android:id="@+id/editTextEmail"
+		     android:layout_width="wrap_content"
+		     android:layout_height="wrap_content"
+		     android:layout_alignLeft="@+id/editTextName"
+		     android:layout_centerVertical="true"
+		     android:ems="10"
+		     android:inputType="textEmailAddress" />
+
+		 <TextView
+		     android:id="@+id/textView2"
+		     android:layout_width="wrap_content"
+		     android:layout_height="wrap_content"
+		     android:layout_above="@+id/editTextEmail"
+		     android:layout_alignLeft="@+id/editTextEmail"
+		     android:text="@string/account_label_email"
+		     android:textSize="16sp" />
+
+		 <TextView
+		     android:id="@+id/textView1"
+		     android:layout_width="wrap_content"
+		     android:layout_height="wrap_content"
+		     android:layout_alignLeft="@+id/editTextName"
+		     android:layout_alignParentTop="true"
+		     android:layout_marginTop="62dp"
+		     android:text="@string/account_label_name"
+		     android:textSize="16sp" />
+
+</RelativeLayout>

@@ -203,6 +203,9 @@ public class MainActivity extends Activity
 				case 3 : 
 					 launchNewActivity(view,"HistoryActivity");
 					break;
+				case 4 :
+					launchNewActivity(view,"TabsActivity");
+					break;
 				default: 
 					break;
 			}

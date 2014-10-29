@@ -36,6 +36,14 @@
             android:name=".HistoryActivity"
             android:label="@string/title_activity_history" >
         </activity>
+        <activity
+            android:name=".AccountFragment"
+            android:label="@string/title_activity_account" >
+        </activity>
+        <activity
+            android:name=".TabsActivity"
+            android:label="@string/title_activity_tab" >
+        </activity>
     </application>
 
 </manifest>
