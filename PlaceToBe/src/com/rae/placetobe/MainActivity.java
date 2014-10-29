@@ -57,7 +57,7 @@ public class MainActivity extends Activity
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
                 mDrawerLayout,         /* DrawerLayout object */
-                R.drawable.ic_menu_hamburger_white,  /* nav drawer image to replace 'Up' caret */
+                R.drawable.ic_menu_white_36dp,  /* nav drawer image to replace 'Up' caret */
                 R.string.drawer_open,  /* "open drawer" description */
                 R.string.drawer_close  /* "close drawer" description */
                 ){
