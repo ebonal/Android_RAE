@@ -2,8 +2,10 @@ package com.rae.placetobe;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ public class HistoryActivity extends Activity
 {
 	// create a gridview
 	private GridView gridview;
+	private SparseArray<ImageData> imageDataList ;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -27,23 +30,56 @@ public class HistoryActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_history);
 		
+		// get my list of imageData in sharedPref
+		imageDataList = ImageData.getAllImageDatas(getBaseContext());
+		
 		// get my gridview in my layout
 		gridview = (GridView) findViewById(R.id.gridview);
 		// set custom adapter to my gridview
-	    gridview.setAdapter(new ImageAdapter(this));
+	    gridview.setAdapter(new ImageAdapter(this,R.layout.history_gridview_item,imageDataList));
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) 
+	{
+	    super.onConfigurationChanged(newConfig);
+
+	    // Checks the orientation of the screen and change the num of columns 
+	    if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+	    	gridview.setNumColumns(3);
+	    } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+	    	gridview.setNumColumns(2);
+	    }
 	}
 	
-	
 	// Custom adapter to implements item in my gridview
-	public class ImageAdapter extends BaseAdapter 
+	public class ImageAdapter extends BaseAdapter
 	{
 	    final private SparseArray<ImageData> imageDataList ;
 	    final private LayoutInflater inflater ;
 	    
 	    // Init my inflater for inflate my custom item view and my list of imageData
-	    public ImageAdapter(Context context) {
+	    public ImageAdapter(Context context, int textViewResourceId, SparseArray<ImageData> imageList) {
 	        inflater = LayoutInflater.from(context);
-	        imageDataList = ImageData.getAllImageDatas(context) ;
+	        imageDataList = imageList ;
+	    }
+	    
+	    // Object to stock gridViewItem data
+	    private class GridViewItem {
+	    	ImageView picture;
+	    	TextView comment;
+			ImageData imageData;
+			Bitmap bitmap;
+	    }
+	    
+	    @Override
+	    public boolean areAllItemsEnabled() {
+	        return false;
+	    }
+
+	    @Override
+	    public boolean isEnabled(int position) {
+	        return false;
 	    }
 
 	    public int getCount() {
@@ -62,29 +98,62 @@ public class HistoryActivity extends Activity
 	    @Override
 	    public View getView(int position, View convertView, ViewGroup parent) 
 	    {
-	        View gridViewItem = convertView;
+	    	
+	    	GridViewItem gridViewItem = null;
 	        
 	        // if it's not recycled, initialize some attributes
-	        if (gridViewItem == null) {  
-	        	gridViewItem = inflater.inflate(R.layout.history_gridview_item, parent, false);
-	        	gridViewItem.setTag(R.id.picture, gridViewItem.findViewById(R.id.picture));
-	        	gridViewItem.setTag(R.id.text, gridViewItem.findViewById(R.id.text));
-	        } 
+	        if (convertView == null) {  
+	        	convertView = inflater.inflate(R.layout.history_gridview_item, parent, false);
+	        	
+	        	gridViewItem = new GridViewItem();
+	        	gridViewItem.picture = (ImageView)convertView.findViewById(R.id.picture);
+	        	gridViewItem.comment = (TextView)convertView.findViewById(R.id.text);
+	        	convertView.setTag(gridViewItem);
+	        }
 	        
-	        // Get the view to implement
-	        ImageView picture = (ImageView)gridViewItem.getTag(R.id.picture);
-	        TextView comment  = (TextView)gridViewItem.getTag(R.id.text);
+	        // get tag of my view
+	        gridViewItem = (GridViewItem)convertView.getTag();
 	        
-	        BitmapFactory.Options optionsBitmapFactory = new BitmapFactory.Options();
-	        optionsBitmapFactory.inSampleSize = 8;
-	        // Create bitmap with the file path item
-            Bitmap myBitmap = BitmapFactory.decodeFile(imageDataList.get(position).getFilePath(), optionsBitmapFactory);
-                       
-            // Set my value to the view
-            picture.setImageBitmap(myBitmap);
-            comment.setText(imageDataList.get(position).getComment());
+	        // get the imageData
+	        gridViewItem.imageData = imageDataList.get(position);
+	        
+	        // Init the bitmap picture and the comment text
+	        gridViewItem.bitmap = null;
+	        gridViewItem.picture.setImageBitmap(gridViewItem.bitmap);
+	        gridViewItem.comment.setText("");
+	        
+	        // Async task to load my picture and comment
+	        new DownloadAsyncTask().execute(gridViewItem);
 
-	        return gridViewItem;
+	        return convertView;
 	    }
+	    
+	    private class DownloadAsyncTask extends AsyncTask<GridViewItem, Void, GridViewItem> 
+	    {
+			@Override
+			protected GridViewItem doInBackground(GridViewItem... params) {
+				GridViewItem gridViewItem = params[0];
+				// Create bitmap option to load light picture
+				BitmapFactory.Options optionsBitmapFactory = new BitmapFactory.Options();
+				optionsBitmapFactory.inSampleSize = 8;
+				// Create bitmap with the file path item
+				gridViewItem.bitmap = BitmapFactory.decodeFile(gridViewItem.imageData.getFilePath(), optionsBitmapFactory);
+				
+				return gridViewItem;
+			}
+			
+			@Override
+			protected void onPostExecute(GridViewItem result) {
+				// TODO Auto-generated method stub
+				if (result.bitmap == null) {
+					result.picture.setImageResource(R.drawable.ic_place_to_be);
+					result.comment.setText("");
+				} else {
+					// Set my result to my view
+					result.picture.setImageBitmap(result.bitmap);
+					result.comment.setText(result.imageData.getComment());
+				}
+			}
+		}
 	}
 }

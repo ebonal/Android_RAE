@@ -26,8 +26,7 @@ public class MainActivity extends Activity
 	
 	private String mCurrentPhotoPath; 
 
-	/** Variable pour le Menu tiroir */
-	// Vue pour mon menu tiroir
+	// Variable pour le Menu tiroir
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -167,6 +166,8 @@ public class MainActivity extends Activity
 	    @Override
 	    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 	    {
+	    	mDrawerLayout.closeDrawers();
+	    	mDrawerList.clearChoices();
 	    	switch(position)
 	    	{
 				case 0 : 
