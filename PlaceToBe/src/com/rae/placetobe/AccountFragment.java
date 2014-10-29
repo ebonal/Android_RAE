@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
+import com.rae.placetobe.util.SharedPreferencesUtil;
 
 public class AccountFragment extends Fragment
 {
@@ -26,10 +26,9 @@ public class AccountFragment extends Fragment
 
 		View rootView = inflater.inflate(R.layout.fragment_account, container, false);
 		
-		final SharedPreferences pref = getActivity().getSharedPreferences(MODE_PRIVATE);
+		final SharedPreferences pref = SharedPreferencesUtil.getAccountDataPreferences(getActivity());
 	    name = pref.getString("account_name", "");
 	    email = pref.getString("account_email", "");
-		
 	    
 	    editTextName = (EditText) getActivity().findViewById(R.id.editTextName);
 	    editTextEmail = (EditText) getActivity().findViewById(R.id.editTextEmail);
@@ -40,14 +39,15 @@ public class AccountFragment extends Fragment
 	    	editTextEmail.setText(email);
 	    
 	    btSave = (Button) getActivity().findViewById(R.id.bt_save);
-	    btSave.setOnClickListener(new View.OnClickListener() {
+	    
+	   /* btSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	Editor editor = pref.edit();	
     	    	editor.putString("account_name", editTextName.getText().toString());
     	    	editor.putString("account_email", editTextEmail.getText().toString());
     	    	editor.commit();
             }
-        });
+        });*/
 	    
 		return rootView;
 	}

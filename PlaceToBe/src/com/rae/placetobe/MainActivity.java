@@ -176,7 +176,7 @@ public class MainActivity extends Activity
 					 launchNewActivity(HistoryActivity.class);
 					break;
 				case 4 :
-					launchNewActivity(view,"TabsActivity");
+					launchNewActivity(TabsActivity.class);
 					break;
 				default: 
 					break;

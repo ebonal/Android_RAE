@@ -10,13 +10,21 @@ public class SharedPreferencesUtil
 {
 	static private final String TAG = SharedPreferencesUtil.class.getSimpleName();
 	
-	public final static String PREFERENCE_FILE_NAME = "ImageData" ;
+	private final static String PREFERENCE_FILE_NAME_IMAGE = "ImageData" ;
+	private final static String PREFERENCE_FILE_NAME_ACCOUNT = "AccountData" ;
 	
 	/**
 	 * Retrieves the Shared Preferences where the image data are saved
 	 */
 	static public SharedPreferences getImageDataPreferences(Context context)  {
-		return context.getSharedPreferences(PREFERENCE_FILE_NAME, Context.MODE_PRIVATE)  ;
+		return context.getSharedPreferences(PREFERENCE_FILE_NAME_IMAGE, Context.MODE_PRIVATE)  ;
+	}
+	
+	/**
+	 * Retrieves the Shared Preferences for user Account
+	 */
+	static public SharedPreferences getAccountDataPreferences(Context context)  {
+		return context.getSharedPreferences(PREFERENCE_FILE_NAME_IMAGE, Context.MODE_PRIVATE)  ;
 	}
 	
 	/**
