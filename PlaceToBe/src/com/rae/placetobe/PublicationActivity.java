@@ -1,5 +1,7 @@
 package com.rae.placetobe;
 
+import rx.Observable;
+import rx.functions.Action1;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -36,7 +38,7 @@ public class PublicationActivity extends Activity
 		mImageView   = (ImageView) findViewById(R.id.imageViewPhoto);
 		mCommentText = (EditText)  findViewById(R.id.editTextComment);
 		
-		mCurrentPhotoPath = getIntent().getStringExtra(MainActivity.EXTRA_FILE_PATH);		
+		mCurrentPhotoPath = getIntent().getStringExtra(MainActivity.EXTRA_FILE_PATH);
 	}
 	
 	
@@ -106,7 +108,14 @@ public class PublicationActivity extends Activity
 		int id = item.getItemId();
 		
 		if(id==R.id.action_toggle) {
-			toggleFilter();
+
+			String[] names = { "Toggle" } ;
+		    Observable.from(names).subscribe(new Action1<String>() {
+		        @Override
+		        public void call(String s) {
+					toggleFilter();
+		        }
+		    });
 		}
 		
 		if(id==R.id.action_commit)  {

@@ -111,7 +111,7 @@ public class ImageData
 			datas.put(id, data) ;
 		}
 		
-		return datas; //.values() ;
+		return datas; 
 	}
 	
 	/**
