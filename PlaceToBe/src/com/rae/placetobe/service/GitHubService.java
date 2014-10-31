@@ -11,9 +11,9 @@ import rx.schedulers.Schedulers;
 import android.util.Log;
 import android.util.Pair;
 
-public class GitHubProxy
+public class GitHubService
 {
-	private static final String TAG = GitHubProxy.class.getSimpleName();
+	private static final String TAG = GitHubService.class.getSimpleName();
 
 	// https://github.com/ebonal/Android_RAE.git
 	final static private String GITHUB_COM = "https://api.github.com" ;  // The base API endpoint.
@@ -23,17 +23,17 @@ public class GitHubProxy
 		public int contributions; // Commit count.
 	}
 
-	public interface GitHubService 
+	public interface GitHubServiceProxy 
 	{
 		@GET("/repos/{owner}/{repo}/contributors")
 		List<Contributor> contributors(@Path("owner") String owner,
 									   @Path("repo") String repo);
 	}
 
-	static private final GitHubService githubService ;
+	static private final GitHubServiceProxy githubServiceProxy ;
 	static {
 		RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(GITHUB_COM).build();
-		githubService = restAdapter.create(GitHubService.class);
+		githubServiceProxy = restAdapter.create(GitHubServiceProxy.class);
 	}
 	
 	static public void test() 
@@ -48,7 +48,7 @@ public class GitHubProxy
 	        {
 	    		Log.d(TAG, "DEBUT TEST");		
 	
-				List<Contributor> contributors = githubService.contributors(ownerRepo.first, ownerRepo.second);
+				List<Contributor> contributors = githubServiceProxy.contributors(ownerRepo.first, ownerRepo.second);
 				for (Contributor contributor : contributors) {
 					Log.d(TAG, contributor.login + " - " + contributor.contributions);
 				}
