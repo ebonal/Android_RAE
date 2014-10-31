@@ -5,13 +5,23 @@
     android:orientation="vertical"
     android:background="#66FF99" >
 
-		 <TextView
-		     android:id="@+id/textView2"
-		     android:layout_width="wrap_content"
-		     android:layout_height="wrap_content"
-		     android:layout_centerHorizontal="true"
-		     android:layout_centerVertical="true"
-		     android:text="Liste des Followers"
-		     android:textSize="16sp" />
+    <ListView
+        android:id="@+id/listViewFollowers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView2" >
+    </ListView>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/account_list_followers"
+        android:textSize="16sp" />
 
 </RelativeLayout>

@@ -34,5 +34,6 @@
     <string name="title_activity_tab">TabActivity</string>
     <string name="action_toggle">Toggle</string>
     <string name="account_list_followed">List of followed</string>
+    <string name="account_list_followers">List of followers</string>
 
 </resources>
