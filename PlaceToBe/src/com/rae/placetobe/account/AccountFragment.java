@@ -1,5 +1,9 @@
 package com.rae.placetobe.account;
 
+import rx.Observable;
+import rx.android.observables.ViewObservable;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -47,6 +51,38 @@ public class AccountFragment extends Fragment
     	    	Toast.makeText(getActivity(), "Validé !", Toast.LENGTH_SHORT).show();
             }
         });
+	    
+	    
+		Action1<String> onEditNameText = new Action1<String>() {
+	        @Override
+	        public void call(String s) { editTextEmail.setText(s); }
+	    };
+	    
+	    Func1<String, String> reverseName = new Func1<String, String>() {
+	        @Override
+	        public String call(String s) 
+	        {  
+	        	return new StringBuffer(s.toLowerCase()).reverse().toString(); 
+	        }
+	    };
+	    
+	    Func1<String, String> addMail = new Func1<String, String>() {
+	        @Override
+	        public String call(String s) 
+	        {  
+	        	if (!s.isEmpty())
+	        		s = s + "@gmail.com";
+				return s;
+	        }
+	    };
+	    
+	    // Observable on EditText name 
+	    @SuppressWarnings("deprecation")
+		Observable<String> o = ViewObservable.input(editTextName, false);
+	    
+	    o = o.map(reverseName);
+	    o = o.map(addMail);
+	    o.subscribe(onEditNameText);
 	    
 		return rootView;
 	}
