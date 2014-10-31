@@ -33,5 +33,6 @@
     <string name="account_edittext_add">Add a new followed</string>
     <string name="title_activity_tab">TabActivity</string>
     <string name="action_toggle">Toggle</string>
+    <string name="account_list_followed">List of followed</string>
 
 </resources>
