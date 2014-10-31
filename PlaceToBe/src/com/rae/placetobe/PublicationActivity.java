@@ -74,9 +74,10 @@ public class PublicationActivity extends Activity
 		super.onWindowFocusChanged(hasFocus);
 	}
 	
-	private void setViewBitmap(boolean bAndW) 
+	
+	private void setViewBitmap(Boolean bw) 
 	{
-		if(bAndW) {
+		if(bw) {
 			// Toggle to black and white
 			if(whiteAndBlackImageBitmap==null) 
 				whiteAndBlackImageBitmap = ImageUtil.applyBlackAndWithFilter(originalImageBitmap) ;
@@ -115,12 +116,12 @@ public class PublicationActivity extends Activity
 	        .observeOn(AndroidSchedulers.mainThread())
 	        .subscribe(new Action1<Boolean>() {
 		        @Override
-		        public void call(Boolean bw) {
-		        	setViewBitmap(bw);
+		        public void call(Boolean blackAndWhite) {
+		        	setViewBitmap(blackAndWhite);
 		        }
 		    });
 		}
-		
+
 		if(id==R.id.action_commit)  {
 			String mCurrentPhotoPath = SharedPreferencesUtil.restoreFilePath(this) ;
 			ImageData.addPhoto(this, mCurrentPhotoPath, mCommentText.getText().toString()) ;
