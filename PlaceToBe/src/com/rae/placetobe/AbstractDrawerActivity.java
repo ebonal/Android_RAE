@@ -22,13 +22,10 @@ import com.rae.placetobe.util.CameraUtil;
 
 @SuppressWarnings("deprecation")
 
-//
-// TODO : Quand on selectionne une entrée dans le drawer, une nouvelle activité est lancée
-// et vient s'empiler par dessus les precedentes.
-// Voir pour utiliser des fragments : http://developer.android.com/training/implementing-navigation/nav-drawer.html
-// en remplaçant la vue courante à l'aide du FragmentManager ?
-// ou alors, plus simple, terminer l'activité en cours (finish()) avant d'en lancer une nouvelle ?
-//
+
+// TODO :
+// - Voir pour utiliser des fragments : http://developer.android.com/training/implementing-navigation/nav-drawer.html
+// -  Utiliser ActionBarDrawerToggle du package V7
 
 public abstract class AbstractDrawerActivity extends FragmentActivity
 {
@@ -88,15 +85,6 @@ public abstract class AbstractDrawerActivity extends FragmentActivity
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 	}
-
-	@Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        
-        //TODO : Something when the drawer is open or closed
-        return super.onPrepareOptionsMenu(menu);
-    }
     
 	// Handle action bar item clicks here. The action bar will
 	// automatically handle clicks on the Home/Up button, so long
