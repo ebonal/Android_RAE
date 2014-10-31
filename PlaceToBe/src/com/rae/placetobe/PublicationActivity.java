@@ -84,9 +84,10 @@ public class PublicationActivity extends Activity
 		super.onWindowFocusChanged(hasFocus);
 	}
 	
-	private void setViewBitmap(boolean bAndW) 
+	
+	private void setViewBitmap(Boolean bw) 
 	{
-		if(bAndW) {
+		if(bw) {
 			// Toggle to black and white
 			if(whiteAndBlackImageBitmap==null) 
 				whiteAndBlackImageBitmap = ImageUtil.applyBlackAndWithFilter(originalImageBitmap) ;
@@ -118,17 +119,15 @@ public class PublicationActivity extends Activity
 		{
 			blackAndWhite = !blackAndWhite ;
 			
-			Boolean[] filters = { blackAndWhite } ;
-		    Observable.from(filters).subscribe(new Action1<Boolean>() {
+		    Observable.just(blackAndWhite).subscribe(new Action1<Boolean>() {
 		        @Override
-		        public void call(Boolean bw) {
-		        	setViewBitmap(bw);
+		        public void call(Boolean blackAndWhite) {
+		        	setViewBitmap(blackAndWhite);
 		        }
 		    });
 		}
 
-		// onSub
-		
+		// onSub	
 		if(id==R.id.action_commit)  {
 			ImageData.addPhoto(this, mCurrentPhotoPath, mCommentText.getText().toString()) ;
 			// Uncomment this line to add the picture to the phone gallery

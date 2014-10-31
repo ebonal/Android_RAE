@@ -176,6 +176,9 @@ public abstract class AbstractDrawerActivity extends FragmentActivity
 				case 0 : 
 					CameraUtil.startImageCaptureActivity(AbstractDrawerActivity.this) ;
 					break;
+				case 1 : 
+					GitHubProxy.test();
+					break;
 				case 3 : 
 					 launchNewActivity(HistoryActivity.class);
 					break;
