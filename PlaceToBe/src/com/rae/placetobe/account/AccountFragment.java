@@ -77,13 +77,13 @@ public class AccountFragment extends Fragment
 	    };
 	    
 	    // Observable on EditText name 
-	    @SuppressWarnings("deprecation")
-		Observable<String> o = ViewObservable.input(editTextName, false);
-	    
+//	    @SuppressWarnings("deprecation")
+		/*
+		 * Observable<String> o = ViewObservable.input(editTextName, false);
 	    o = o.map(reverseName);
 	    o = o.map(addMail);
 	    o.subscribe(onEditNameText);
-	    
+	*/    
 		return rootView;
 	}
 }

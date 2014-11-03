@@ -38,5 +38,6 @@
     <string name="account_list_followed">List of followed</string>
     <string name="account_list_followers">List of followers</string>
     <string name="title_activity_add_followed">AddFollowedActivity</string>
+    <string name="acount_bt_add">acount_bt_add</string>
 
 </resources>
