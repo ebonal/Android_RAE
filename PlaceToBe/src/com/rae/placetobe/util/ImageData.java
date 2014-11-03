@@ -13,7 +13,7 @@ import android.util.SparseArray;
  * For exemple for the second picture (index is zero based):
  * 
  *   PATH.1    = /<filePath>/image.jpg
- *   COMMENT.1 = User's comment
+ *   COMMENT.1 = Users's comment
  *   DATE.1    = The timestamp
  *
  */

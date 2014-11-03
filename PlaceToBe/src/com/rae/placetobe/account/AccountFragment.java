@@ -1,6 +1,9 @@
 package com.rae.placetobe.account;
 
+import java.util.Locale;
+
 import rx.Observable;
+import rx.android.events.OnTextChangeEvent;
 import rx.android.observables.ViewObservable;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -58,11 +61,11 @@ public class AccountFragment extends Fragment
 	        public void call(String s) { editTextEmail.setText(s); }
 	    };
 	    
-	    Func1<String, String> reverseName = new Func1<String, String>() {
+	    Func1<OnTextChangeEvent, String> reverseName = new Func1<OnTextChangeEvent, String>() {
 	        @Override
-	        public String call(String s) 
+	        public String call(OnTextChangeEvent s) 
 	        {  
-	        	return new StringBuffer(s.toLowerCase()).reverse().toString(); 
+	        	return new StringBuffer(s.text.toString().toLowerCase(Locale.getDefault())).reverse().toString(); 
 	        }
 	    };
 	    
@@ -76,14 +79,13 @@ public class AccountFragment extends Fragment
 	        }
 	    };
 	    
-	    // Observable on EditText name 
-//	    @SuppressWarnings("deprecation")
-		/*
-		 * Observable<String> o = ViewObservable.input(editTextName, false);
-	    o = o.map(reverseName);
-	    o = o.map(addMail);
-	    o.subscribe(onEditNameText);
-	*/    
+	    // Observable on EditText name
+		Observable<OnTextChangeEvent> o = ViewObservable.text(editTextName, false);
+	    Observable<String> o2;
+	    o2 = o.map(reverseName);
+	    o2 = o2.map(addMail);
+	    o2.subscribe(onEditNameText);
+	    
 		return rootView;
 	}
 }
