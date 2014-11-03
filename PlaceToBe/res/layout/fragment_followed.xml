@@ -32,7 +32,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="22dp"
-        android:contentDescription="@string/acount_bt_add"
+        android:contentDescription="@string/account_bt_add"
         android:src="@android:drawable/ic_menu_add" />
 
 </RelativeLayout>
