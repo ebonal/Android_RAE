@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.rae.placetobe.account.TabsActivity;
 import com.rae.placetobe.history.HistoryActivity;
-import com.rae.placetobe.service.GitHubService;
+import com.rae.placetobe.proxy.GitHubProxy;
 import com.rae.placetobe.util.CameraUtil;
 
 @SuppressWarnings("deprecation")
@@ -166,7 +166,7 @@ public abstract class AbstractDrawerActivity extends FragmentActivity
 					CameraUtil.startImageCaptureActivity(AbstractDrawerActivity.this) ;
 					break;
 				case 1 : 
-					GitHubService.test();
+					GitHubProxy.test();
 					break;
 				case 3 : 
 					 launchNewActivity(HistoryActivity.class);

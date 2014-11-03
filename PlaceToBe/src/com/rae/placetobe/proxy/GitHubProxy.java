@@ -1,4 +1,4 @@
-package com.rae.placetobe.service;
+package com.rae.placetobe.proxy;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ import rx.schedulers.Schedulers;
 import android.util.Log;
 import android.util.Pair;
 
-public class GitHubService
+public class GitHubProxy
 {
-	private static final String TAG = GitHubService.class.getSimpleName();
+	private static final String TAG = GitHubProxy.class.getSimpleName();
 
 	// https://github.com/ebonal/Android_RAE.git
 	final static private String GITHUB_COM = "https://api.github.com" ;  // The base API endpoint.
