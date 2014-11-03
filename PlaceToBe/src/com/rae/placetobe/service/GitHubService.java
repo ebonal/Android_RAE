@@ -23,17 +23,17 @@ public class GitHubService
 		public int contributions; // Commit count.
 	}
 
-	public interface GitHubServiceProxy 
+	public interface GitHubServiceStub 
 	{
 		@GET("/repos/{owner}/{repo}/contributors")
 		List<Contributor> contributors(@Path("owner") String owner,
 									   @Path("repo") String repo);
 	}
 
-	static private final GitHubServiceProxy githubServiceProxy ;
+	static private final GitHubServiceStub githubServiceStub ;
 	static {
 		RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(GITHUB_COM).build();
-		githubServiceProxy = restAdapter.create(GitHubServiceProxy.class);
+		githubServiceStub = restAdapter.create(GitHubServiceStub.class);
 	}
 	
 	static public void test() 
@@ -48,7 +48,7 @@ public class GitHubService
 	        {
 	    		Log.d(TAG, "DEBUT TEST");		
 	
-				List<Contributor> contributors = githubServiceProxy.contributors(ownerRepo.first, ownerRepo.second);
+				List<Contributor> contributors = githubServiceStub.contributors(ownerRepo.first, ownerRepo.second);
 				for (Contributor contributor : contributors) {
 					Log.d(TAG, contributor.login + " - " + contributor.contributions);
 				}
