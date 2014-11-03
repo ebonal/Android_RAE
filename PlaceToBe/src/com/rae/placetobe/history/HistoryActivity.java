@@ -21,6 +21,8 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 import com.rae.placetobe.AbstractDrawerActivity;
 import com.rae.placetobe.R;
@@ -28,9 +30,8 @@ import com.rae.placetobe.util.ImageData;
 
 public class HistoryActivity extends AbstractDrawerActivity
 {
-	private GridView gridview;
-	private SparseArray<ImageData> imageDataList ;
-
+	@InjectView(R.id.gridview) GridView gridview;
+	
 	@Override
 	protected int getContentViewId() {
 		return R.layout.activity_history;
@@ -41,11 +42,9 @@ public class HistoryActivity extends AbstractDrawerActivity
 	{
 		super.onCreate(savedInstanceState); // Will inflate the layout using getContentViewId()
 		
-		// get my gridview in my layout
-		gridview = (GridView) findViewById(R.id.gridview);
+		ButterKnife.inject(this);
 		// set custom adapter to my gridview
 		gridview.setAdapter(new GridViewAdapter(this,R.layout.history_gridview_item));
-	    
 	}
 	
 	// Custom adapter to implements item in my gridview
