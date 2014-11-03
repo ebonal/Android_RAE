@@ -26,12 +26,13 @@
         android:textSize="16sp" />
 
     <ImageButton
-        android:id="@+id/imageButton1"
+        android:id="@+id/imageButtonAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="22dp"
+        android:contentDescription="@string/acount_bt_add"
         android:src="@android:drawable/ic_menu_add" />
 
 </RelativeLayout>

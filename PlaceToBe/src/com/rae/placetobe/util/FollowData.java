@@ -1,6 +1,5 @@
 package com.rae.placetobe.util;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,7 +16,6 @@ public class FollowData
 	private static final String LIST_FOLLOWED = "list_followed";
 	private static final String LIST_FOLLOWERS = "list_followers";
 	private static Context context;
-	private static List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 	
 	public FollowData(Context c)
 	{
@@ -41,8 +39,9 @@ public class FollowData
 	}
 	
 	// Fill a List<HashMap<String, String>> with a string
-	static public void stringToListMap(String str)
+	static public void fillListWithString(String str, List<HashMap<String, String>> list)
 	{
+		list.clear();
 		String[] elements = str.split(";");
 		HashMap<String, String> item;
 		
@@ -58,7 +57,7 @@ public class FollowData
 	}
 	
 	// create a SimpleAdapter and set it to the listView
-	static public void setSimpleAdapterToListView(ListView listView)
+	static public void setSimpleAdapterToListView(ListView listView, List<HashMap<String, String>> list)
 	{
 		ListAdapter adapter = new SimpleAdapter(context, list,
 				android.R.layout.simple_list_item_2, new String[] { NAME,
