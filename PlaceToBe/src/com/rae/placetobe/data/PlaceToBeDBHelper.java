@@ -3,40 +3,41 @@ package com.rae.placetobe.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
-public class PlaceToBeDBHelper extends SQLiteOpenHelper
+public class PlaceToBeDBHelper extends SQLiteOpenHelper implements PtbColumns
 {
+	private static final String TAG = PlaceToBeDBHelper.class.getSimpleName() ;
+	
     // Bump this for each change in the schema
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "PlaceTobe";
+    public static final int    DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME    = "PlaceTobe";
 
-    private static final String TYPE_TEXT    = " TEXT";
-	private static final String TYPE_INTEGER = " INTEGER";
-	
-	private static final String COMMA_SEP = ",";
-	
-    public PlaceToBeDBHelper(Context context) {
+	private static PlaceToBeDBHelper instance;
+
+	synchronized static public PlaceToBeDBHelper getInstance(Context context)
+	{
+		Log.d(TAG, "getInstance()") ;
+		if (instance == null)
+			instance = new PlaceToBeDBHelper(context.getApplicationContext());
+		return instance;
+	}
+
+    private PlaceToBeDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     
-	private static final String SQL_CREATE_USERS_TABLE =
-		    "CREATE TABLE " + Users.TABLE_NAME + " (" +
-		    Users._ID + " INTEGER PRIMARY KEY," +
-		    Users.COLUMN_NAME_USER_ID + TYPE_INTEGER + COMMA_SEP +
-		    Users.COLUMN_NAME_EMAIL   + TYPE_TEXT + COMMA_SEP +
-		    Users.COLUMN_NAME_NAME    + TYPE_TEXT + COMMA_SEP +
-		    " )";
-
-
-	public void onCreate(SQLiteDatabase db) {
-      db.execSQL(SQL_CREATE_USERS_TABLE);
+	public void onCreate(SQLiteDatabase db)  {
+		db.execSQL( Users.CREATE_TABLE_STATEMENT);
+		db.execSQL(Images.CREATE_TABLE_STATEMENT);
     }
-
-	private static final String SQL_DELETE_USERS = "DROP TABLE IF EXISTS " + Users.TABLE_NAME;
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database upgrade policy is to discard the data
-        db.execSQL(SQL_DELETE_USERS);
+        db.execSQL(DROP_TABLE_STATEMENT + Users.TABLE_NAME);
+        db.execSQL(DROP_TABLE_STATEMENT + Images.TABLE_NAME);
         onCreate(db);
     }
+    
+    
 }

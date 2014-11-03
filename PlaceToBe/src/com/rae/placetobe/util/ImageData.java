@@ -19,7 +19,7 @@ import android.util.SparseArray;
  */
 public class ImageData
 {
-//	private static final String TAG = ImageData.class.getSimpleName();
+//	private static final String TAG = Images.class.getSimpleName();
 	
 	static final private String KEY_PATH    = "PATH" ;
 	static final private String KEY_COMMENT = "COMMENT" ;

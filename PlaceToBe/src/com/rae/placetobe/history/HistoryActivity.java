@@ -29,7 +29,7 @@ import com.rae.placetobe.util.ImageData;
 public class HistoryActivity extends AbstractDrawerActivity
 {
 	private GridView gridview;
-	private SparseArray<ImageData> imageDataList ;
+//	private SparseArray<ImageData> imageDataList ;
 
 	@Override
 	protected int getContentViewId() {
