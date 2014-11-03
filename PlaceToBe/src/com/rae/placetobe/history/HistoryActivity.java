@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rae.placetobe.AbstractDrawerActivity;
@@ -67,7 +66,7 @@ public class HistoryActivity extends AbstractDrawerActivity
 	    
 	    // Object to stock gridViewItem data
 	    private class GridViewItem {
-	    	ImageView picture;
+	    	SquareImageView picture;
 	    	TextView comment;
 			ImageData imageData;
 			Bitmap bitmap;
@@ -107,7 +106,7 @@ public class HistoryActivity extends AbstractDrawerActivity
 	        	convertView = inflater.inflate(R.layout.history_gridview_item, parent, false);
 	        	
 	        	gridViewItem = new GridViewItem();
-	        	gridViewItem.picture = (ImageView)convertView.findViewById(R.id.picture);
+	        	gridViewItem.picture = (SquareImageView)convertView.findViewById(R.id.picture);
 	        	gridViewItem.comment = (TextView)convertView.findViewById(R.id.text);
 	        	convertView.setTag(gridViewItem);
 	        }
@@ -120,7 +119,7 @@ public class HistoryActivity extends AbstractDrawerActivity
 	        
 	        // Init the bitmap picture and the comment text
 	        gridViewItem.bitmap = null;
-	        gridViewItem.picture.setImageBitmap(gridViewItem.bitmap);
+	        // gridViewItem.picture.setImageBitmap(gridViewItem.bitmap);
 	        gridViewItem.comment.setText("");
 	        
 	        // Async task to load my picture and comment
@@ -147,11 +146,12 @@ public class HistoryActivity extends AbstractDrawerActivity
 			protected void onPostExecute(GridViewItem result) {
 				// TODO Auto-generated method stub
 				if (result.bitmap == null) {
-					result.picture.setImageResource(R.drawable.ic_place_to_be);
-					result.comment.setText("");
+					// result.picture.setImageResource(R.drawable.ic_place_to_be);
+					// result.comment.setText("");
 				} else {
 					// Set my result to my view
 					result.picture.setImageBitmap(result.bitmap);
+					// result.picture.setSquareDimmension();
 					result.comment.setText(result.imageData.getComment());
 				}
 			}

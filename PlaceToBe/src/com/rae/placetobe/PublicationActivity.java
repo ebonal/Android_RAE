@@ -1,7 +1,9 @@
 package com.rae.placetobe;
 
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -27,9 +29,6 @@ public class PublicationActivity extends Activity
 	private Bitmap originalImageBitmap ;
 	private Bitmap whiteAndBlackImageBitmap = null ; // Lazy initialization
 	
-	private String mCurrentPhotoPath; 
-	private Boolean blackAndWhite = Boolean.FALSE ;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -40,21 +39,18 @@ public class PublicationActivity extends Activity
 		ButterKnife.inject(this);		
 		
 		setTitle("");
-		mCurrentPhotoPath = SharedPreferencesUtil.restoreFilePath(this) ;
-		blackAndWhite     = SharedPreferencesUtil.restoreBlackAndWhite(this); 
 	}
 	
-	
+	// NOTE : SAVING ACTIVITY STATE
 	// onSaveInstanceState are not always called see : http://developer.android.com/reference/android/app/Activity.html
-	// so each time the activity is paused, the data are NOW saved in the shared preferences.
-	@Override
-	protected void onPause()
-	{
-       	Log.d(TAG, "onPause()") ;
-		super.onPause();
-		SharedPreferencesUtil.backupBlackAndWhite(this, blackAndWhite);
-		// Note : mCurrentPhotoPath is saved on MainActivity
-	}
+	// so each time the activity is paused, the data are saved in the shared preferences.
+	// @Override
+	// protected void onPause()
+	// {
+	//		super.onPause();
+	//
+	//      USE shared preferences to save the data here
+	// }
 
 	/*
 	 * The image is loaded here because the size of the imageView is undefined in the onCreate() method.
@@ -65,17 +61,11 @@ public class PublicationActivity extends Activity
 	{
 		try 
 		{
-        	// BOB : The original setPic() method in the official documentation is buggy, 
-			// openGL texture size on older phone MUST be a power of 2.
-        	// original setPic() : see  @ http://developer.android.com/training/camera/photobasics.html
-            // int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-        	
-			// The correct version is from here :
-        	// @see http://developer.android.com/training/displaying-bitmaps/load-bitmap.html
-        	originalImageBitmap = ImageUtil.decodeSampledBitmapFromResource(mCurrentPhotoPath, mImageView.getWidth(),  mImageView.getHeight()) ;
+			String mCurrentPhotoPath = SharedPreferencesUtil.restoreFilePath(this) ;
+			originalImageBitmap = ImageUtil.decodeSampledBitmapFromResource(mCurrentPhotoPath, mImageView.getWidth(),  mImageView.getHeight()) ;
            	Log.d(TAG,"imageBitmap : " + originalImageBitmap) ;
 
-           	setViewBitmap(blackAndWhite);
+           	setViewBitmap(SharedPreferencesUtil.restoreBlackAndWhite(this));
 		}
 		catch(Exception e) {
 			Log.e(TAG, "onWindowFocusChanged", e) ;
@@ -84,9 +74,10 @@ public class PublicationActivity extends Activity
 		super.onWindowFocusChanged(hasFocus);
 	}
 	
-	private void setViewBitmap(boolean bAndW) 
+	
+	private void setViewBitmap(Boolean bw) 
 	{
-		if(bAndW) {
+		if(bw) {
 			// Toggle to black and white
 			if(whiteAndBlackImageBitmap==null) 
 				whiteAndBlackImageBitmap = ImageUtil.applyBlackAndWithFilter(originalImageBitmap) ;
@@ -116,20 +107,23 @@ public class PublicationActivity extends Activity
 		
 		if(id==R.id.action_toggle) 
 		{
+			Boolean blackAndWhite = SharedPreferencesUtil.restoreBlackAndWhite(this) ;
 			blackAndWhite = !blackAndWhite ;
-			
-			Boolean[] filters = { blackAndWhite } ;
-		    Observable.from(filters).subscribe(new Action1<Boolean>() {
+			SharedPreferencesUtil.backupBlackAndWhite(this, blackAndWhite);
+
+	        Observable.just(blackAndWhite)
+	        .subscribeOn(Schedulers.newThread())
+	        .observeOn(AndroidSchedulers.mainThread())
+	        .subscribe(new Action1<Boolean>() {
 		        @Override
-		        public void call(Boolean bw) {
-		        	setViewBitmap(bw);
+		        public void call(Boolean blackAndWhite) {
+		        	setViewBitmap(blackAndWhite);
 		        }
 		    });
 		}
 
-		// onSub
-		
 		if(id==R.id.action_commit)  {
+			String mCurrentPhotoPath = SharedPreferencesUtil.restoreFilePath(this) ;
 			ImageData.addPhoto(this, mCurrentPhotoPath, mCommentText.getText().toString()) ;
 			// Uncomment this line to add the picture to the phone gallery
 	    	// GalleryUtil.addPic(this, mCurrentPhotoPath);			

@@ -76,6 +76,12 @@ public class ImageUtil
 	/**
 	 * Re-scale the bitmap from the camera 
 	 */
+	// BOB : The original setPic() method in the official documentation is buggy, 
+	// openGL texture size on older phone MUST be a power of 2.
+	// original setPic() : see  @ http://developer.android.com/training/camera/photobasics.html
+    // int scaleFactor = Math.min(photoW/targetW, photoH/targetH);	
+	// The correct version is from here :
+	// @see http://developer.android.com/training/displaying-bitmaps/load-bitmap.html
 	static public Bitmap decodeSampledBitmapFromResource(String pathName, int reqWidth, int reqHeight)
 	{ 
 	   	Log.d(TAG, "reqWidth  : "+reqWidth + " reqHeight  : "+reqHeight) ;
