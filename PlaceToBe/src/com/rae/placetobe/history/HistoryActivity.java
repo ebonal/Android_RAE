@@ -1,11 +1,20 @@
 package com.rae.placetobe.history;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -23,6 +32,7 @@ import com.rae.placetobe.util.ImageData;
 public class HistoryActivity extends AbstractDrawerActivity
 {
 	private GridView gridview;
+	private SparseArray<ImageData> imageDataList ;
 
 	@Override
 	protected int getContentViewId() {
@@ -37,41 +47,26 @@ public class HistoryActivity extends AbstractDrawerActivity
 		// get my gridview in my layout
 		gridview = (GridView) findViewById(R.id.gridview);
 		// set custom adapter to my gridview
-	    gridview.setAdapter(new ImageAdapter(this,R.layout.history_gridview_item));
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) 
-	{
-	    super.onConfigurationChanged(newConfig);
-
-	    // Checks the orientation of the screen and change the num of columns 
-	    if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-	    	gridview.setNumColumns(3);
-	    } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-	    	gridview.setNumColumns(2);
-	    }
+		gridview.setAdapter(new GridViewAdapter(this,R.layout.history_gridview_item));
+	    
 	}
 	
 	// Custom adapter to implements item in my gridview
-	public class ImageAdapter extends BaseAdapter
+	public class GridViewAdapter extends BaseAdapter
 	{
+		final private LayoutInflater inflater ;
 	    final private SparseArray<ImageData> imageDataList ;
-	    final private LayoutInflater inflater ;
+	    final private List<Bitmap> imageBitmapList;
 	    
-	    // Init my inflater for inflate my custom item view and my list of imageData
-	    public ImageAdapter(Context context, int textViewResourceId) {
+	    // Get layoutInflater to the context for inflate my custom item view
+	    // Get the imageDataList in my sharedPref
+	    // Init list of Bitmap and add a first item at null
+	    public GridViewAdapter(Context context, int textViewResourceId) {
 	        inflater = LayoutInflater.from(context);
 			// get my list of imageData in sharedPref
-	        imageDataList = ImageData.getAllImageDatas(getBaseContext()) ;
-	    }
-	    
-	    // Object to stock gridViewItem data
-	    private class GridViewItem {
-	    	SquareImageView picture;
-	    	TextView comment;
-			ImageData imageData;
-			Bitmap bitmap;
+	        imageDataList = ImageData.getAllImageDatas(getBaseContext());
+	        imageBitmapList = new ArrayList<Bitmap>();
+	        imageBitmapList.add(0,null);
 	    }
 	    
 	    @Override
@@ -98,65 +93,74 @@ public class HistoryActivity extends AbstractDrawerActivity
 
 	    // create a new ImageView for each item referenced by the Adapter
 	    @Override
-	    public View getView(int position, View convertView, ViewGroup parent) 
+	    public View getView(final int position, View convertView, ViewGroup parent) 
 	    {
+	    	final ImageView picture;
+	    	final TextView comment;
 	    	
-	    	GridViewItem gridViewItem = null;
-	        
 	        // if it's not recycled, initialize some attributes
 	        if (convertView == null) {  
 	        	convertView = inflater.inflate(R.layout.history_gridview_item, parent, false);
-	        	
-	        	gridViewItem = new GridViewItem();
-	        	gridViewItem.picture = (SquareImageView)convertView.findViewById(R.id.picture);
-	        	gridViewItem.comment = (TextView)convertView.findViewById(R.id.text);
-	        	convertView.setTag(gridViewItem);
+	        	convertView.setTag(R.id.picture, convertView.findViewById(R.id.picture));
+	        	convertView.setTag(R.id.text, convertView.findViewById(R.id.text));
 	        }
 	        
-	        // get tag of my view
-	        gridViewItem = (GridViewItem)convertView.getTag();
-	        
-	        // get the imageData
-	        gridViewItem.imageData = imageDataList.get(position);
-	        
-	        // Init the bitmap picture and the comment text
-	        gridViewItem.bitmap = null;
-	        // gridViewItem.picture.setImageBitmap(gridViewItem.bitmap);
-	        gridViewItem.comment.setText("");
-	        
-	        // Async task to load my picture and comment
-	        new DownloadAsyncTask().execute(gridViewItem);
-
+	        // Get my view
+	        picture = (ImageView)convertView.getTag(R.id.picture);
+        	comment = (TextView)convertView.getTag(R.id.text);
+        	
+        	// if my bitmap is null at this position
+        	// Getting my bitmap with observable Async
+	        if(imageBitmapList.get(position) == null){
+	        	imageBitmapList.add(position+1,null);
+	        	ImageData imageData = imageDataList.get(position);
+	        	comment.setText(imageData.getComment());
+	        	picture.setImageResource(R.drawable.ic_thumb_img);
+	        	Observable.just(imageData)
+					.map(new Func1<ImageData, String>(){
+			    		@Override
+			    		public String call(ImageData imageData){
+							return imageData.getFilePath();
+			    		}
+			    	})
+			    	.map(new Func1<String, Bitmap>(){
+			    		@Override
+			    		public Bitmap call(String filePath){
+			    			BitmapFactory.Options optionsBitmapFactory = new BitmapFactory.Options();
+							optionsBitmapFactory.inSampleSize = 8;
+							Bitmap bitmap = BitmapFactory.decodeFile(filePath, optionsBitmapFactory);
+							return bitmap;
+			    		}
+			    	})
+			    	.subscribeOn(Schedulers.newThread())
+			    	.observeOn(AndroidSchedulers.mainThread())
+			    	.subscribe(new Action1<Bitmap>() {
+						@Override
+						public void call(Bitmap bitmap) {
+							imageBitmapList.set(position,bitmap);
+							picture.setImageBitmap(bitmap);
+						}
+					});
+	        } else {
+	        	comment.setText(imageDataList.get(position).getComment());
+	        	picture.setImageBitmap(imageBitmapList.get(position));
+	        }
 	        return convertView;
 	    }
 	    
-	    private class DownloadAsyncTask extends AsyncTask<GridViewItem, Void, GridViewItem> 
-	    {
-			@Override
-			protected GridViewItem doInBackground(GridViewItem... params) {
-				GridViewItem gridViewItem = params[0];
-				// Create bitmap option to load light picture
-				BitmapFactory.Options optionsBitmapFactory = new BitmapFactory.Options();
-				optionsBitmapFactory.inSampleSize = 8;
-				// Create bitmap with the file path item
-				gridViewItem.bitmap = BitmapFactory.decodeFile(gridViewItem.imageData.getFilePath(), optionsBitmapFactory);
-				
-				return gridViewItem;
-			}
-			
-			@Override
-			protected void onPostExecute(GridViewItem result) {
-				// TODO Auto-generated method stub
-				if (result.bitmap == null) {
-					// result.picture.setImageResource(R.drawable.ic_place_to_be);
-					// result.comment.setText("");
-				} else {
-					// Set my result to my view
-					result.picture.setImageBitmap(result.bitmap);
-					// result.picture.setSquareDimmension();
-					result.comment.setText(result.imageData.getComment());
-				}
-			}
-		}
 	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) 
+	{
+	    super.onConfigurationChanged(newConfig);
+
+	    // Checks the orientation of the screen and change the num of columns 
+	    if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+	    	gridview.setNumColumns(3);
+	    } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+	    	gridview.setNumColumns(2);
+	    }
+	}
+	
 }
