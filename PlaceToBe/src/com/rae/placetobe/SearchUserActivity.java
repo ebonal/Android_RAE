@@ -26,7 +26,6 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-import com.rae.placetobe.service.GitHubService.Contributor;
 import com.rae.placetobe.util.ApiManager;
 import com.rae.placetobe.util.GitHubMember;
 
