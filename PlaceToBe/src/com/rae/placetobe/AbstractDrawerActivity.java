@@ -17,6 +17,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.rae.placetobe.account.TabsActivity;
+import com.rae.placetobe.debug.ImagesDebugActivity;
+import com.rae.placetobe.debug.UsersDebugActivity;
 import com.rae.placetobe.history.HistoryActivity;
 import com.rae.placetobe.proxy.GitHubProxy;
 import com.rae.placetobe.util.CameraUtil;
@@ -30,6 +32,10 @@ import com.rae.placetobe.util.CameraUtil;
 
 public abstract class AbstractDrawerActivity extends FragmentActivity
 {
+	// ID de loader unique entre chaque activity/ffragment
+	final static public int LOADER_USERS  = 0 ;
+	final static public int LOADER_IMAGES = 1 ;	
+	
 	private final static String TAG = AbstractDrawerActivity.class.getSimpleName();
 	
 	abstract protected int getContentViewId() ;
@@ -173,6 +179,12 @@ public abstract class AbstractDrawerActivity extends FragmentActivity
 					break;
 				case 4 :
 					launchNewActivity(TabsActivity.class);
+					break;
+				case 5 :
+					launchNewActivity(UsersDebugActivity.class);
+					break;
+				case 6 :
+					launchNewActivity(ImagesDebugActivity.class);
 					break;
 				default: 
 					break;
