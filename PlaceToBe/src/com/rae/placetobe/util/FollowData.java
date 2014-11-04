@@ -22,6 +22,7 @@ public class FollowData
 		context = c;
 	}
 	
+	// not used
 	public String getListFollowedPref()
 	{
 		String prefListFollowed;		

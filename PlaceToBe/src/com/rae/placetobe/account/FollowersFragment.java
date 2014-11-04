@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 import com.rae.placetobe.util.FollowData;
 import com.rae.placetobe.R;
@@ -18,7 +20,7 @@ import com.rae.placetobe.R;
 public class FollowersFragment extends Fragment
 {
 
-	private ListView listViewFollowers;
+	@InjectView(R.id.listViewFollowers)  ListView listViewFollowers;
 	private List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 
 	@Override
@@ -28,9 +30,7 @@ public class FollowersFragment extends Fragment
 
 		View rootView = inflater.inflate(R.layout.fragment_followers,
 				container, false);
-
-		listViewFollowers = (ListView) rootView
-				.findViewById(R.id.listViewFollowers);
+		ButterKnife.inject(this, rootView);
 
 		FollowData followData = new FollowData(getActivity());
 
