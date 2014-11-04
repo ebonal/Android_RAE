@@ -168,6 +168,9 @@ public abstract class AbstractDrawerActivity extends FragmentActivity
 				case 1 : 
 					GitHubService.test();
 					break;
+				case 2 : 
+					launchNewActivity(SearchUserActivity.class);
+					break;
 				case 3 : 
 					 launchNewActivity(HistoryActivity.class);
 					break;
