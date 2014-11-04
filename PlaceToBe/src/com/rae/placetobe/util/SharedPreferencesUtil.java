@@ -11,7 +11,7 @@ public class SharedPreferencesUtil
 	static private final String TAG = SharedPreferencesUtil.class.getSimpleName();
 	
 	private final static String PREFERENCE_FILE_NAME_BACKUP  = "backup" ;
-	private final static String PREFERENCE_FILE_NAME_IMAGE   = "ImageData" ;
+	private final static String PREFERENCE_FILE_NAME_IMAGE   = "Images" ;
 	private final static String PREFERENCE_FILE_NAME_ACCOUNT = "AccountData" ;
 	
 	final static private String BACKUP_BLACK_AND_WHITE = "BACKUP_BLACK_AND_WHITE" ;

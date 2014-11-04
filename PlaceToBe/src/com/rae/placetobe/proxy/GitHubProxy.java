@@ -1,4 +1,4 @@
-package com.rae.placetobe.service;
+package com.rae.placetobe.proxy;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ import rx.schedulers.Schedulers;
 import android.util.Log;
 import android.util.Pair;
 
-public class GitHubService
+public class GitHubProxy
 {
-	private static final String TAG = GitHubService.class.getSimpleName();
+	private static final String TAG = GitHubProxy.class.getSimpleName();
 
 	// https://github.com/ebonal/Android_RAE.git
 	final static private String GITHUB_COM = "https://api.github.com" ;  // The base API endpoint.
@@ -23,17 +23,17 @@ public class GitHubService
 		public int contributions; // Commit count.
 	}
 
-	public interface GitHubServiceStub 
+	public interface GitHubStub 
 	{
 		@GET("/repos/{owner}/{repo}/contributors")
 		List<Contributor> contributors(@Path("owner") String owner,
 									   @Path("repo") String repo);
 	}
 
-	static private final GitHubServiceStub githubServiceStub ;
+	static private final GitHubStub githubStub ;
 	static {
 		RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(GITHUB_COM).build();
-		githubServiceStub = restAdapter.create(GitHubServiceStub.class);
+		githubStub = restAdapter.create(GitHubStub.class);
 	}
 	
 	static public void test() 
@@ -48,7 +48,7 @@ public class GitHubService
 	        {
 	    		Log.d(TAG, "DEBUT TEST");		
 	
-				List<Contributor> contributors = githubServiceStub.contributors(ownerRepo.first, ownerRepo.second);
+				List<Contributor> contributors = githubStub.contributors(ownerRepo.first, ownerRepo.second);
 				for (Contributor contributor : contributors) {
 					Log.d(TAG, contributor.login + " - " + contributor.contributions);
 				}
