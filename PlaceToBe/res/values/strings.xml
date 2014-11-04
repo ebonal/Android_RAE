@@ -11,6 +11,8 @@
         <item>Medias de ceux que je suis</item>
         <item>Historique de media</item>
         <item>Mon compte</item>
+        <item>DEBUG User\'s list</item>
+        <item>DEBUG Image\'s list</item>
     </string-array>
 
     <string name="discover_share">Discover | Share | &#8230;</string>
@@ -38,5 +40,8 @@
     <string name="account_list_followed">List of followed</string>
     <string name="account_list_followers">List of followers</string>
     <string name="title_activity_add_followed">AddFollowedActivity</string>
+    <string name="title_activity_users_debug">UsersDebugActivity</string>
+    <string name="title_activity_images_debug">ImagesDebugActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

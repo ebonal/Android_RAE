@@ -1,5 +1,7 @@
 package com.rae.placetobe.account;
 
+import java.util.Locale;
+
 import rx.Observable;
 import rx.android.events.OnTextChangeEvent;
 import rx.android.observables.ViewObservable;
@@ -63,7 +65,7 @@ public class AccountFragment extends Fragment
 	        @Override
 	        public String call(OnTextChangeEvent s) 
 	        {  
-	        	return new StringBuffer(s.text.toString().toLowerCase()).reverse().toString(); 
+	        	return new StringBuffer(s.text.toString().toLowerCase(Locale.getDefault())).reverse().toString(); 
 	        }
 	    };
 	    
