@@ -20,7 +20,7 @@ import com.rae.placetobe.account.TabsActivity;
 import com.rae.placetobe.debug.ImagesDebugActivity;
 import com.rae.placetobe.debug.UsersDebugActivity;
 import com.rae.placetobe.history.HistoryActivity;
-import com.rae.placetobe.proxy.GitHubProxy;
+import com.rae.placetobe.map.PtbMapActivity;
 import com.rae.placetobe.util.CameraUtil;
 
 @SuppressWarnings("deprecation")
@@ -172,7 +172,7 @@ public abstract class AbstractDrawerActivity extends FragmentActivity
 					CameraUtil.startImageCaptureActivity(AbstractDrawerActivity.this) ;
 					break;
 				case 1 : 
-					launchNewActivity(TestMapActivity.class);
+					launchNewActivity(PtbMapActivity.class);
 					break;
 				case 2 : 
 					launchNewActivity(SearchUserActivity.class);

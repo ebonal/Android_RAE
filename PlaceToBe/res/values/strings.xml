@@ -44,5 +44,6 @@
     <string name="title_activity_images_debug">ImagesDebugActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_test_map">TestMapActivity</string>
+    <string name="title_activity_ptb_map">PtbMapActivity</string>
 
 </resources>
