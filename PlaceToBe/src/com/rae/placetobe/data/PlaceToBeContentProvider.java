@@ -18,9 +18,11 @@ public class PlaceToBeContentProvider extends ContentProvider
 {
 	private static final String TAG = PlaceToBeContentProvider.class.getSimpleName() ;
 
-	private static final String AUTHORITY = "com.rea.placetobe.provider";
+	private static final String AUTHORITY = "com.rae.placetobe.provider";
 
 	private static final String USERS_PATH     = "users";
+	private static final String FOLLOWED_PATH     = "followed";
+	private static final String FOLLOWERS_PATH     = "followers";
 	private static final String IMAGES_PATH    = "images";	
 	
 	public static final Uri USERS_URI   = Uri.parse("content://" + AUTHORITY + "/" + USERS_PATH);
