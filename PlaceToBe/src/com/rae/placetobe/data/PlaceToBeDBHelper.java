@@ -11,7 +11,7 @@ public class PlaceToBeDBHelper extends SQLiteOpenHelper implements PtbColumns
 	
     // Bump this for each change in the schema
     public static final int    DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME    = "PlaceTobe";
+    public static final String DATABASE_NAME    = "PlaceTobe2";
 
 	private static PlaceToBeDBHelper instance;
 
@@ -28,16 +28,32 @@ public class PlaceToBeDBHelper extends SQLiteOpenHelper implements PtbColumns
     }
     
 	public void onCreate(SQLiteDatabase db)  {
+		Log.d(TAG, "onCreate()") ;
+		
 		db.execSQL( Users.CREATE_TABLE_STATEMENT);
 		db.execSQL(Images.CREATE_TABLE_STATEMENT);
-    }
 
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        // Test data
+        String debut = new StringBuilder("INSERT INTO users(")
+        .append(Users.COLUMN_USER_ID).append(PtbColumns.COMMA_SEP)
+        .append(Users.COLUMN_NAME).append(PtbColumns.COMMA_SEP)
+        .append(Users.COLUMN_EMAIL).append(") values (").toString() ;
+        
+        
+        db.execSQL(debut+ "101, 'Robert Bakic'    , 'robert.bakic@gmail.com')");
+        db.execSQL(debut+ "102, 'Anthony Fontaine', 'anthony.fontaine@gmail.com')");
+        db.execSQL(debut+ "103, 'Emeric Bonal'    , 'emeric.bonal@gmail.com')");
+
+	}
+
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+    {
+		Log.d(TAG, "onUpgrade()") ;
         // This database upgrade policy is to discard the data
         db.execSQL(DROP_TABLE_STATEMENT + Users.TABLE_NAME);
         db.execSQL(DROP_TABLE_STATEMENT + Images.TABLE_NAME);
+                
         onCreate(db);
     }
-    
-    
 }

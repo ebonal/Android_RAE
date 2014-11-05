@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-import com.rae.placetobe.util.ImageData;
+import com.rae.placetobe.util.ImageDataDB;
 import com.rae.placetobe.util.ImageUtil;
 import com.rae.placetobe.util.SharedPreferencesUtil;
 
@@ -124,7 +124,7 @@ public class PublicationActivity extends Activity
 
 		if(id==R.id.action_commit)  {
 			String mCurrentPhotoPath = SharedPreferencesUtil.restoreFilePath(this) ;
-			ImageData.addPhoto(this, mCurrentPhotoPath, mCommentText.getText().toString()) ;
+			ImageDataDB.addPhoto(this, mCurrentPhotoPath, mCommentText.getText().toString()) ;
 			// Uncomment this line to add the picture to the phone gallery
 	    	// GalleryUtil.addPic(this, mCurrentPhotoPath);			
 			finish();

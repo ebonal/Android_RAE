@@ -5,6 +5,7 @@ public interface Images extends PtbColumns
 {
     String TABLE_NAME = "imagedata";
 
+    String COLUMN_ID      = _ID ;
     String COLUMN_PATH    = "PATH";
     String COLUMN_COMMENT = "COMMENT";
     String COLUMN_DATE    = "DATE";

@@ -10,10 +10,18 @@ public class UsersDao implements Users
 {
 	private static final String TAG = UsersDao.class.getSimpleName();
 	
+	// The indices for the projection array above.
+	
+	public static final int IDX__ID     = 0;
+	public static final int IDX_NAME    = 1;
+	public static final int IDX_EMAIL   = 2;
+	public static final int IDX_USER_ID = 3;
+	
 	public static final String[] PROJECTION =  {
-	    COLUMN_NAME,   // 0
-	    COLUMN_EMAIL,  // 1
-	    COLUMN_USER_ID // 2
+	    COLUMN_ID,     // 0
+		COLUMN_NAME,   // 1
+	    COLUMN_EMAIL,  // 2
+	    COLUMN_USER_ID // 3
 	};
 
 	
