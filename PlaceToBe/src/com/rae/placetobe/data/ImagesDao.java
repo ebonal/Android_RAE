@@ -10,13 +10,20 @@ public class ImagesDao implements Images
 {
 	private static final String TAG = ImagesDao.class.getSimpleName();	
 	
+	public static final int IDX__ID     = 0;
+	public static final int IDX_PATH    = 1;
+	public static final int IDX_DATE    = 2;
+	public static final int IDX_COMMENT = 3;
+
 	public static final String[] PROJECTION =  {
-	    COLUMN_PATH,   // 0
-	    COLUMN_DATE,   // 1
-	    COLUMN_COMMENT // 2
+	    COLUMN_ID,     // 0
+	    COLUMN_PATH,   // 1
+	    COLUMN_DATE,   // 2
+	    COLUMN_COMMENT // 3
 	};
+
 	
-	public static Cursor findAll(Context context)  {
+	public static Cursor findAll(Context context, String[] selectionArgs)  {
 		Log.d(TAG, "findAll()") ;
 		SQLiteDatabase db = PlaceToBeDBHelper.getInstance(context).getReadableDatabase() ;
 		return db.query(TABLE_NAME, PROJECTION, null, null, null, null, COLUMN_DATE);
