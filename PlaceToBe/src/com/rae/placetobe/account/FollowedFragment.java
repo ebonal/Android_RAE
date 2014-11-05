@@ -37,6 +37,7 @@ public class FollowedFragment extends Fragment
 				false);
 		ButterKnife.inject(this, rootView);
 
+		// database access
 		PlaceToBeHelper helper = new PlaceToBeHelper(getActivity()); 
 		SQLiteDatabase db = helper.getReadableDatabase();
 		
@@ -48,10 +49,10 @@ public class FollowedFragment extends Fragment
 		Cursor c = db.query(Users.TABLE_NAME, projection, null, null, null, null, null, null);
 		String[] from = new String[] { Users.COLUMN_NAME_NAME, Users.COLUMN_NAME_EMAIL };
 		// Fields from the row layout
-		int[] to = new int[] { R.id.listViewFollowed };
+		int[] to = new int[] {  android.R.id.text1,  android.R.id.text2 };
 		
 		
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(), R.id.listViewFollowed, c, from, to);
+		SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_2, c, from, to);
 		listViewFollowed.setAdapter(adapter);
 		
 	    btAdd.setOnClickListener(new View.OnClickListener() {
