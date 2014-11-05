@@ -38,8 +38,7 @@ public class FollowersFragment extends Fragment
 
 		if (prefListFollowers.isEmpty())
 		{
-			Toast.makeText(getActivity(), "Followers List empty !",
-					Toast.LENGTH_LONG).show();
+			//Toast.makeText(getActivity(), "Followers List empty !",Toast.LENGTH_LONG).show();
 			prefListFollowers = "Lelouch vi Britannia-lelouch@britannia.com;Emeric-ebonal@hotmail.fr;Anthony-anthonyfontaine34@gmail.com;Robert-robert.bakic@gmail.com";
 		}
 		FollowData.fillListWithString(prefListFollowers, list);

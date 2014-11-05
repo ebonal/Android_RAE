@@ -6,8 +6,6 @@ import rx.android.observables.ViewObservable;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import android.annotation.SuppressLint;
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -20,8 +18,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import com.rae.placetobe.R;
-import com.rae.placetobe.sqlite.PlaceToBeContract.Users;
-import com.rae.placetobe.sqlite.PlaceToBeHelper;
 import com.rae.placetobe.util.SharedPreferencesUtil;
 
 public class AccountFragment extends Fragment
@@ -53,34 +49,15 @@ public class AccountFragment extends Fragment
 		editTextName.setText(name);
 		editTextEmail.setText(email);
 
-		/*
-		 * // We save name and email values in preferences
-		 * btSave.setOnClickListener(new View.OnClickListener() { public void
-		 * onClick(View v) { String name = editTextName.getText().toString();
-		 * String mail = editTextEmail.getText().toString();
-		 * SharedPreferencesUtil.accountSave(getActivity(), name, mail);
-		 * Toast.makeText(getActivity(), "Validé !", Toast.LENGTH_SHORT).show();
-		 * } });
-		 */
-
+		// We save name and email values in preferences
 		btSave.setOnClickListener(new View.OnClickListener()
 		{
 			public void onClick(View v)
 			{
-				PlaceToBeHelper helper = new PlaceToBeHelper(getActivity());
-				SQLiteDatabase db = helper.getWritableDatabase();
-
-				ContentValues values = new ContentValues();
-				values.put(Users.COLUMN_NAME_NAME, editTextName.getText()
-						.toString());
-				values.put(Users.COLUMN_NAME_EMAIL, editTextEmail.getText()
-						.toString());
-				values.put(Users.COLUMN_NAME_USER_ID, 0);
-
-				long newRowId = db.insert(Users.TABLE_NAME, null, values);
-
-				Toast.makeText(getActivity(), "SQLite Validé !", Toast.LENGTH_SHORT)
-						.show();
+				String name = editTextName.getText().toString();
+				String mail = editTextEmail.getText().toString();
+				SharedPreferencesUtil.accountSave(getActivity(), name, mail);
+				Toast.makeText(getActivity(), "Validé !", Toast.LENGTH_SHORT).show();
 			}
 		});
 
