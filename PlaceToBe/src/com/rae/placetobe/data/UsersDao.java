@@ -23,7 +23,6 @@ public class UsersDao implements Users
 	    COLUMN_EMAIL,  // 2
 	    COLUMN_USER_ID // 3
 	};
-
 	
 	public static Cursor findAll(Context context, String[] selectionArgs)  {
 		Log.d(TAG, "findAll()") ;

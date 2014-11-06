@@ -14,12 +14,16 @@ public class ImagesDao implements Images
 	public static final int IDX_PATH    = 1;
 	public static final int IDX_DATE    = 2;
 	public static final int IDX_COMMENT = 3;
+	public static final int IDX_LNG     = 4;
+	public static final int IDX_LAT     = 5;
 
 	public static final String[] PROJECTION =  {
-	    COLUMN_ID,     // 0
-	    COLUMN_PATH,   // 1
-	    COLUMN_DATE,   // 2
-	    COLUMN_COMMENT // 3
+	    COLUMN_ID,      // 0
+	    COLUMN_PATH,    // 1
+	    COLUMN_DATE,    // 2
+	    COLUMN_COMMENT, // 3
+	    COLUMN_LNG,     // 4
+	    COLUMN_LAT      // 5
 	};
 
 	

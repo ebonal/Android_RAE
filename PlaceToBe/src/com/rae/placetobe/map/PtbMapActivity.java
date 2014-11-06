@@ -16,8 +16,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rae.placetobe.AbstractDrawerActivity;
 import com.rae.placetobe.R;
-import com.rae.placetobe.data.UsersDao;
-import com.rae.placetobe.debug.UsersDebugCallbacks;
+import com.rae.placetobe.data.CursorHelper;
+import com.rae.placetobe.data.ImagesDao;
+import com.rae.placetobe.debug.ImagesDebugCallbacks;
 import com.rae.placetobe.framework.CursorHolder;
 import com.rae.placetobe.framework.LoaderHolder;
 
@@ -40,12 +41,12 @@ public class PtbMapActivity extends AbstractDrawerActivity  implements CursorHol
         
         googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.fragMap)).getMap();
         
-    	callbacks = new UsersDebugCallbacks(this, this) ;		
+    	callbacks = new ImagesDebugCallbacks(this, this) ;		
 
 		// You typically initialize a Loader within the activity's onCreate() method, or within the fragment's onActivityCreated() method.
 		LoaderManager loaderManager = getLoaderManager() ;
 		// Prepare the loader.  Either re-connect with an existing one, or start a new one.
-		loaderManager.initLoader(AbstractDrawerActivity.LOADER_USERS, null /*args*/, callbacks); 
+		loaderManager.initLoader(AbstractDrawerActivity.LOADER_IMAGES, null /*args*/, callbacks); 
     }
     
 	@Override
@@ -91,24 +92,24 @@ public class PtbMapActivity extends AbstractDrawerActivity  implements CursorHol
 		cursor.moveToFirst(); // Car peut etre deja iteré par d'autre controller
 		while(!cursor.isAfterLast()) 
 		{
-			int id      = cursor.getInt(UsersDao.IDX__ID) ;
-			String name = cursor.getString(UsersDao.IDX_NAME) ;
-			// String mail   = cursor.getString(UsersDao.IDX_EMAIL) ;
-			// String userId = cursor.getString(UsersDao.IDX_USER_ID) ;
-			double lat = Math.random()*90 ; // TODO : Store in database
-			double lng = Math.random()*180 ; // TODO : Store in database
+			int id         = cursor.getInt   (ImagesDao.IDX__ID) ;
+			String comment = cursor.getString(ImagesDao.IDX_COMMENT) ;			
+			Double lat = CursorHelper.getNDouble(cursor, ImagesDao.IDX_LAT) ;
+			Double lng = CursorHelper.getNDouble(cursor, ImagesDao.IDX_LNG) ;
+			if(lat!=null) 
+			{
+				curLatLng = new LatLng(lat, lng);
+				if(lastPos==null) lastPos = curLatLng ;			
 			
-			curLatLng = new LatLng(lat, lng);
-			if(lastPos==null) lastPos = curLatLng ;
+				MarkerOptions mo = new MarkerOptions()
+		        	.position(curLatLng)
+		        	.title(comment) ;
 
-			MarkerOptions mo = new MarkerOptions()
-	        	.position(curLatLng)
-	        	.title(name) ;
+				if(id%2!=0) mo.icon(bmHueGreen);
+				else	 	mo.icon(bmHueOrange);
 
-			if(id%2!=0) mo.icon(bmHueGreen);
-			else	 	mo.icon(bmHueOrange);
-
-			googleMap.addMarker(mo) ;
+				googleMap.addMarker(mo) ;				
+			}
 			
 			cursor.moveToNext();
 		}
