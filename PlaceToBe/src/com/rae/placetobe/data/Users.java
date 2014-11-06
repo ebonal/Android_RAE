@@ -20,4 +20,11 @@ public interface Users extends PtbColumns
 		    COLUMN_NAME    + TYPE_TEXT + COMMA_SEP +
 		    COLUMN_FOLLOWED    + TYPE_INTEGER + COMMA_SEP +
 		    COLUMN_FOLLOWERS    + TYPE_INTEGER  +  " )";
+	
+	// Users arguments name
+	public static final String USERS_ARG_FOLLOW = "users_follow";
+	
+	// Users argument value name
+	public static final String USERS_ARG_VALUE_FOLLOWED = "followed";
+	public static final String USERS_ARG_VALUE_FOLLOWERS = "followers";
 }

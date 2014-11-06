@@ -22,29 +22,30 @@ public class PlaceToBeContentProvider extends ContentProvider
 
 	private static final String USERS_PATH     = "users";
 	private static final String FOLLOWED_PATH     = "followed";
-	private static final String FOLLOWERS_PATH     = "followers";
 	private static final String IMAGES_PATH    = "images";	
 	
 	public static final Uri USERS_URI   = Uri.parse("content://" + AUTHORITY + "/" + USERS_PATH);
+	public static final Uri FOLLOWED_URI   = Uri.parse("content://" + AUTHORITY + "/" + FOLLOWED_PATH);
 	public static final Uri IMAGES_URI  = Uri.parse("content://" + AUTHORITY + "/" + IMAGES_PATH);
 
 	  // Used for the UriMacher
-	private static final int USERS     = 20;
-	private static final int USERS_ID  = 21;
-	private static final int IMAGES    = 30;
-	private static final int IMAGES_ID = 31;
+	private static final int USERS    		 = 20;
+	private static final int USERS_ID 		 = 21;
+	private static final int IMAGES   		 = 30;
+	private static final int IMAGES_ID 		 = 31;
+	private static final int USERS_FOLLOW 	 = 40;
 	  
 	private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 	static {
-	    sURIMatcher.addURI(AUTHORITY, USERS_PATH      , USERS);
-	    sURIMatcher.addURI(AUTHORITY, USERS_PATH+"/#" , USERS_ID);
-	    sURIMatcher.addURI(AUTHORITY, IMAGES_PATH     , IMAGES);
-	    sURIMatcher.addURI(AUTHORITY, IMAGES_PATH+"/#", IMAGES_ID);
+	    sURIMatcher.addURI(AUTHORITY, USERS_PATH      			, USERS);
+	    sURIMatcher.addURI(AUTHORITY, USERS_PATH+"/#" 			, USERS_ID);
+	    sURIMatcher.addURI(AUTHORITY, FOLLOWED_PATH 	, USERS_FOLLOW);
+	    sURIMatcher.addURI(AUTHORITY, IMAGES_PATH     			, IMAGES);
+	    sURIMatcher.addURI(AUTHORITY, IMAGES_PATH+"/#"			, IMAGES_ID);
 	  }
 	
 	@Override	
 	public synchronized String getType(Uri uri) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -82,6 +83,10 @@ public class PlaceToBeContentProvider extends ContentProvider
 				cursor = UsersDao.findAll(getContext(), selectionArgs) ;
 				break ;
 			
+			case USERS_FOLLOW :
+				cursor = UsersDao.findFollow(getContext(), selectionArgs) ;
+				break ;
+				
 			case IMAGES :
 				cursor = ImagesDao.findAll(getContext(), selectionArgs) ;
 				break ;

@@ -10,8 +10,8 @@ public class PlaceToBeDBHelper extends SQLiteOpenHelper implements PtbColumns
 	private static final String TAG = PlaceToBeDBHelper.class.getSimpleName() ;
 	
     // Bump this for each change in the schema
-    public static final int    DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME    = "PlaceTobe2";
+    public static final int    DATABASE_VERSION = 2;
+    public static final String DATABASE_NAME    = "PlaceToBe";
 
 	private static PlaceToBeDBHelper instance;
 
@@ -38,12 +38,21 @@ public class PlaceToBeDBHelper extends SQLiteOpenHelper implements PtbColumns
         String debut = new StringBuilder("INSERT INTO users(")
         .append(Users.COLUMN_USER_ID).append(PtbColumns.COMMA_SEP)
         .append(Users.COLUMN_NAME).append(PtbColumns.COMMA_SEP)
-        .append(Users.COLUMN_EMAIL).append(") values (").toString() ;
+        .append(Users.COLUMN_EMAIL).append(PtbColumns.COMMA_SEP)
+        .append(Users.COLUMN_FOLLOWED).append(PtbColumns.COMMA_SEP)
+        .append(Users.COLUMN_FOLLOWERS).append(") values (").toString() ;
         
         
-        db.execSQL(debut+ "101, 'Robert Bakic'    , 'robert.bakic@gmail.com')");
-        db.execSQL(debut+ "102, 'Anthony Fontaine', 'anthony.fontaine@gmail.com')");
-        db.execSQL(debut+ "103, 'Emeric Bonal'    , 'emeric.bonal@gmail.com')");
+        db.execSQL(debut+ "101, 'Robert Bakic'    , 'robert.bakic@gmail.com', 1, 0)");
+        db.execSQL(debut+ "102, 'Anthony Fontaine', 'anthony.fontaine@gmail.com', 1, 0)");
+        db.execSQL(debut+ "103, 'Emeric Bonal'    , 'emeric.bonal@gmail.com', 0, 0)");
+        db.execSQL(debut+ "104, 'Edward Elric'    , 'fullmetal@gmail.com', 0, 1)");
+        db.execSQL(debut+ "105, 'Light Yagami'    , 'kira@gmail.com', 0, 0)");
+        db.execSQL(debut+ "106, 'Lelouch Vi Britannia'    , 'britannia@gmail.com', 1, 1)");
+        db.execSQL(debut+ "107, 'Shirō Emiya'    , 'fate@gmail.com', 0, 0)");
+        db.execSQL(debut+ "108, 'Kirigaya Kazuto'    , 'kirito@gmail.com', 0, 0)");
+        db.execSQL(debut+ "109, 'Haruyuki Arita'    , 'silvercrow@gmail.com', 0, 1)");
+        db.execSQL(debut+ "110, 'Kira Yamato'    , 'kira.yamato@gmail.com', 1, 0)");
 
 	}
 
