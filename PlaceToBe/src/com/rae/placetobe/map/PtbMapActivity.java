@@ -73,7 +73,10 @@ public class PtbMapActivity extends AbstractDrawerActivity  implements CursorHol
 		getLoaderManager().restartLoader(loaderId, args, callbacks) ;
 	}
 
-	static final LatLng DEFAULT_LOCATION = new LatLng(48.852986, 2.349975); // ND de Paris
+	static final LatLng PARIS            = new LatLng(48.852986, 2.349975); // ND de Paris
+	static final LatLng MONTPELLIER      = new LatLng(43.600   , 3.883);
+	static final LatLng DEFAULT_LOCATION = MONTPELLIER ;
+    
 
 	@Override
 	public void onNewCursor(Cursor cursor)
@@ -115,7 +118,7 @@ public class PtbMapActivity extends AbstractDrawerActivity  implements CursorHol
 		}
 		
 		// Move the camera instantly to lastPos with a zoom of 15.
-		if(lastPos==null)  lastPos = DEFAULT_LOCATION ;
-		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastPos, 15));
+		/*if(lastPos==null)*/  lastPos = DEFAULT_LOCATION ;
+		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastPos, 5));
 	}
 }
