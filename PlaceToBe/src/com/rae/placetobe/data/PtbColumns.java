@@ -6,6 +6,7 @@ public interface PtbColumns extends BaseColumns
 {
     String TYPE_TEXT    = " TEXT";
 	String TYPE_INTEGER = " INTEGER";
+	String TYPE_NUMERIC = " NUMERIC";
 	
 	String COMMA_SEP = ",";
 	

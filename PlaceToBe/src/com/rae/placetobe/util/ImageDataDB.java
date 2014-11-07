@@ -2,6 +2,7 @@ package com.rae.placetobe.util;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.location.Location;
 import android.net.Uri;
 import android.util.Log;
 
@@ -17,10 +18,6 @@ public class ImageDataDB
 {
 	private static final String TAG = ImageDataDB.class.getSimpleName();
 	
-	static final private String KEY_PATH    = "PATH" ;
-	static final private String KEY_COMMENT = "COMMENT" ;
-	static final private String KEY_DATE    = "DATE" ;
-
 	final private int    id  ;
 	final private String filePath  ;
 	final private String comment   ;
@@ -51,7 +48,7 @@ public class ImageDataDB
 	/**
 	 * Add a photo to the list
 	 */
-	static public ImageDataDB addPhoto(Context context, String filePath, String comment)
+	static public ImageDataDB addPhoto(Context context, String filePath, String comment, Location location)
 	{
 		long timestamp = System.currentTimeMillis() ;
 
@@ -60,9 +57,15 @@ public class ImageDataDB
   	    values.put(Images.COLUMN_COMMENT, comment);
   	    values.put(Images.COLUMN_DATE   , String.valueOf(timestamp));
 
+  	    if(location!=null) {
+  	    	values.put(Images.COLUMN_LAT, location.getLatitude());
+  	    	values.put(Images.COLUMN_LNG, location.getLongitude());  	 	  	    	
+  	    }
+  	    
+  	    
   	    Uri uri = DBProxy.insert(context, PlaceToBeContentProvider.IMAGES_URI, values) ;
 
-  	    Log.d(TAG, "URI : "+uri) ;
+  	    Log.d(TAG, "URI : " + uri) ;
   	    
   	    // TODO : get primary key
   	    

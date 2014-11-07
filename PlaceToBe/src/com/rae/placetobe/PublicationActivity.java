@@ -4,22 +4,25 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
-import android.app.Activity;
+
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import com.rae.placetobe.location.AbstractGeolocationActivity;
 import com.rae.placetobe.util.ImageDataDB;
 import com.rae.placetobe.util.ImageUtil;
 import com.rae.placetobe.util.SharedPreferencesUtil;
 
-public class PublicationActivity extends Activity
+public class PublicationActivity extends AbstractGeolocationActivity
 {
 	private static final String TAG = PublicationActivity.class.getSimpleName();
 	
@@ -28,12 +31,16 @@ public class PublicationActivity extends Activity
 
 	private Bitmap originalImageBitmap ;
 	private Bitmap whiteAndBlackImageBitmap = null ; // Lazy initialization
+
+	private Location currentLocation ;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
        	Log.d(TAG, "onCreate()") ;
 		super.onCreate(savedInstanceState);
+		
+		currentLocation = null ;
 		
 		setContentView(R.layout.activity_publication);		
 		ButterKnife.inject(this);		
@@ -124,7 +131,7 @@ public class PublicationActivity extends Activity
 
 		if(id==R.id.action_commit)  {
 			String mCurrentPhotoPath = SharedPreferencesUtil.restoreFilePath(this) ;
-			ImageDataDB.addPhoto(this, mCurrentPhotoPath, mCommentText.getText().toString()) ;
+			ImageDataDB.addPhoto(this, mCurrentPhotoPath, mCommentText.getText().toString(), currentLocation) ;
 			// Uncomment this line to add the picture to the phone gallery
 	    	// GalleryUtil.addPic(this, mCurrentPhotoPath);			
 			finish();
@@ -137,5 +144,30 @@ public class PublicationActivity extends Activity
 		}
 				
 		return super.onOptionsItemSelected(item);
+	}
+
+	// TODO
+	@Override
+	final protected void setGeoStatus(int status) {
+  		Log.d(TAG, "setGeoStatus : "+getString(status)) ;
+	}
+	
+	@Override
+	final protected void updateLocation(Location location) {
+		if(location==null) {
+	  		Log.d(TAG, "updateLocation is NULL") ;
+			return ;
+		}
+		currentLocation = location ;
+	}
+	
+	
+	@Override
+	public void setAddress(String address) {
+		// Turn off the progress bar
+		// mActivityIndicator.setVisibility(View.GONE);
+		// Set the address in the UI
+		// loaddr.setText(address);
+		
 	}
 }

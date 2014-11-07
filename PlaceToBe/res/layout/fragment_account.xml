@@ -4,7 +4,9 @@
     android:layout_height="match_parent"
     android:background="#6699FF"
     android:gravity="center_horizontal"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:descendantFocusability="beforeDescendants"
+  	android:focusableInTouchMode="true">
 
     <TextView
         android:id="@+id/textView1"
