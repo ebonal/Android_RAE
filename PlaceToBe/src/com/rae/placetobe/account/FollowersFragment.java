@@ -48,7 +48,7 @@ public class FollowersFragment extends Fragment implements CursorHolder, LoaderH
 		// set the filter for receive only followed users => true
 		args.putBoolean(Users.USERS_ARG_FOLLOW, Boolean.FALSE);
 		// Prepare the loader.  Either re-connect with an existing one, or start a new one.
-		loaderManager.initLoader(AbstractDrawerActivity.LOADER_USERS, args, callbacks);
+		loaderManager.initLoader(AbstractDrawerActivity.LOADER_FOLLOWERS, args, callbacks);
 
 		return rootView;
 	}

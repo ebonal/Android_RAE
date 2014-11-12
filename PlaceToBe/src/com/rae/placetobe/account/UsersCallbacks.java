@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.rae.placetobe.AbstractDrawerActivity;
 import com.rae.placetobe.data.PlaceToBeContentProvider;
 import com.rae.placetobe.framework.CursorHolder;
 import com.rae.placetobe.framework.PtrLoaderCallbacks;
@@ -22,7 +23,7 @@ public class UsersCallbacks extends PtrLoaderCallbacks
 	@Override
 	final public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 	    Uri uri;
-	    if (args.isEmpty())
+	    if (id == AbstractDrawerActivity.LOADER_USERS)
 	    	uri = PlaceToBeContentProvider.USERS_URI;
 	    else 
 	    	uri = PlaceToBeContentProvider.FOLLOWED_URI;

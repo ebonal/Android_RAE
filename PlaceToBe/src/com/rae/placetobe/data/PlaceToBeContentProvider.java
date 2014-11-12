@@ -34,12 +34,14 @@ public class PlaceToBeContentProvider extends ContentProvider
 	private static final int IMAGES   		 = 30;
 	private static final int IMAGES_ID 		 = 31;
 	private static final int USERS_FOLLOW 	 = 40;
+	private static final int USERS_FOLLOW_ID = 41;
 	  
 	private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 	static {
 	    sURIMatcher.addURI(AUTHORITY, USERS_PATH      			, USERS);
 	    sURIMatcher.addURI(AUTHORITY, USERS_PATH+"/#" 			, USERS_ID);
-	    sURIMatcher.addURI(AUTHORITY, FOLLOWED_PATH 	, USERS_FOLLOW);
+	    sURIMatcher.addURI(AUTHORITY, FOLLOWED_PATH 			, USERS_FOLLOW);
+	    sURIMatcher.addURI(AUTHORITY, FOLLOWED_PATH+"/#"		, USERS_FOLLOW_ID);
 	    sURIMatcher.addURI(AUTHORITY, IMAGES_PATH     			, IMAGES);
 	    sURIMatcher.addURI(AUTHORITY, IMAGES_PATH+"/#"			, IMAGES_ID);
 	  }

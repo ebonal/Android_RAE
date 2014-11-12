@@ -27,8 +27,15 @@ public class UsersDao implements Users
 	
 	public static Cursor findAll(Context context, String[] selectionArgs)  {
 		Log.d(TAG, "findAll()") ;
-		SQLiteDatabase db = PlaceToBeDBHelper.getInstance(context).getReadableDatabase() ;
-		return db.query(TABLE_NAME, PROJECTION, null, null, null, null, COLUMN_NAME);
+		SQLiteDatabase db = PlaceToBeDBHelper.getInstance(context).getReadableDatabase();
+		String selection;
+		if (selectionArgs != null && !selectionArgs[0].isEmpty())
+		{
+			selection = COLUMN_NAME + " LIKE '%" + selectionArgs[0] + "%'";
+		} else {
+			selection = null;
+		}
+		return db.query(TABLE_NAME, PROJECTION, selection, null, null, null, COLUMN_NAME);
 	}
 	
 	public static Cursor findFollow(Context context, String[] selectionArgs)  {

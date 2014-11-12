@@ -28,8 +28,13 @@ public class UsersCursorLoader extends CursorLoader implements Users
 				array[0] = Users.USERS_ARG_VALUE_FOLLOWERS; 
 			}
 		} else {
-			// Default
-			return null;
+			if (bundle.containsKey(Users.USERS_ARG_SEARCH))
+			{
+				array[0] = bundle.getString(Users.USERS_ARG_SEARCH);
+			} else {
+				// Default
+				return null;
+			}
 		}
 
 		return array;

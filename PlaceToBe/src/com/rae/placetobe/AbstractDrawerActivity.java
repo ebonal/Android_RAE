@@ -33,8 +33,10 @@ import com.rae.placetobe.util.CameraUtil;
 public abstract class AbstractDrawerActivity extends FragmentActivity
 {
 	// ID de loader unique entre chaque activity/fragment
-	final static public int LOADER_USERS  = 0 ;
-	final static public int LOADER_IMAGES = 1 ;	
+	final static public int LOADER_USERS 	 = 0 ;
+	final static public int LOADER_IMAGES	 = 1 ;
+	final static public int LOADER_FOLLOWED  = 2 ;
+	final static public int LOADER_FOLLOWERS = 3 ;
 	
 	private final static String TAG = AbstractDrawerActivity.class.getSimpleName();
 	

@@ -67,8 +67,6 @@ public class ImageDataDB
 
   	    Log.d(TAG, "URI : " + uri) ;
   	    
-  	    // TODO : get primary key
-  	    
   	    return new ImageDataDB(1, filePath, comment, timestamp) ;
 	}
 }

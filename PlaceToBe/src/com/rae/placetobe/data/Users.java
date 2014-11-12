@@ -23,6 +23,7 @@ public interface Users extends PtbColumns
 	
 	// Users arguments name
 	public static final String USERS_ARG_FOLLOW = "users_follow";
+	public static final String USERS_ARG_SEARCH = "users_search";
 	
 	// Users argument value name
 	public static final String USERS_ARG_VALUE_FOLLOWED = "followed";
