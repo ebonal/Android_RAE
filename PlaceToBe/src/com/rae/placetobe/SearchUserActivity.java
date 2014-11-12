@@ -41,22 +41,26 @@ public class SearchUserActivity extends Activity {
 	@InjectView(R.id.textViewEmail) TextView textViewEmail;
 	@InjectView(R.id.textViewName) TextView textViewName;
 	
-	private List<GitHubMember> gitHubMembers;
-	private List<String> simpleGitHubMembers;
-	
+	// Login List of HB user
 	private static final String[] GITHUB_MEMBERS = new String[]{
 		"AnthonyFontaine", "RobertBakic", "ebonal", "motof", "MiloIgor", "rmarcou", "moea-chan", "uanatol", "tpuch24", "Darthevel", "Argeel", "MichaelAdjedj"
 	};
-
+	// List for stock gitHub Members
+	private List<GitHubMember> gitHubMembers;
+	private List<String> simpleGitHubMembers;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search_user);
 		ButterKnife.inject(this);
 		
+		// Init my list of gitHub Members
 		gitHubMembers = new ArrayList<GitHubMember>();
 		simpleGitHubMembers = new ArrayList<String>();
 		
+		// Observable on HB user list
+		// Get the github account link to my user
 		Observable<GitHubMember> o1 = Observable.from(GITHUB_MEMBERS)
 			.flatMap(new Func1<String, Observable<GitHubMember>>(){
 	    		@Override
@@ -65,6 +69,7 @@ public class SearchUserActivity extends Activity {
 	    		}
 	    	});
 		
+		// Observable on Retrofit github members list
 		Observable<GitHubMember> o2 = ApiManager.getGitHubMembersList()
 			.flatMap(new Func1<List<GitHubMember>, Observable<GitHubMember>>() {
 		        @Override
@@ -73,6 +78,9 @@ public class SearchUserActivity extends Activity {
 		        }
 		    });
 		
+		// Observable the two observable
+		// Put the github member into a list of github member
+		// Set the adapter and click listener UI
 		Observable.merge(o1,o2)
 			.subscribeOn(Schedulers.io())
 			.observeOn(AndroidSchedulers.mainThread())
@@ -101,9 +109,11 @@ public class SearchUserActivity extends Activity {
 	{
 	    @Override
 	    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-	    {	    	
+	    {	
+	    	// Get the item selected
 	    	String selected = (String) parent.getItemAtPosition(position);
 	    	
+	    	// Get the githubmemeber user info
 	    	ApiManager.getGitHubMember(selected)
 		    	.subscribeOn(Schedulers.io())
 		    	.observeOn(AndroidSchedulers.mainThread())
@@ -114,6 +124,7 @@ public class SearchUserActivity extends Activity {
 						textViewEmail.setText(gitHubMember.email);
 						textViewName.setText(gitHubMember.name);
 						
+						// Async observable to display avatar
 						Observable.just(gitHubMember.avatar_url)
 					    	.map(new Func1<String, Bitmap>(){
 					    		@Override
