@@ -45,9 +45,9 @@ public class GitHubMember {
 		ContentValues values = new ContentValues();
   	    values.put(Users.COLUMN_USER_ID, id);
   	    values.put(Users.COLUMN_NAME, login);
-  	    values.put(Users.COLUMN_EMAIL, login);
-  	    values.put(Users.COLUMN_FOLLOWED, login);
-  	    values.put(Users.COLUMN_FOLLOWERS, login);
+  	    values.put(Users.COLUMN_EMAIL, email);
+  	    values.put(Users.COLUMN_FOLLOWED, following);
+  	    values.put(Users.COLUMN_FOLLOWERS, followers);
 
   	    Uri uri = DBProxy.insert(context, PlaceToBeContentProvider.USERS_URI, values) ;
 
