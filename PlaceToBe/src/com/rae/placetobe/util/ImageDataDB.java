@@ -6,49 +6,24 @@ import android.location.Location;
 import android.net.Uri;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.rae.placetobe.data.DBProxy;
 import com.rae.placetobe.data.Images;
 import com.rae.placetobe.data.PlaceToBeContentProvider;
+import com.rae.placetobe.model.ImageData;
 
 /**
  * Manage a list of 10 pictures and their associated data.
  * 
  */
-public class ImageDataDB
+public class ImageDataDB 
 {
 	private static final String TAG = ImageDataDB.class.getSimpleName();
-	
-	final private int    id  ;
-	final private String filePath  ;
-	final private String comment   ;
-	final private long   timestamp ;
 
-	public int getId() {
-		return id;
-	}
-	public String getFilePath() {
-		return filePath;
-	}
-	public String getComment() {
-		return comment;
-	}
-	public long getTimestamp() {
-		return timestamp;
-	}
-	
-	// private constructor ensure the use of the #addPhoto factory method.
-	private ImageDataDB(int id, String filePath, String comment, long timestamp)
-	{
-		this.id        = id ;
-		this.filePath  = filePath ;
-		this.comment   = comment ; 
-		this.timestamp = timestamp ;
-	}
-	
 	/**
 	 * Add a photo to the list
 	 */
-	static public ImageDataDB addPhoto(Context context, String filePath, String comment, Location location)
+	static public ImageData addPhoto(Context context, String filePath, String comment, Location location)
 	{
 		long timestamp = System.currentTimeMillis() ;
 
@@ -69,6 +44,8 @@ public class ImageDataDB
   	    
   	    // TODO : get primary key
   	    
-  	    return new ImageDataDB(1, filePath, comment, timestamp) ;
+  	    LatLng latlng = null ;
+  	    if(location!=null) latlng = new LatLng(location.getLatitude(), location.getLongitude()) ;
+  	    return new ImageData(1, filePath, comment, timestamp, latlng) ;
 	}
 }
