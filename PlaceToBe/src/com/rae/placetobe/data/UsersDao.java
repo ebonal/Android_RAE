@@ -19,10 +19,12 @@ public class UsersDao implements Users
 	
 		
 	public static final String[] PROJECTION =  {
-	    COLUMN_ID,     // 0
-		COLUMN_NAME,   // 1
-	    COLUMN_EMAIL,  // 2
-	    COLUMN_USER_ID // 3
+	    COLUMN_ID,    		 // 0
+		COLUMN_NAME,  		 // 1
+	    COLUMN_EMAIL,  		 // 2
+	    COLUMN_USER_ID,		 // 3
+	    COLUMN_FOLLOWED,	 // 4
+		COLUMN_FOLLOWERS	 // 5
 	};
 	
 	public static Cursor findAll(Context context, String[] selectionArgs)  {

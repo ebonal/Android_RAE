@@ -5,8 +5,11 @@ import rx.android.events.OnTextChangeEvent;
 import rx.android.observables.ViewObservable;
 import rx.functions.Action1;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +18,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -64,20 +66,32 @@ public class AddFollowedActivity extends Activity implements CursorHolder, Loade
 		// Observable on EditText search
 		Observable<OnTextChangeEvent> o = ViewObservable.text(editTextSearch, false);
 		o.subscribe(searchUsersInDB);
-		
 
-
+		// update of the column "followed" on a tap on a user
 		listViewResult.setOnItemClickListener(new OnItemClickListener() {
-	        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+	        public void onItemClick(AdapterView<?> parent, View view, int position, final long id) {
 	        	
-	        	//DBProxy.update(getApplicationContext(), PlaceToBeContentProvider.FOLLOWED_URI, id, values);
+	        	// ask user's confirmation with a alert
+	        	new AlertDialog.Builder(AddFollowedActivity.this)
+	            .setMessage("Are you sure you want to add this followed?")
+	            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+	                public void onClick(DialogInterface dialog, int which) { 
+	                    // update this user for add him to the followed list
+	                	ContentValues values = new ContentValues();
+	    	        	values.put(Users.COLUMN_FOLLOWED, 1);
+	    	        	DBProxy.update(getApplicationContext(), PlaceToBeContentProvider.USERS_URI, (int) id, values);
+	                }
+	             })
+	             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+			        public void onClick(DialogInterface dialog, int which) { 
+			            // do nothing
+			        }
+			     })
+	            .setIcon(android.R.drawable.ic_dialog_alert)
+	            .show();
 	        	
-	        	Toast.makeText(getBaseContext(),"pos "+position+" - id "+id,Toast.LENGTH_SHORT).show();
 	        }
 	    });
-
-
-		
 	}
 	
 	@Override
