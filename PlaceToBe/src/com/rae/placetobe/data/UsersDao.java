@@ -16,7 +16,8 @@ public class UsersDao implements Users
 	public static final int IDX_NAME    = 1;
 	public static final int IDX_EMAIL   = 2;
 	public static final int IDX_USER_ID = 3;
-	
+	public static final int IDX_FOLLOWED = 4;
+	public static final int IDX_FOLLOWERS = 5;
 		
 	public static final String[] PROJECTION =  {
 	    COLUMN_ID,    		 // 0
