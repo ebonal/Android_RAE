@@ -10,10 +10,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterManager;
 import com.rae.placetobe.AbstractDrawerActivity;
 import com.rae.placetobe.R;
 import com.rae.placetobe.data.CursorHelper;
@@ -21,6 +19,8 @@ import com.rae.placetobe.data.ImagesDao;
 import com.rae.placetobe.debug.ImagesDebugCallbacks;
 import com.rae.placetobe.framework.CursorHolder;
 import com.rae.placetobe.framework.LoaderHolder;
+import com.rae.placetobe.location.extra.ImageRenderer;
+import com.rae.placetobe.model.ImageData;
 
 public class PtbMapActivity extends AbstractDrawerActivity  implements CursorHolder, LoaderHolder
 {
@@ -29,18 +29,43 @@ public class PtbMapActivity extends AbstractDrawerActivity  implements CursorHol
 	private LoaderCallbacks<Cursor> callbacks ;
     private GoogleMap googleMap;
 
+    private ClusterManager<ImageData> mClusterManager;
+    
 	@Override
 	protected int getContentViewId() {
 		return R.layout.activity_ptb_map ;
 	}
+
+    private boolean ensureInitMap()
+    {	
+    	if(mClusterManager!=null) return true ; // OK
+    	
+		if(googleMap==null)
+			googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.fragMap)).getMap();
 		
+		if(googleMap==null) {
+			Log.d("TAG", "MAP not available") ;
+			return false ;
+		}
+		
+        mClusterManager = new ClusterManager<ImageData>(this, googleMap);		
+        mClusterManager.setRenderer(new ImageRenderer(this, googleMap, mClusterManager));
+        
+		UiSettings settings = googleMap.getUiSettings() ;
+		settings.setMyLocationButtonEnabled(true) ;	
+		googleMap.setMyLocationEnabled(true);
+        googleMap.setOnCameraChangeListener(mClusterManager);
+		
+		return true ;
+    }
+	
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        
-        googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.fragMap)).getMap();
-        
+
+        ensureInitMap() ;
+
     	callbacks = new ImagesDebugCallbacks(this, this) ;		
 
 		// You typically initialize a Loader within the activity's onCreate() method, or within the fragment's onActivityCreated() method.
@@ -48,23 +73,11 @@ public class PtbMapActivity extends AbstractDrawerActivity  implements CursorHol
 		// Prepare the loader.  Either re-connect with an existing one, or start a new one.
 		loaderManager.initLoader(AbstractDrawerActivity.LOADER_IMAGES, null /*args*/, callbacks); 
     }
-    
+        
 	@Override
-	protected void onResume()
-	{
+	protected void onResume() {
 		super.onResume();
-
-		if(googleMap==null)
-			googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.fragMap)).getMap();
-		
-		if(googleMap==null) {
-			Log.d("TAG", "MAP not available") ;
-			return ;
-		}
-		
-		UiSettings settings = googleMap.getUiSettings() ;
-		settings.setMyLocationButtonEnabled(true) ;	
-		googleMap.setMyLocationEnabled(true);
+		ensureInitMap() ;
 	}
 
 	@Override
@@ -86,32 +99,39 @@ public class PtbMapActivity extends AbstractDrawerActivity  implements CursorHol
 			return; 
 		}
 		
-		BitmapDescriptor bmHueGreen  = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN) ;
-		BitmapDescriptor bmHueOrange = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE) ;
-		
 		LatLng lastPos = null;
 		LatLng curLatLng ;
 		
 		cursor.moveToFirst(); // Car peut etre deja iteré par d'autre controller
 		while(!cursor.isAfterLast()) 
 		{
-			int id         = cursor.getInt   (ImagesDao.IDX__ID) ;
-			String comment = cursor.getString(ImagesDao.IDX_COMMENT) ;			
+			int id           = cursor.getInt   (ImagesDao.IDX__ID) ;
+			String path      = cursor.getString(ImagesDao.IDX_PATH) ;
+			String comment   = cursor.getString(ImagesDao.IDX_COMMENT) ;			
+			String timestamp = cursor.getString(ImagesDao.IDX_DATE) ;			
 			Double lat = CursorHelper.getNDouble(cursor, ImagesDao.IDX_LAT) ;
 			Double lng = CursorHelper.getNDouble(cursor, ImagesDao.IDX_LNG) ;
+			
 			if(lat!=null) 
 			{
 				curLatLng = new LatLng(lat, lng);
 				if(lastPos==null) lastPos = curLatLng ;			
 			
+				/*
+		//BitmapDescriptor bmHueGreen  = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN) ;
+		// BitmapDescriptor bmHueOrange = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE) ;
 				MarkerOptions mo = new MarkerOptions()
 		        	.position(curLatLng)
 		        	.title(comment) ;
 
 				if(id%2!=0) mo.icon(bmHueGreen);
 				else	 	mo.icon(bmHueOrange);
-
 				googleMap.addMarker(mo) ;				
+				*/
+				
+				//Extra
+				ImageData imageData = new ImageData(id, path, comment, Long.valueOf(timestamp), curLatLng) ;
+                mClusterManager.addItem(imageData);
 			}
 			
 			cursor.moveToNext();

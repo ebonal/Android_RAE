@@ -1,0 +1,32 @@
+Creation du groupe Google : RobAntEme
+	https://groups.google.com/d/forum/robanteme 
+	robanteme@googlegroups.com
+
+
+
+Voir la doc :
+	http://developer.android.com/tools/publishing/publishing_overview.html
+
+
+?????? Android Tools : Export signed application package.
+
+Clic-droit sur le projet : 
+     export -> android -> Export Android Application
+	Selection du keystore : /opt/RAE/rae.keystore
+             password : android
+
+	utiliser : androiddebugkey
+         password : android
+
+   Destination : /opt/RAE/PlaceToBeNotAlign.apk
+
+               
+ZIP Align :
+===========
+/opt/LUNA/android-sdk-linux/build-tools/21.1.1/zipalign -v 4 PlaceToBeNotAlign.apk PlaceToBe.apk
+
+
+Publication Google Play :
+https://play.google.com/apps/publish/
+
+

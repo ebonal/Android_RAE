@@ -1,6 +1,8 @@
-package com.rae.placetobe.util;
+package com.rae.placetobe.nouse;
 
 import java.util.Map;
+
+import com.rae.placetobe.util.SharedPreferencesUtil;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,7 +19,7 @@ import android.util.SparseArray;
  *   DATE.1    = The timestamp
  *
  */
-public class ImageData
+public class ImageDataSP
 {
 //	private static final String TAG = Images.class.getSimpleName();
 	
@@ -44,7 +46,7 @@ public class ImageData
 	}
 	
 	// private constructor ensure the use of the #addPhoto factory method.
-	private ImageData(int id, String filePath, String comment, long timestamp)
+	private ImageDataSP(int id, String filePath, String comment, long timestamp)
 	{
 		this.id        = id ;
 		this.filePath  = filePath ;
@@ -55,7 +57,7 @@ public class ImageData
 	/**
 	 * Add a photo to the list
 	 */
-	static public ImageData addPhoto(Context context, String filePath, String comment)
+	static public ImageDataSP addPhoto(Context context, String filePath, String comment)
 	{
 		SharedPreferences sharedPref = SharedPreferencesUtil.getImageDataPreferences(context) ;
 		int idx = getNextID(sharedPref) ;
@@ -68,29 +70,29 @@ public class ImageData
 		editor.putString(KEY_DATE   +"."+idx, String.valueOf(timestamp));		
 		editor.commit();
 
-		return new ImageData(Integer.valueOf(idx), filePath, comment, timestamp) ;
+		return new ImageDataSP(Integer.valueOf(idx), filePath, comment, timestamp) ;
 	}
 
 	/**
 	 * Returns the data for a specified image
 	 */
-	static public ImageData getImageData(SharedPreferences sharedPref, int searchId)
+	static public ImageDataSP getImageData(SharedPreferences sharedPref, int searchId)
 	{
 		String filePath = sharedPref.getString(KEY_PATH   +"."+searchId, "") ;
 		String comment  = sharedPref.getString(KEY_COMMENT+"."+searchId, "") ;
 		String sDate    = sharedPref.getString(KEY_DATE   +"."+searchId, "") ;
-		return new ImageData(searchId, filePath, comment, Long.parseLong(sDate)) ;
+		return new ImageDataSP(searchId, filePath, comment, Long.parseLong(sDate)) ;
 	}
 		
 	/**
 	 * Returns the list of image's data
 	 */
-	static public SparseArray<ImageData> getAllImageDatas(Context context)
+	static public SparseArray<ImageDataSP> getAllImageDatas(Context context)
 	{
 		SharedPreferences sharedPref = SharedPreferencesUtil.getImageDataPreferences(context) ;
-		SparseArray<ImageData> datas = new SparseArray<ImageData>(10) ;
+		SparseArray<ImageDataSP> datas = new SparseArray<ImageDataSP>(10) ;
 		
-		ImageData data ;		
+		ImageDataSP data ;		
 		String key ;		
 		int id ;
 		

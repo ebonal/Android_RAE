@@ -1,14 +1,9 @@
 package com.rae.placetobe.history;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import java.io.File;
+
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ResourceCursorAdapter;
@@ -17,6 +12,7 @@ import android.widget.TextView;
 import com.rae.placetobe.R;
 import com.rae.placetobe.data.ImagesDao;
 import com.rae.placetobe.util.TextHelper;
+import com.squareup.picasso.Picasso;
 
 public class HistoryAdapter extends ResourceCursorAdapter
 {
@@ -37,6 +33,9 @@ public class HistoryAdapter extends ResourceCursorAdapter
 		
        	picture.setImageResource(R.drawable.ic_thumb_img);
 
+		Picasso.with(context).load(new File(path)).resize(200, 200).centerCrop().into(picture);
+		
+		/*
        	Observable.just(path)
 		    	.map(new Func1<String, Bitmap>(){
 		    		@Override
@@ -55,6 +54,7 @@ public class HistoryAdapter extends ResourceCursorAdapter
 						picture.setImageBitmap(bitmap);
 					}
 				});
+			*/
 
 	}
 }
