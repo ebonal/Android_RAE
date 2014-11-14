@@ -42,8 +42,7 @@ public class ImageDataDB
 
   	    Log.d(TAG, "URI : " + uri) ;
   	    
-  	    // TODO : get primary key
-  	    
+  	    // TODO : get primary key  	    
   	    LatLng latlng = null ;
   	    if(location!=null) latlng = new LatLng(location.getLatitude(), location.getLongitude()) ;
   	    return new ImageData(1, filePath, comment, timestamp, latlng) ;

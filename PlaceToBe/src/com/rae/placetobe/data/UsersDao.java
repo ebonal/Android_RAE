@@ -17,19 +17,42 @@ public class UsersDao implements Users
 	public static final int IDX_EMAIL   = 2;
 	public static final int IDX_USER_ID = 3;
 	
+		
 	public static final String[] PROJECTION =  {
-	    COLUMN_ID,     // 0
-		COLUMN_NAME,   // 1
-	    COLUMN_EMAIL,  // 2
-	    COLUMN_USER_ID // 3
+	    COLUMN_ID,    		 // 0
+		COLUMN_NAME,  		 // 1
+	    COLUMN_EMAIL,  		 // 2
+	    COLUMN_USER_ID,		 // 3
+	    COLUMN_FOLLOWED,	 // 4
+		COLUMN_FOLLOWERS	 // 5
 	};
 	
 	public static Cursor findAll(Context context, String[] selectionArgs)  {
 		Log.d(TAG, "findAll()") ;
-		SQLiteDatabase db = PlaceToBeDBHelper.getInstance(context).getReadableDatabase() ;
-		return db.query(TABLE_NAME, PROJECTION, null, null, null, null, COLUMN_NAME);
+		SQLiteDatabase db = PlaceToBeDBHelper.getInstance(context).getReadableDatabase();
+		String selection;
+		if (selectionArgs != null && !selectionArgs[0].isEmpty())
+		{
+			selection = COLUMN_NAME + " LIKE '%" + selectionArgs[0] + "%'";
+		} else {
+			selection = null;
+		}
+		return db.query(TABLE_NAME, PROJECTION, selection, null, null, null, COLUMN_NAME);
 	}
-
+	
+	public static Cursor findFollow(Context context, String[] selectionArgs)  {
+		Log.d(TAG, "findFollow()");
+		String selection;
+		
+		if (selectionArgs[0].equals(Users.USERS_ARG_VALUE_FOLLOWED))
+			selection = COLUMN_FOLLOWED + " = 1";
+		else 
+			selection = COLUMN_FOLLOWERS + " = 1";
+		
+		SQLiteDatabase db = PlaceToBeDBHelper.getInstance(context).getReadableDatabase() ;
+		return db.query(TABLE_NAME, PROJECTION, selection, null, null, null, COLUMN_NAME);
+	}
+	
 	public static long insert(Context context, ContentValues values) {
 		SQLiteDatabase db = PlaceToBeDBHelper.getInstance(context).getWritableDatabase() ;		
 		values.remove(_ID) ; // Safer

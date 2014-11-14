@@ -32,7 +32,7 @@
         
         <provider
             android:name=".data.PlaceToBeContentProvider"
-            android:authorities="com.rea.placetobe.provider"
+            android:authorities="com.rae.placetobe.provider"
             android:exported="false" />
 
         <activity

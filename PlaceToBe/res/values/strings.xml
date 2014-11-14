@@ -26,7 +26,7 @@
     <string name="action_cancel">Cancel</string>
     <string name="action_valid">Valid</string>
     <string name="title_activity_history">HistoryActivity</string>
-    <string name="acount_bt_search">Search a new followed</string>
+    <string name="acount_edittext_search">Search a new followed</string>
     <string name="account_tab_account">Account</string>
     <string name="account_tab_followed">Followed</string>
     <string name="account_tab_followers">Followers</string>
