@@ -2,7 +2,6 @@ package com.rae.placetobe.model;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
-import com.rae.placetobe.R;
 
 public class ImageData implements ClusterItem 
 {
@@ -10,9 +9,7 @@ public class ImageData implements ClusterItem
 	final private String filePath  ;
 	final private String comment   ;
 	final private long   timestamp ;
-
-    public final int profilePhoto;
-    private final LatLng mPosition;
+    final private LatLng mPosition ;
 	
 	public int getId() {
 		return id;
@@ -25,9 +22,6 @@ public class ImageData implements ClusterItem
 	}
 	public long getTimestamp() {
 		return timestamp;
-	}
-	public int getPhotoPictureId() {
-		return profilePhoto ;
 	}
 
     @Override
@@ -42,8 +36,6 @@ public class ImageData implements ClusterItem
 		this.filePath  = filePath ;
 		this.comment   = comment ; 
 		this.timestamp = timestamp ;
-		
-        profilePhoto = R.drawable.turtle; // pictureResource;
         mPosition = position;
 	}
 
