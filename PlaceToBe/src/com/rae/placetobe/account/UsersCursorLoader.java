@@ -27,6 +27,8 @@ public class UsersCursorLoader extends CursorLoader implements Users
 			} else {
 				array[0] = Users.USERS_ARG_VALUE_FOLLOWERS; 
 			}
+		} else if (bundle.containsKey(Users.COLUMN_NAME)){
+			array[0] = bundle.getString(Users.COLUMN_NAME);
 		} else {
 			// Default
 			return null;

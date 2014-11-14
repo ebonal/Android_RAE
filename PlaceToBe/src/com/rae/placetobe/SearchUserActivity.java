@@ -145,9 +145,9 @@ public class SearchUserActivity extends Activity implements CursorHolder, Loader
 		getLoaderManager().restartLoader(loaderId, args, callbacks) ;
     }
 	
-	public void launchProfileActivity(String user) {
+	public void launchProfileActivity(String login) {
 		Intent intent = new Intent(this, ProfileActivity.class);
-    	intent.putExtra("user", user);
+    	intent.putExtra("login", login);
 	   	startActivity(intent);
    }
 	
