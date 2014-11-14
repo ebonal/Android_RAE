@@ -7,12 +7,17 @@ import java.util.List;
 import android.app.Activity;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -21,7 +26,6 @@ import com.rae.placetobe.debug.UsersDebugAdapter;
 import com.rae.placetobe.debug.UsersDebugCallbacks;
 import com.rae.placetobe.framework.CursorHolder;
 import com.rae.placetobe.framework.LoaderHolder;
-import com.rae.placetobe.util.GitHubMember;
 
 public class SearchUserActivity extends Activity implements CursorHolder, LoaderHolder
 {
@@ -36,12 +40,12 @@ public class SearchUserActivity extends Activity implements CursorHolder, Loader
 	private CursorAdapter cursorAdapter ;
 	private LoaderCallbacks<Cursor> callbacks ;
 	
-	// Login List of HB user
-	private static final String[] GITHUB_MEMBERS = new String[]{
-		"AnthonyFontaine", "RobertBakic", "ebonal", "motof", "MiloIgor", "rmarcou", "moea-chan", "uanatol", "tpuch24", "Darthevel", "Argeel", "MichaelAdjedj"
-	};
-	// List for stock gitHub Members
-	private List<GitHubMember> gitHubMembers;
+//	// Login List of HB user
+//	private static final String[] GITHUB_MEMBERS = new String[]{
+//		"AnthonyFontaine", "RobertBakic", "ebonal", "motof", "MiloIgor", "rmarcou", "moea-chan", "uanatol", "tpuch24", "Darthevel", "Argeel", "MichaelAdjedj"
+//	};
+//	// List for stock gitHub Members
+//	private List<GitHubMember> gitHubMembers;
 	private List<String> simpleGitHubMembers;
 	
 	@Override
@@ -52,6 +56,7 @@ public class SearchUserActivity extends Activity implements CursorHolder, Loader
 		
     	cursorAdapter = new UsersDebugAdapter(this) ;
         listView.setAdapter(cursorAdapter) ;
+        listView.setOnItemClickListener(new listViewClickListener());
         
     	callbacks = new UsersDebugCallbacks(this, this) ;		
 
@@ -120,20 +125,17 @@ public class SearchUserActivity extends Activity implements CursorHolder, Loader
 		
 		cursorAdapter.swapCursor(cursor) ;
 		
-		HashMap<String, String> element;
+		simpleGitHubMembers = new ArrayList<String>();
 		cursor.moveToFirst(); // Car peut etre deja iteré par d'autre controller
 		while(!cursor.isAfterLast()) 
 		{
-			element = new HashMap<String, String>();	
-			String userId = cursor.getString(UsersDao.IDX_USER_ID);
-			String userLogin = cursor.getString(UsersDao.IDX_NAME);
-			String userEmail = cursor.getString(UsersDao.IDX_EMAIL);
-            element.put("id", userId );	
-            element.put("login", userLogin);
-            element.put("email", userEmail);
-            gitHubMembersList.add(element);			
+			simpleGitHubMembers.add(cursor.getString(UsersDao.IDX_NAME));			
 			cursor.moveToNext();
 		}
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+				getBaseContext(),android.R.layout.simple_dropdown_item_1line, simpleGitHubMembers);
+        userSearchInput.setAdapter(adapter);
+        userSearchInput.setOnItemClickListener(new userClickListener()); 
 	}
 
 	@Override
@@ -143,14 +145,39 @@ public class SearchUserActivity extends Activity implements CursorHolder, Loader
 		getLoaderManager().restartLoader(loaderId, args, callbacks) ;
     }
 	
-//	private class autoCompleteClickListener implements ListView.OnItemClickListener
-//	{
-//	    @Override
-//	    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-//	    {	
-//	    	// Get the item selected
-//	    	String selected = (String) parent.getItemAtPosition(position);
-//	    	
+	public void launchProfileActivity(String user) {
+		Intent intent = new Intent(this, ProfileActivity.class);
+    	intent.putExtra("user", user);
+	   	startActivity(intent);
+   }
+	
+	private class listViewClickListener implements ListView.OnItemClickListener
+	{
+	    @Override
+	    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+	    {	
+	    	// Get the item selected
+	    	String user = simpleGitHubMembers.get(position);
+	    	
+//	    	Toast.makeText(getApplicationContext(), user, Toast.LENGTH_SHORT).show();
+	    	
+	    	launchProfileActivity(user);
+	    	
+	    }
+	}
+	
+	private class userClickListener implements ListView.OnItemClickListener
+	{
+	    @Override
+	    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+	    {	
+	    	// Get the item selected
+	    	String user = (String) parent.getItemAtPosition(position);
+	    	
+//	    	Toast.makeText(getApplicationContext(), user, Toast.LENGTH_SHORT).show();
+	    	
+	    	launchProfileActivity(user);
+	    	
 //	    	// Get the githubmemeber user info
 //	    	ApiManager.getGitHubMember(selected)
 //		    	.subscribeOn(Schedulers.io())
@@ -191,8 +218,8 @@ public class SearchUserActivity extends Activity implements CursorHolder, Loader
 //							});
 //					}
 //				});
-//	    	
-//	    }
-//	}
+	    	
+	    }
+	}
 	
 }
