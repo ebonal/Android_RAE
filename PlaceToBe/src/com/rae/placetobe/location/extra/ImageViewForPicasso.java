@@ -27,14 +27,14 @@ public class ImageViewForPicasso extends ImageView implements Target
 	public void onBitmapLoaded(Bitmap bitmap, LoadedFrom loadedFrom) {
 	    // Drawable d = new BitmapDrawable(getContext().getResources(), bitmap);
 	    this.setImageBitmap(bitmap);
-        //textView[picassoCounter].setCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
+	    this.refreshDrawableState();
+        // textView[picassoCounter].setCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
         // textView[picassoCounter].setCompoundDrawablePadding(5);    
 	}
 
 	@Override
 	public void onPrepareLoad(Drawable drawable) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
 
 }
