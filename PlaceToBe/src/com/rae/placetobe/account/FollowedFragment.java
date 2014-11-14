@@ -97,7 +97,7 @@ public class FollowedFragment extends Fragment implements CursorHolder, LoaderHo
 	        	return true;
 			}
 		});
-	    
+
 		return rootView;
 	}
 
@@ -121,5 +121,5 @@ public class FollowedFragment extends Fragment implements CursorHolder, LoaderHo
 	{
 		cursorAdapter.swapCursor(cursor) ;
 	}
-
+	
 }
