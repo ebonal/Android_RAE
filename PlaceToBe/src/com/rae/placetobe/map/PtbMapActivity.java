@@ -19,6 +19,7 @@ import com.rae.placetobe.data.ImagesDao;
 import com.rae.placetobe.debug.ImagesDebugCallbacks;
 import com.rae.placetobe.framework.CursorHolder;
 import com.rae.placetobe.framework.LoaderHolder;
+import com.rae.placetobe.location.LocationUtils;
 import com.rae.placetobe.location.extra.ImageRenderer;
 import com.rae.placetobe.model.ImageData;
 
@@ -63,7 +64,8 @@ public class PtbMapActivity extends AbstractDrawerActivity  implements CursorHol
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
+        LocationUtils.isServicesConnected(this);
+        
         ensureInitMap() ;
 
     	callbacks = new ImagesDebugCallbacks(this, this) ;		
