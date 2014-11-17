@@ -32,7 +32,6 @@ public class HistoryAdapter extends ResourceCursorAdapter
 		String path = cursor.getString(ImagesDao.IDX_PATH) ;
 		
        	picture.setImageResource(R.drawable.ic_thumb_img);
-
 		Picasso.with(context).load(new File(path)).resize(200, 200).centerCrop().into(picture);
 		
 		/*

@@ -57,6 +57,10 @@
             android:name=".history.HistoryActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name" />
+        <activity
+            android:name=".history.ClusterHistoryActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name" />
         <activity android:name=".account.AccountFragment" />
         <activity
             android:name=".account.TabsActivity"

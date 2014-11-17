@@ -6,13 +6,11 @@
     <string name="action_photo">Photo</string>
 
     <string-array name="main_nav_array">
-        <item>Capturer un media</item>
-        <item>Medias autour de moi</item>
-        <item>Medias de ceux que je suis</item>
-        <item>Historique de media</item>
+        <item>Prendre une photo</item>
+        <item>Carte</item>
+        <!-- item>Medias de ceux que je suis</item -->
+        <item>Toutes les photos</item>
         <item>Mon compte</item>
-        <item>DEBUG User\'s list</item>
-        <item>DEBUG Image\'s list</item>
     </string-array>
 
     <string name="discover_share">Discover | Share | &#8230;</string>

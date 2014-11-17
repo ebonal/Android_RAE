@@ -1,5 +1,7 @@
 package com.rae.placetobe.util;
 
+import java.util.Calendar;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.location.Location;
@@ -25,12 +27,16 @@ public class ImageDataDB
 	 */
 	static public ImageData addPhoto(Context context, String filePath, String comment, Location location)
 	{
-		long timestamp = System.currentTimeMillis() ;
+//		long timestamp = System.currentTimeMillis() ;
+		
+		Calendar cDate = Calendar.getInstance() ;	
+		String timestamp = TimeSQLHelper.formatSQLDate(cDate) ;
+		
 
 		ContentValues values = new ContentValues();
   	    values.put(Images.COLUMN_PATH, filePath);
   	    values.put(Images.COLUMN_COMMENT, comment);
-  	    values.put(Images.COLUMN_DATE   , String.valueOf(timestamp));
+  	    values.put(Images.COLUMN_DATE   , /*String.valueOf(*/timestamp/*)*/);
 
   	    if(location!=null) {
   	    	values.put(Images.COLUMN_LAT, location.getLatitude());

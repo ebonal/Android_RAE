@@ -17,8 +17,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.rae.placetobe.account.TabsActivity;
-import com.rae.placetobe.debug.ImagesDebugActivity;
-import com.rae.placetobe.debug.UsersDebugActivity;
 import com.rae.placetobe.history.HistoryActivity;
 import com.rae.placetobe.map.PtbMapActivity;
 import com.rae.placetobe.util.CameraUtil;
@@ -136,7 +134,11 @@ public abstract class AbstractDrawerActivity extends FragmentActivity
     public void launchNewActivity(Class<?> activityClass) {
 	   	Intent intent = new Intent(this, activityClass);
 	    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP) ;
-	   	startActivity(intent);
+	   	
+	    
+	    
+//	    intent.putExtra(name, value)
+	    startActivity(intent);
    }
 
 
@@ -177,21 +179,24 @@ public abstract class AbstractDrawerActivity extends FragmentActivity
 				case 1 : 
 					launchNewActivity(PtbMapActivity.class);
 					break;
+					/*
 				case 2 : 
 					launchNewActivity(SearchUserActivity.class);
-					break;
-				case 3 : 
+					break;*/
+				case 2 : 
 					 launchNewActivity(HistoryActivity.class);
 					break;
-				case 4 :
+				case 3 :
 					launchNewActivity(TabsActivity.class);
 					break;
+					/*
 				case 5 :
 					launchNewActivity(UsersDebugActivity.class);
 					break;
 				case 6 :
 					launchNewActivity(ImagesDebugActivity.class);
 					break;
+					*/
 				default: 
 					break;
 			}
