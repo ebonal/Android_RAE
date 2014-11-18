@@ -8,6 +8,25 @@ import com.google.maps.android.clustering.ClusterItem;
 
 public class ImageData implements ClusterItem, Parcelable 
 {
+	@Override
+	public boolean equals(Object o)
+	{
+		if(o==this) return true;
+		if(o==null) return false ;
+		if(!(o instanceof ImageData)) return false ;
+		
+		ImageData ido = (ImageData)o ; 
+		if(filePath==null || ido.filePath==null) return false ;
+		if(ido.filePath.equals(filePath)) return true ;		
+		return false ;
+	}
+
+	@Override
+	public int hashCode() {
+		if(filePath==null) return super.hashCode();
+		return filePath.hashCode() ;
+	}
+
 	private int    id  ;
 	private String filePath  ;
 	private String comment   ;

@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,7 +24,7 @@ import com.rae.placetobe.framework.CursorHolder;
 import com.rae.placetobe.framework.LoaderHolder;
 import com.rae.placetobe.history.ClusterHistoryActivity;
 import com.rae.placetobe.location.LocationUtils;
-import com.rae.placetobe.location.extra.ImageRenderer;
+import com.rae.placetobe.location.extra.PicassoImageRenderer;
 import com.rae.placetobe.model.ImageData;
 
 public class PtbMapActivity extends AbstractDrawerActivity  implements CursorHolder, LoaderHolder, ClusterManager.OnClusterClickListener<ImageData>
@@ -35,7 +34,7 @@ public class PtbMapActivity extends AbstractDrawerActivity  implements CursorHol
 	private LoaderCallbacks<Cursor> callbacks ;
     private GoogleMap googleMap;
 
-    private ClusterManager<ImageData> mClusterManager;
+    private ClusterManager<ImageData> clusterManager;
     
 	@Override
 	protected int getContentViewId() {
@@ -44,7 +43,7 @@ public class PtbMapActivity extends AbstractDrawerActivity  implements CursorHol
 
     private boolean ensureInitMap()
     {	
-    	if(mClusterManager!=null) return true ; // OK
+    	if(clusterManager!=null) return true ; // OK
     	
 		if(googleMap==null)
 			googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.fragMap)).getMap();
@@ -54,18 +53,16 @@ public class PtbMapActivity extends AbstractDrawerActivity  implements CursorHol
 			return false ;
 		}
 		
-        mClusterManager = new ClusterManager<ImageData>(this, googleMap);		
-        mClusterManager.setRenderer(new ImageRenderer(this, googleMap, mClusterManager));
-        
-        mClusterManager.setOnClusterClickListener(this);
+        clusterManager = new ClusterManager<ImageData>(this, googleMap);		
+        clusterManager.setRenderer(new PicassoImageRenderer(this, googleMap, clusterManager));        
+        clusterManager.setOnClusterClickListener(this);
 
-        
 		UiSettings settings = googleMap.getUiSettings() ;
 		settings.setMyLocationButtonEnabled(true) ;	
 		googleMap.setMyLocationEnabled(true);
-        googleMap.setOnCameraChangeListener(mClusterManager);
-        googleMap.setOnMarkerClickListener(mClusterManager);
-        googleMap.setOnInfoWindowClickListener(mClusterManager);
+        googleMap.setOnCameraChangeListener(clusterManager);
+        googleMap.setOnMarkerClickListener(clusterManager);
+        googleMap.setOnInfoWindowClickListener(clusterManager);
         
 		return true ;
     }
@@ -128,15 +125,14 @@ public class PtbMapActivity extends AbstractDrawerActivity  implements CursorHol
 				curLatLng = new LatLng(lat, lng);
 				if(lastPos==null) lastPos = curLatLng ;			
 							
-				// Extra
-                mClusterManager.addItem(new ImageData(id, path, comment, timestamp, curLatLng));
+                clusterManager.addItem(new ImageData(id, path, comment, timestamp, curLatLng));
 			}
 			
 			cursor.moveToNext();
 		}
 		
 		// Move the camera instantly to lastPos with a zoom of 15.
-		/*if(lastPos==null)*/  lastPos = DEFAULT_LOCATION ;
+		if(lastPos==null)  lastPos = DEFAULT_LOCATION ;
 		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastPos, 5));
 	}
 
@@ -153,9 +149,6 @@ public class PtbMapActivity extends AbstractDrawerActivity  implements CursorHol
 	    intent.putExtra(ClusterHistoryActivity.EXTRA_PHOTOS, ps) ;
 	    startActivity(intent);		
 
-	    // Show a toast with some info when the cluster is clicked.
-        String firstName = cluster.getItems().iterator().next().getTimestamp();
-        Toast.makeText(this, cluster.getSize() + " (including " + firstName + ")", Toast.LENGTH_SHORT).show();
-        return true;
+	    return true;
 	}
 }

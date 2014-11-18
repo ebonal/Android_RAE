@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public class ImagesDao implements Images
 {
@@ -28,7 +27,6 @@ public class ImagesDao implements Images
 
 	
 	public static Cursor findAll(Context context, String[] selectionArgs)  {
-		Log.d(TAG, "findAll()") ;
 		SQLiteDatabase db = PlaceToBeDBHelper.getInstance(context).getReadableDatabase() ;
 		return db.query(TABLE_NAME, PROJECTION, null, null, null, null, COLUMN_DATE);
 	}

@@ -80,7 +80,17 @@ public class ClusterHistoryActivity extends AbstractHistoryActivity
 
 	        ImageData data = getItem(position) ;
 	        
-	        comment.setText(data.getComment());
+			String sqlDate = data.getTimestamp() ;
+			String sComment = data.getComment() ;
+			if(sComment==null || sComment.isEmpty())
+				sComment = sqlDate ;
+			else 
+				sComment = sComment + "\n" + sqlDate ;		
+			comment.setText(sComment);
+			// TextHelper.putString(comment, cursor, ImagesDao.IDX_COMMENT) ;
+	        
+	        
+	        
 	       	picture.setImageResource(R.drawable.ic_thumb_img);
 			Picasso.with(getContext()).load(new File(data.getFilePath())).resize(200, 200).centerCrop().into(picture);
 	        

@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.rae.placetobe.R;
 import com.rae.placetobe.data.ImagesDao;
-import com.rae.placetobe.util.TextHelper;
 import com.squareup.picasso.Picasso;
 
 public class HistoryAdapter extends ResourceCursorAdapter
@@ -26,9 +25,16 @@ public class HistoryAdapter extends ResourceCursorAdapter
         // Get my view
         final ImageView picture = (ImageView)view.findViewById(R.id.picture);
         final TextView  comment = (TextView) view.findViewById(R.id.text);
+		        
+		String sqlDate = cursor.getString(ImagesDao.IDX_DATE) ;
+		String sComment = cursor.getString(ImagesDao.IDX_COMMENT) ;
+		if(sComment==null || sComment.isEmpty())
+			sComment = sqlDate ;
+		else 
+			sComment = sComment + "\n" + sqlDate ;		
+		comment.setText(sComment);
+		// TextHelper.putString(comment, cursor, ImagesDao.IDX_COMMENT) ;
 		
-		TextHelper.putString(comment, cursor, ImagesDao.IDX_COMMENT) ;
-        
 		String path = cursor.getString(ImagesDao.IDX_PATH) ;
 		
        	picture.setImageResource(R.drawable.ic_thumb_img);
